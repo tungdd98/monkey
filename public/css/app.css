@@ -1,0 +1,185 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito);body {
+  font-size: 14px;
+  margin: 0;
+}
+
+html,
+body {
+  height: 100vh;
+}
+
+a {
+  text-decoration: none;
+}
+
+button,
+input {
+  font-family: inherit !important;
+}
+
+.el-main::-webkit-scrollbar {
+  width: 6px;
+}
+
+.el-main::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.el-main::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.v-body {
+  flex-direction: column !important;
+  background: #ebedef;
+}
+
+.v-body .el-dialog {
+  width: 70% !important;
+}
+
+/* Aside */
+
+.v-aside {
+  background-color: #3c4b64;
+}
+
+.v-aside-brand {
+  padding: 10px 0;
+  text-align: center;
+  border-bottom: 1px solid #fff;
+}
+
+.v-aside-brand__text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.v-menu-aside {
+  border-right: none !important;
+}
+
+.v-menu-aside a {
+  color: #fff;
+  transition: 0.2s ease;
+}
+
+.v-menu-aside li:hover a {
+  color: #3490dc;
+}
+
+/* Header */
+
+.v-header {
+  box-shadow: 0 2px 2px 0 rgba(60, 75, 100, 0.14), 0 3px 1px -2px rgba(60, 75, 100, 0.12), 0 1px 5px 0 rgba(60, 75, 100, 0.2);
+  background: #fff;
+}
+
+.v-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.v-header-brand__title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.v-header-account {
+  display: flex;
+  align-items: center;
+}
+
+.v-header-account__icon {
+  margin: 0 14px;
+}
+
+/* Footer */
+
+.v-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-top: 1px solid #ddd;
+}
+
+/* Breadcrumb */
+
+.v-breadcrumb {
+  padding: 10px 0;
+  border-top: 1px solid #ddd;
+}
+
+/* Login */
+
+.v-login,
+.v-register {
+  display: flex;
+  justify-content: center;
+}
+
+.v-login-form,
+.v-register-form {
+  width: 30%;
+  margin: 100px 20px;
+  padding: 40px 60px;
+  border-radius: 5px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 798px) {
+  .v-login-form,
+  .v-register-form {
+    width: 90%;
+  }
+}
+
+.v-login-form h3,
+.v-register-form h3 {
+  text-align: center;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.v-login-btn button,
+.v-register-btn button {
+  display: block !important;
+  width: 100%;
+}
+
+.v-login-actions,
+.v-register-actions {
+  margin-top: 5px;
+  font-style: italic;
+  font-weight: 13px;
+  text-decoration: underline;
+}
+
+.v-breadcrumb {
+  padding: 10px 0;
+  border-top: 1px solid #ddd;
+}
+
+.v-products-dialog {
+  padding-bottom: 10px;
+}
+
+.v-products-dialog__add {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.v-pagination {
+  display: flex;
+  justify-content: flex-end;
+  background: #fff;
+  padding: 5px 0;
+}
+
