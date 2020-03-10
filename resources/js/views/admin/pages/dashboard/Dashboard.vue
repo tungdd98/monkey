@@ -64,10 +64,10 @@
   </div>
 </template>
 <script>
-import ChartLine from './components/ChartLine'
-import ChartLineBig from './components/ChartLineBig'
+import ChartLine from '../../components/ChartLine'
+import ChartLineBig from '../../components/ChartLineBig'
 export default {
-  name: 'news-feed',
+  name: 'dash-board',
   components: {
     ChartLine,
     ChartLineBig

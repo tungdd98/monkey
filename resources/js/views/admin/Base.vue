@@ -11,9 +11,9 @@
   </el-container>
 </template>
 <script>
-import VAside from '@/containers/admin/VAside'
-import VHeader from '@/containers/admin/VHeader'
-import VFooter from '@/containers/admin/VFooter'
+import VAside from './templates/VAside'
+import VHeader from './templates/VHeader'
+import VFooter from './templates/VHeader'
 export default {
   name: 'dashboard',
   components: {

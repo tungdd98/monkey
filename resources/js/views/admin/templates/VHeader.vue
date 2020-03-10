@@ -5,7 +5,7 @@
   </el-header>
 </template>
 <script>
-import VBreadcrumb from './VBreadcrumb'
+import VBreadcrumb from '../components/VBreadcrumb'
 import VHeaderTop from './VHeaderTop'
 export default {
   name: "v-header",

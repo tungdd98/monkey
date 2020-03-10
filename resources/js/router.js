@@ -5,12 +5,12 @@ Vue.use(VueRouter)
 
 import store from '@/store'
 
-import Dashboard from '@/pages/admin/Dashboard'
-import newsfeed from '@/pages/admin/newsfeed/router'
-import Login from '@/pages/admin/Login'
-import Register from '@/pages/admin/Register'
+import Admin from '@/views/admin/Base'
+import dashboard from '@/views/admin/pages/dashboard/router'
+import Login from '@/views/Login'
+import Register from '@/views/Register'
 
-import Home from '@/pages/home/Home'
+import Home from '@/views/home/Base'
 const routes = [
   {
     path: '/',
@@ -19,9 +19,9 @@ const routes = [
   },
   {
     path: '/admin',
-    component: Dashboard,
+    component: Admin,
     children: [
-      newsfeed
+      dashboard
     ],
     meta: { requiresAuth: true }
   },
