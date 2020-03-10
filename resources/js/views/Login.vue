@@ -23,7 +23,7 @@
 </template>
 <script>
 import { mapActions } from 'vuex'
-import { noti } from '@/constraint'
+import { notification, rules } from '@/configs'
 export default {
   name: 'login',
   data() {
@@ -33,14 +33,7 @@ export default {
         email: 'admin@gmail.com',
         password: '123456'
       },
-      rules: {
-        email: [
-          { required: true, message: 'Vui lòng nhập email đăng nhập', trigger: 'blur' }
-        ],
-        password: [
-          { required: true, message: 'Vui lòng nhập mật khẩu đăng nhập', trigger: 'blur' }
-        ],
-      }
+      rules: rules.login
     }
   },
   methods: {
@@ -54,12 +47,10 @@ export default {
           this.login(formData)
           .then(res => {
             if(res.flag) {
-              noti.success.title = 'Đăng nhập thành công'
-              this.$fire(noti.success)
+              this.$fire(notification.success.logined)
               return true
             } else {
-              noti.error.title = 'Đăng nhập thất bại'
-              this.$fire(noti.error)
+              this.$fire(notification.error)
               return false
             }
           })

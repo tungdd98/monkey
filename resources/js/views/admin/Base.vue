@@ -13,7 +13,7 @@
 <script>
 import VAside from './templates/VAside'
 import VHeader from './templates/VHeader'
-import VFooter from './templates/VHeader'
+import VFooter from './templates/VFooter'
 export default {
   name: 'dashboard',
   components: {

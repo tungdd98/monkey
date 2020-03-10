@@ -22,7 +22,7 @@
       <el-dropdown trigger="click">
         <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>
+          <el-dropdown-item v-if="user">
             <span>{{ user.name }}</span>
           </el-dropdown-item>
           <el-dropdown-item icon="el-icon-plus">
