@@ -27,7 +27,7 @@
       <el-menu-item index="2">
         <template slot="title">
           <i class="el-icon-picture"></i>
-          <router-link to="/admin">Thư viện</router-link>
+          <router-link to="/sliders">Slider</router-link>
         </template>
       </el-menu-item>
       <el-submenu index="3">

@@ -55,7 +55,6 @@ const actions = {
           'Authorization': `Bearer ${token}`
         }
       })
-      console.log(result)
       if(result.status === 200) {
         commit('setUserLogin', result.data)
         return {

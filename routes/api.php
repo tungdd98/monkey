@@ -8,3 +8,4 @@ Route::group([
     Route::get('users', 'Api\UserController');
 });
 Route::apiResource('products', 'Api\ProductsController');
+Route::apiResource('sliders', 'Api\SliderController');
