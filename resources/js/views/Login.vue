@@ -23,7 +23,7 @@
 </template>
 <script>
 import { mapActions } from 'vuex'
-import { notification, rules } from '@/configs'
+import foo from '@/configs'
 export default {
   name: 'login',
   data() {
@@ -33,7 +33,7 @@ export default {
         email: 'admin@gmail.com',
         password: '123456'
       },
-      rules: rules.login
+      rules: foo.RULES.login
     }
   },
   methods: {
@@ -47,10 +47,10 @@ export default {
           this.login(formData)
           .then(res => {
             if(res.flag) {
-              this.$fire(notification.success.logined)
+              this.$fire(foo.NOTIFICATION.success.logined)
               return true
             } else {
-              this.$fire(notification.error)
+              this.$fire(foo.NOTIFICATION.error)
               return false
             }
           })

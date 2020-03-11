@@ -11,8 +11,8 @@ class Slider extends Model
 
     public function getListItems($params = null, $options = null) {
         $result = null;
-        if($options['pagination'] == false) {
-            $result = self::select($this->columns)->get();
+        if($options['pagination'] == 'false') {
+            $result = self::select($this->columns)->orderBy($options['order_by'], $options['order_dir'])->get();
         } else {
             $result = self::select($this->columns)->orderBy($options['order_by'], $options['order_dir'])->paginate($options['per_page']);
         }

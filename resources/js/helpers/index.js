@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { status, time } from '@/configs'
+import foo from '@/configs'
 const Helpers = {
   getThumbnail(_controller, _thumbnail) {
     return `images/${_controller}/${_thumbnail}`
@@ -9,10 +9,10 @@ const Helpers = {
   },
   dateFormat(_time, _type) {
     moment.locale('vi')
-    return moment(_time).format(time[_type])
+    return moment(_time).format(foo.TIME[_type])
   },
   showStatus(_state) {
-    return status[_state].class
+    return foo.STATUS[_state].class
   }
 }
 export default Helpers

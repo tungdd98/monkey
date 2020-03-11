@@ -1,6 +1,6 @@
-const status = {
-  0: { title: 'Không hiển thị', class: 'v-status-disable' },
-  1: { title: 'Hiển thị', class: 'v-status-active' },
-  2: { title: 'Huỷ bỏ', class: 'v-status-danger' }
-}
+const status = [
+  { title: 'Không hiển thị', class: 'v-status-disable', value: 0 },
+  { title: 'Hiển thị', class: 'v-status-active', value: 1 },
+  { title: 'Huỷ bỏ', class: 'v-status-danger', value: 2 }
+]
 export default status

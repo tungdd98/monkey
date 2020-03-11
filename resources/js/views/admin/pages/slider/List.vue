@@ -1,6 +1,13 @@
 <template>
   <div class="v-products">
-    <edit></edit>
+    <el-row>
+      <el-col :span="12">
+        <filters></filters>
+      </el-col>
+      <el-col :span="12">
+        <edit></edit>
+      </el-col>
+    </el-row>
     <div class="v-products-table">
       <el-table v-loading="isLoading" v-if="items" :data="items">
         <el-table-column type="index" width="50" align="center"></el-table-column>
@@ -50,23 +57,25 @@
         layout="prev, pager, next"
         @current-change="handleCurrChange"
         :total="total"
-        :page-size="paginate.per_page"
+        :page-size="foo.PAGINATE.per_page"
       ></el-pagination>
     </div>
   </div>
 </template>
 <script>
 import Edit from './Edit'
+import Filters from './Filters'
 import Actions from '../../components/Actions'
 import { mapActions, mapState, mapGetters } from 'vuex'
-import { paginate } from '@/configs'
+import foo from '@/configs'
+
 const controller = 'slider'
 
 export default {
   data() {
     return {
       controller,
-      paginate
+      foo
     }
   },
   computed: {
@@ -83,9 +92,15 @@ export default {
   },
   methods: {
     ...mapActions(controller, ['getList']),
+    /**
+     * Khởi tạo dữ liệu
+     */
     init(){
-      this.getList({}, true)
+      this.getList({})
     },
+    /**
+     * Phân trang
+     */
     handleCurrChange(val) {
       this.getList({
         page: val
@@ -94,7 +109,8 @@ export default {
   },
   components: {
     Edit,
-    Actions
+    Actions,
+    Filters
   }
 }
 </script>
