@@ -9,17 +9,33 @@ const state = {
 const getters = {
   getAll: state => {
     return state.all
+  },
+  getTotalList: state => {
+    return state.total
   }
 }
    
 const actions = {
-  getList: async ({ commit }) => {
+  getList: async ({ commit }, { per_page = paginate.per_page, page = paginate.page, order_by = paginate.order_by, order_dir = paginate.order_dir }, pagination = false) => {
     commit('setLoading', true, { root: true })
     try {
-      let result = await Axios.get('api/sliders')
+      let config = {
+        params: {
+          per_page,
+          page,
+          order_by,
+          order_dir,
+          pagination
+        }
+      }
+      let result = await Axios.get('api/sliders', config)
+      console.log(result)
       commit('setLoading', false, { root: true })
       if(result.status === 200) {
-        commit('setList', result.data.data) 
+        commit('setList', {
+          all: result.data.data,
+          total: result.data.meta.total
+        }) 
         return {
           flag: true
         }
@@ -37,8 +53,9 @@ const actions = {
 }
 
 const mutations = {
-  setList: (state, data) => {
-    state.all = data
+  setList: (state, { all, total }) => {
+    state.all = all
+    state.total = total
   }
 }
 

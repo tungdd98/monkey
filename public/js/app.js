@@ -4785,6 +4785,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4794,7 +4807,7 @@ var controller = 'slider';
   data: function data() {
     return {
       controller: controller,
-      time: _configs__WEBPACK_IMPORTED_MODULE_3__["time"]
+      paginate: _configs__WEBPACK_IMPORTED_MODULE_3__["paginate"]
     };
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapState"])({
@@ -4802,14 +4815,20 @@ var controller = 'slider';
       return state.isLoading;
     }
   }), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapGetters"])({
-    items: "".concat(controller, "/getAll")
+    items: "".concat(controller, "/getAll"),
+    total: "".concat(controller, "/getTotalList")
   })),
   created: function created() {
     this.init();
   },
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapActions"])(controller, ['getList']), {
     init: function init() {
-      this.getList();
+      this.getList({}, true);
+    },
+    handleCurrChange: function handleCurrChange(val) {
+      this.getList({
+        page: val
+      });
     }
   }),
   components: {
@@ -104107,6 +104126,28 @@ var render = function() {
                   }),
                   _vm._v(" "),
                   _c("el-table-column", {
+                    attrs: { width: "50" },
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "default",
+                          fn: function(scope) {
+                            return [
+                              _c("div", {
+                                staticClass: "v-status",
+                                class: _vm.showStatus(scope.row.status)
+                              })
+                            ]
+                          }
+                        }
+                      ],
+                      null,
+                      false,
+                      2126405293
+                    )
+                  }),
+                  _vm._v(" "),
+                  _c("el-table-column", {
                     attrs: { label: "Ảnh", align: "center", width: "120" },
                     scopedSlots: _vm._u(
                       [
@@ -104191,7 +104232,7 @@ var render = function() {
                                   _vm._s(
                                     _vm.dateFormat(
                                       scope.row.created_at,
-                                      _vm.time.short
+                                      "short"
                                     )
                                   )
                                 )
@@ -104206,7 +104247,7 @@ var render = function() {
                       ],
                       null,
                       false,
-                      4209632426
+                      3257483409
                     )
                   }),
                   _vm._v(" "),
@@ -104223,7 +104264,7 @@ var render = function() {
                                   _vm._s(
                                     _vm.dateFormat(
                                       scope.row.updated_at,
-                                      _vm.time.short
+                                      "short"
                                     )
                                   )
                                 )
@@ -104238,7 +104279,7 @@ var render = function() {
                       ],
                       null,
                       false,
-                      1154496842
+                      1484568465
                     )
                   }),
                   _vm._v(" "),
@@ -104246,7 +104287,18 @@ var render = function() {
                 ],
                 1
               )
-            : _vm._e()
+            : _vm._e(),
+          _vm._v(" "),
+          _c("el-pagination", {
+            staticClass: "v-pagination",
+            attrs: {
+              background: "",
+              layout: "prev, pager, next",
+              total: _vm.total,
+              "page-size": _vm.paginate.per_page
+            },
+            on: { "current-change": _vm.handleCurrChange }
+          })
         ],
         1
       )
@@ -121135,7 +121187,7 @@ new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 /*!***************************************!*\
   !*** ./resources/js/configs/index.js ***!
   \***************************************/
-/*! exports provided: notification, rules, paginate, time */
+/*! exports provided: notification, rules, paginate, time, status */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -121151,6 +121203,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony import */ var _modules_time__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/time */ "./resources/js/configs/modules/time.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "time", function() { return _modules_time__WEBPACK_IMPORTED_MODULE_3__["default"]; });
+
+/* harmony import */ var _modules_status__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/status */ "./resources/js/configs/modules/status.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "status", function() { return _modules_status__WEBPACK_IMPORTED_MODULE_4__["default"]; });
+
 
 
 
@@ -121227,9 +121283,9 @@ var notification = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 var paginate = {
-  per_page: 5,
+  per_page: 2,
   page: 1,
-  order_by: 'created',
+  order_by: 'created_at',
   order_dir: 'desc'
 };
 /* harmony default export */ __webpack_exports__["default"] = (paginate);
@@ -121263,6 +121319,33 @@ var rules = {
 
 /***/ }),
 
+/***/ "./resources/js/configs/modules/status.js":
+/*!************************************************!*\
+  !*** ./resources/js/configs/modules/status.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var status = {
+  0: {
+    title: 'Không hiển thị',
+    "class": 'v-status-disable'
+  },
+  1: {
+    title: 'Hiển thị',
+    "class": 'v-status-active'
+  },
+  2: {
+    title: 'Huỷ bỏ',
+    "class": 'v-status-danger'
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (status);
+
+/***/ }),
+
 /***/ "./resources/js/configs/modules/time.js":
 /*!**********************************************!*\
   !*** ./resources/js/configs/modules/time.js ***!
@@ -121291,17 +121374,22 @@ var time = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _configs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/configs */ "./resources/js/configs/index.js");
+
 
 var Helpers = {
-  getThumbnail: function getThumbnail(controller, thumbnail) {
-    return "images/".concat(controller, "/").concat(thumbnail);
+  getThumbnail: function getThumbnail(_controller, _thumbnail) {
+    return "images/".concat(_controller, "/").concat(_thumbnail);
   },
-  showMsg: function showMsg(str) {
-    return str.toLowerCase();
+  showMsg: function showMsg(_str) {
+    return _str.toLowerCase();
   },
-  dateFormat: function dateFormat(time, type) {
+  dateFormat: function dateFormat(_time, _type) {
     moment__WEBPACK_IMPORTED_MODULE_0___default.a.locale('vi');
-    return moment__WEBPACK_IMPORTED_MODULE_0___default()(time).format(type);
+    return moment__WEBPACK_IMPORTED_MODULE_0___default()(_time).format(_configs__WEBPACK_IMPORTED_MODULE_1__["time"][_type]);
+  },
+  showStatus: function showStatus(_state) {
+    return _configs__WEBPACK_IMPORTED_MODULE_1__["status"][_state]["class"];
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (Helpers);
@@ -121856,62 +121944,93 @@ var state = {
 var getters = {
   getAll: function getAll(state) {
     return state.all;
+  },
+  getTotalList: function getTotalList(state) {
+    return state.total;
   }
 };
 var actions = {
   getList: function () {
-    var _getList = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref) {
-      var commit, result;
+    var _getList = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(_ref, _ref2) {
+      var commit,
+          _ref2$per_page,
+          per_page,
+          _ref2$page,
+          page,
+          _ref2$order_by,
+          order_by,
+          _ref2$order_dir,
+          order_dir,
+          pagination,
+          config,
+          result,
+          _args = arguments;
+
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
               commit = _ref.commit;
+              _ref2$per_page = _ref2.per_page, per_page = _ref2$per_page === void 0 ? _configs__WEBPACK_IMPORTED_MODULE_2__["paginate"].per_page : _ref2$per_page, _ref2$page = _ref2.page, page = _ref2$page === void 0 ? _configs__WEBPACK_IMPORTED_MODULE_2__["paginate"].page : _ref2$page, _ref2$order_by = _ref2.order_by, order_by = _ref2$order_by === void 0 ? _configs__WEBPACK_IMPORTED_MODULE_2__["paginate"].order_by : _ref2$order_by, _ref2$order_dir = _ref2.order_dir, order_dir = _ref2$order_dir === void 0 ? _configs__WEBPACK_IMPORTED_MODULE_2__["paginate"].order_dir : _ref2$order_dir;
+              pagination = _args.length > 2 && _args[2] !== undefined ? _args[2] : false;
               commit('setLoading', true, {
                 root: true
               });
-              _context.prev = 2;
-              _context.next = 5;
-              return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('api/sliders');
+              _context.prev = 4;
+              config = {
+                params: {
+                  per_page: per_page,
+                  page: page,
+                  order_by: order_by,
+                  order_dir: order_dir,
+                  pagination: pagination
+                }
+              };
+              _context.next = 8;
+              return axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('api/sliders', config);
 
-            case 5:
+            case 8:
               result = _context.sent;
+              console.log(result);
               commit('setLoading', false, {
                 root: true
               });
 
               if (!(result.status === 200)) {
-                _context.next = 10;
+                _context.next = 14;
                 break;
               }
 
-              commit('setList', result.data.data);
+              commit('setList', {
+                all: result.data.data,
+                total: result.data.meta.total
+              });
               return _context.abrupt("return", {
                 flag: true
               });
 
-            case 10:
-              return _context.abrupt("return", {
-                flag: false
-              });
-
-            case 13:
-              _context.prev = 13;
-              _context.t0 = _context["catch"](2);
-              console.log(_context.t0);
+            case 14:
               return _context.abrupt("return", {
                 flag: false
               });
 
             case 17:
+              _context.prev = 17;
+              _context.t0 = _context["catch"](4);
+              console.log(_context.t0);
+              return _context.abrupt("return", {
+                flag: false
+              });
+
+            case 21:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, null, [[2, 13]]);
+      }, _callee, null, [[4, 17]]);
     }));
 
-    function getList(_x) {
+    function getList(_x, _x2) {
       return _getList.apply(this, arguments);
     }
 
@@ -121919,8 +122038,11 @@ var actions = {
   }()
 };
 var mutations = {
-  setList: function setList(state, data) {
-    state.all = data;
+  setList: function setList(state, _ref3) {
+    var all = _ref3.all,
+        total = _ref3.total;
+    state.all = all;
+    state.total = total;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({

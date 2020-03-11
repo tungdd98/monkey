@@ -5,6 +5,11 @@
       <el-table v-loading="isLoading" v-if="items" :data="items">
         <el-table-column type="index" width="50" align="center"></el-table-column>
         <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column width="50">
+          <template slot-scope="scope">
+            <div class="v-status" :class="showStatus(scope.row.status)"></div>
+          </template>
+        </el-table-column>
         <el-table-column label="Ảnh" align="center" width="120">
           <template slot-scope="scope">
             <el-image
@@ -27,18 +32,26 @@
         </el-table-column>
         <el-table-column label="Ngày tạo">
           <template slot-scope="scope">
-            <div>{{ dateFormat(scope.row.created_at, time.short) }}</div>
+            <div>{{ dateFormat(scope.row.created_at, 'short') }}</div>
             <div class="v-italic">{{ scope.row.created_by }}</div>
           </template>
         </el-table-column>
         <el-table-column label="Cập nhật lần cuối">
           <template slot-scope="scope">
-            <div>{{ dateFormat(scope.row.updated_at, time.short) }}</div>
+            <div>{{ dateFormat(scope.row.updated_at, 'short') }}</div>
             <div class="v-italic">{{ scope.row.updated_by }}</div>
           </template>
         </el-table-column>
         <actions></actions>
       </el-table>
+      <el-pagination
+        background
+        class="v-pagination"
+        layout="prev, pager, next"
+        @current-change="handleCurrChange"
+        :total="total"
+        :page-size="paginate.per_page"
+      ></el-pagination>
     </div>
   </div>
 </template>
@@ -46,15 +59,14 @@
 import Edit from './Edit'
 import Actions from '../../components/Actions'
 import { mapActions, mapState, mapGetters } from 'vuex'
-import { time } from '@/configs'
-
+import { paginate } from '@/configs'
 const controller = 'slider'
 
 export default {
   data() {
     return {
-      controller: controller,
-      time: time
+      controller,
+      paginate
     }
   },
   computed: {
@@ -62,7 +74,8 @@ export default {
       isLoading: state => state.isLoading
     }),
     ...mapGetters({
-      items: `${controller}/getAll`
+      items: `${controller}/getAll`,
+      total: `${controller}/getTotalList`
     })
   },
   created() {
@@ -71,8 +84,13 @@ export default {
   methods: {
     ...mapActions(controller, ['getList']),
     init(){
-      this.getList()
-    }
+      this.getList({}, true)
+    },
+    handleCurrChange(val) {
+      this.getList({
+        page: val
+      })
+    },
   },
   components: {
     Edit,

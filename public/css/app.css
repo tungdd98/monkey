@@ -183,3 +183,18 @@ input {
   padding: 5px 0;
 }
 
+.v-status {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.v-status-active {
+  background-color: #38c172;
+}
+
+.v-status-disable {
+  background-color: #e3342f;
+}
+

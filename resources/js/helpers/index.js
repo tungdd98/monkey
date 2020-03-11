@@ -1,14 +1,18 @@
 import moment from 'moment'
+import { status, time } from '@/configs'
 const Helpers = {
-  getThumbnail(controller, thumbnail) {
-    return `images/${controller}/${thumbnail}`
+  getThumbnail(_controller, _thumbnail) {
+    return `images/${_controller}/${_thumbnail}`
   },
-  showMsg(str) {
-    return str.toLowerCase()
+  showMsg(_str) {
+    return _str.toLowerCase()
   },
-  dateFormat(time, type) {
+  dateFormat(_time, _type) {
     moment.locale('vi')
-    return moment(time).format(type)
+    return moment(_time).format(time[_type])
+  },
+  showStatus(_state) {
+    return status[_state].class
   }
 }
 export default Helpers

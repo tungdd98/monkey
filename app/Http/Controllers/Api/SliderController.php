@@ -20,9 +20,15 @@ class SliderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $items = $this->model->getListItems(null, ['list' => 'all']);
+        $options = [
+            'pagination' => $request->pagination, 
+            'per_page' => $request->per_page,
+            'order_by' => $request->order_by,
+            'order_dir' => $request->order_dir
+        ];
+        $items = $this->model->getListItems(null, $options);
         return Resource::collection($items);
     }
 

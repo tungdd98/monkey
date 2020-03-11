@@ -22,6 +22,7 @@ class Sliders extends Migration
             $table->string('thumbnail')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+            $table->tinyInteger('status')->default(1)->nullable();
             $table->timestamps();
         });
     }
