@@ -3,6 +3,11 @@ import App from '@/App.vue'
 import '@/plugins'
 import router from '@/router.js'
 import store from '@/store'
+import Helpers from '@/helpers'
+
+Vue.mixin({
+  methods: Helpers
+})
 
 Vue.config.productionTip = false
 

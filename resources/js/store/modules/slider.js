@@ -7,17 +7,26 @@ const state = {
 }
 
 const getters = {
-
+  getAll: state => {
+    return state.all
+  }
 }
-
+   
 const actions = {
-  
   getList: async ({ commit }) => {
     commit('setLoading', true, { root: true })
     try {
       let result = await Axios.get('api/sliders')
       commit('setLoading', false, { root: true })
-      console.log(result)
+      if(result.status === 200) {
+        commit('setList', result.data.data) 
+        return {
+          flag: true
+        }
+      }
+      return {
+        flag: false
+      }
     } catch (error) {
       console.log(error)
       return {
@@ -28,7 +37,9 @@ const actions = {
 }
 
 const mutations = {
-
+  setList: (state, data) => {
+    state.all = data
+  }
 }
 
 export default {
