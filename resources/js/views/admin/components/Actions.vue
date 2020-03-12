@@ -1,7 +1,6 @@
 <template>
   <el-table-column fixed="right" label="Thao tác" align="center" width="120">
     <template>
-      <!-- <el-button type="primary" icon="el-icon-edit" circle size="small"></el-button> -->
       <el-button 
         v-for="item in foo.ACTION[controller]"
         :key="item.title" 
@@ -9,6 +8,7 @@
         :icon="item.icon" 
         :size="item.size"
         :title="item.title"
+        @click="item.event"
         circle 
       ></el-button>
     </template>
@@ -24,6 +24,14 @@ export default {
   },
   props: {
     controller: { type: String, default: '' }
+  },
+  methods: {
+    handleShow() {
+      console.log('hihi')
+    },
+    handleDelete() {
+      console.log('hí hí')
+    }
   }
 }
 </script>

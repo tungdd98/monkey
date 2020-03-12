@@ -24,6 +24,9 @@ export default {
     per_page: { type: Number, default: 0 }
   },
   methods: {
+    /**
+     * Phân trang
+     */
     handleCurrChange(val) {
       this.$store.dispatch(`${this.controller}/getList`, {
         page: val

@@ -58,6 +58,36 @@ const actions = {
       }
     }
   },
+  /**
+   * Thay đổi trạng thái phần tử
+   */
+  changeStatus: async ({ commit, dispatch }, data) => {
+    try {
+      data.status = data.status === 1 ? 0 : 1
+      let result = await Axios.patch(`api/sliders/${data.id}`, data)
+      if(result.status === 200) {
+        return {
+          flag: true
+        }
+      }
+    } catch (error) {
+      console.log(error)
+      return {
+        flag: false
+      }
+    }
+  },
+  deleteItem: async ({ commit }, id) => {
+    try {
+      let result = await Axios.delete(`api/delete/${id}`)
+      console.log(result)
+    } catch (error) {
+      console.log(error)
+      return {
+        flag: false
+      }
+    }
+  }
 }
 
 const mutations = {

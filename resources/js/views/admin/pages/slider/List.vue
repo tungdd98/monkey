@@ -19,7 +19,7 @@
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column width="50">
             <template slot-scope="scope">
-              <div class="v-status" :class="showStatus(scope.row.status)"></div>
+              <div class="v-status" :class="_showStatus(scope.row.status)" @click="_changeStatus(controller, scope.row)"></div>
             </template>
           </el-table-column>
           <el-table-column label="Ảnh" align="center" width="120">
@@ -27,7 +27,7 @@
               <el-image
                 style="width: 80px; height: 80px"
                 fit="cover"
-                :src="getThumbnail(controller, scope.row.thumbnail)"
+                :src="_getThumbnail(controller, scope.row.thumbnail)"
               ></el-image>
             </template>
           </el-table-column>
@@ -44,17 +44,22 @@
           </el-table-column>
           <el-table-column label="Ngày tạo">
             <template slot-scope="scope">
-              <div>{{ dateFormat(scope.row.created_at, 'short') }}</div>
+              <div>{{ _dateFormat(scope.row.created_at, 'short') }}</div>
               <div class="v-italic">{{ scope.row.created_by }}</div>
             </template>
           </el-table-column>
           <el-table-column label="Cập nhật lần cuối">
             <template slot-scope="scope">
-              <div>{{ dateFormat(scope.row.updated_at, 'short') }}</div>
+              <div>{{ _dateFormat(scope.row.updated_at, 'short') }}</div>
               <div class="v-italic">{{ scope.row.updated_by }}</div>
             </template>
           </el-table-column>
-          <actions :controller="controller"></actions>
+          <el-table-column fixed="right" label="Thao tác" align="center" width="120">
+            <template slot-scope="scope">
+              <el-button type="primary" icon="el-icon-edit" size="small" title="Edit" circle></el-button>
+              <el-button type="danger" icon="el-icon-delete" size="small" title="Delete" circle @click="handleDelete(scope.row)"></el-button>
+            </template>
+          </el-table-column>
       </el-table>
       <pagination :total="total" :controller="controller" :per_page="per_page"></pagination>
     </div>
@@ -63,7 +68,6 @@
 <script>
 import Edit from './Edit'
 import Filters from '../../components/Filters'
-import Actions from '../../components/Actions'
 import Pagination from '../../components/Pagination'
 import { mapActions, mapState, mapGetters } from 'vuex'
 import foo from '@/configs'
@@ -92,7 +96,7 @@ export default {
     this.init()
   },
   methods: {
-    ...mapActions(controller, ['getList']),
+    ...mapActions(controller, ['getList', 'deleteItem']),
     /**
      * Khởi tạo dữ liệu
      */
@@ -100,19 +104,10 @@ export default {
       this.getList({})
     },
     /**
-     * Phân trang
-     */
-    handleCurrChange(val) {
-      this.getList({
-        page: val
-      })
-    },
-    /**
      * Lọc theo số bản ghi
      */
     handleInputPerPage(data) {
       this.per_page = data
-      console.log(this.per_page)
       if(this.per_page === 'all') {
         this.getList({
           pagination: false
@@ -132,11 +127,16 @@ export default {
         order_dir: data.order_dir,
         per_page: this.per_page
       })
+    },
+    /**
+     * Xoá sản phẩm
+     */
+    handleDelete(data) {
+      this.deleteItem(data.id)
     }
   },
   components: {
     Edit,
-    Actions,
     Filters,
     Pagination
   }

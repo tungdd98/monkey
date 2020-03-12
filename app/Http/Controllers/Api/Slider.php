@@ -7,7 +7,7 @@ use App\Models\Slider as Model;
 use Illuminate\Http\Request;
 use App\Http\Resources\Slider as Resource;
 
-class SliderController extends Controller
+class Slider extends Controller
 {
     private $model;
     private $params = [];
@@ -58,12 +58,15 @@ class SliderController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Slider  $slider
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Slider $slider)
+    public function update(Request $request)
     {
-        //
+        $params = [
+            'id' => $request->id,
+            'status' => $request->status
+        ];
+        $this->model->updateItem($params, ['field' => 'status']);
     }
 
     /**
@@ -74,6 +77,6 @@ class SliderController extends Controller
      */
     public function destroy(Slider $slider)
     {
-        //
+        return response()->json(['item' => $slider]);
     }
 }
