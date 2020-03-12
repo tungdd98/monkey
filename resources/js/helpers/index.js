@@ -41,6 +41,25 @@ const Helpers = {
       else 
         _this.$fire(foo.NOTIFICATION.error)
     })
+  },
+  /**
+   * Hiển thị lỗi từ serve
+   * @param {*} _errors 
+   */
+  _showErrors(_errors) {
+    let xhtml = ''
+    for(let i in _errors) {
+      let error = _errors[i]
+      xhtml += `<div style="font-size: 12px">${error[0]}</div>`
+    }
+    foo.NOTIFICATION.error.html = xhtml
+    foo.NOTIFICATION.error.timer = 5000
+    this.$fire(foo.NOTIFICATION.error)
+  },
+  _notag(_str) {
+    if(_str && typeof(_str) === 'string') {
+      return _str.replace(/&/g, '&amp;').replace(/'/g,'&#x27;').replace(/\"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\//g, '&#x2F;')
+    }
   }
 }
 export default Helpers

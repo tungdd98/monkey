@@ -69,6 +69,7 @@
 <script>
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import foo from '@/configs'
+import { mapActions } from 'vuex';
 export default {
   data() {
     return {
@@ -98,6 +99,7 @@ export default {
     controller: { type: String, default: '' }
   },
   methods: {
+    ...mapActions('slider', ['createItem']),
     /**
      * Hiển thị dialog hình ảnh
      */
@@ -132,8 +134,20 @@ export default {
       this.$refs[formName].validate(valid => {
         if(valid) {
           this.dialogFormVisible = false
-          console.log(this.form)
-          // this.handleReset(formName)
+          let data = new FormData()
+          for(let i in this.form) {
+            const field = this.form[i]
+            data.append(i, field)
+          }
+          this.createItem(data).then(res => {
+            if(res.flag) {
+              this.$fire(foo.NOTIFICATION.success.created)
+            } else {
+              let errors = res.msg.response.data.errors
+              this._showErrors(errors)
+            }
+            this.handleReset(formName)
+          })
         }
       })
     }

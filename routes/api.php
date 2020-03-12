@@ -15,6 +15,7 @@ Route::group([
     Route::get('/', 'Api\Slider@index')->name('slider.index');
     Route::patch('/{id}', 'Api\Slider@update')->name('slider.update');
     Route::delete('/{id}', 'Api\Slider@destroy')->name('slider.delete');
+    Route::post('/', 'Api\Slider@store')->name('slider.store');
 });
 
 

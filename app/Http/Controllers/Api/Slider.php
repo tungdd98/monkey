@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Slider as Model;
 use Illuminate\Http\Request;
 use App\Http\Resources\Slider as Resource;
-
+use App\Http\Requests\SliderRequest as MainRequest;
 class Slider extends Controller
 {
     private $model;
@@ -38,9 +38,10 @@ class Slider extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MainRequest $request)
     {
-        //
+        $params = $request->all();
+        $this->model->saveItem($params, ['field' => 'add-item']);
     }
 
     /**
@@ -66,7 +67,7 @@ class Slider extends Controller
             'id' => $request->id,
             'status' => $request->status
         ];
-        $this->model->updateItem($params, ['field' => 'status']);
+        $this->model->saveItem($params, ['field' => 'status']);
     }
 
     /**
@@ -77,13 +78,11 @@ class Slider extends Controller
      */
     public function destroy(Request $request)
     {
-        $params = [
-            'id' => $request->id,
-            'thumbnail' => $request->thumbnail
-        ];
-        $imagePath = public_path() . "/images/" . $this->controller . "/" . $params['thumbnail'];
-        if(file_exists($imagePath)) {
-            unlink($imagePath);
+        $params['id'] = $request->id;
+        $item = Model::findOrFail($request->id);
+        $imgPath = "images/{$this->controller}/{$item->thumbnail}";
+        if(file_exists(public_path() . $imgPath)) {
+            unlink($imgPath);
         }
         $this->model->deleteItem($params, ['task' => 'item']);
     }

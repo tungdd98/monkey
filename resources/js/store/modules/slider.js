@@ -1,5 +1,8 @@
-import Axios from "axios"
+import Axios from "@/plugins/axios"
 import foo from '@/configs'
+
+const URL = 'sliders'
+
 const state = {
   all: [],
   total: 0
@@ -30,7 +33,7 @@ const actions = {
           pagination
         }
       }
-      let result = await Axios.get('api/sliders', config)
+      let result = await Axios.get(`${URL}`, config)
       commit('setLoading', false, { root: true })
       if(result.status === 200) {
         if(pagination === false) {
@@ -64,7 +67,7 @@ const actions = {
   changeStatus: async ({ commit, dispatch }, data) => {
     try {
       data.status = data.status === 1 ? 0 : 1
-      let result = await Axios.patch(`api/sliders/${data.id}`, data)
+      let result = await Axios.patch(`${URL}/${data.id}`, data)
       if(result.status === 200) {
         return {
           flag: true
@@ -77,9 +80,12 @@ const actions = {
       }
     }
   },
+  /**
+   * Xoá phần tử
+   */
   deleteItem: async ({ commit, dispatch }, data) => {
     try {
-      let result = await Axios.delete(`api/sliders/${data.id}`, data)
+      let result = await Axios.delete(`${URL}/${data.id}`)
       if(result.status === 200) {
         dispatch('getList', {})
         return {
@@ -93,6 +99,28 @@ const actions = {
       console.log(error)
       return {
         flag: false
+      }
+    }
+  },
+  /**
+   * Thêm phần tử
+   */
+  createItem: async ({ commit, dispatch }, data) => {
+    try {
+      let result = await Axios.post(`${URL}`, data)
+      if(result.status === 200) {
+        dispatch('getList', {})
+        return {
+          flag: true
+        }
+      }
+      return {
+        flag: false
+      }
+    } catch (error) {
+      return {
+        flag: false,
+        msg: error
       }
     }
   }

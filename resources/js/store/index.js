@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
-import axios from '@/plugins/libs/axios'
+import axios from '@/plugins/axios'
 import auth from './modules/auth'
 import slider from './modules/slider'
 
