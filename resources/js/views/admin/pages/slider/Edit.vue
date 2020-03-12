@@ -7,7 +7,7 @@
       </el-button>
       <div class="v-products-dialog__form">
         <el-dialog :title="formTitle" :visible.sync="dialogFormVisible" :show-close="true">
-          <el-form :model="form" :rules="rules" :ref="formName">
+          <el-form :model="form" :rules="rules" :ref="controller">
             <el-row :gutter="20">
               <el-col :span="16">
                 <el-form-item label="Tiêu đề" :label-width="formLabelWidth" prop="title">
@@ -58,8 +58,8 @@
             </el-row>
           </el-form>
           <span slot="footer" class="dialog-footer">
-            <el-button size="small" @click="handleReset(formName)">Huỷ bỏ</el-button>
-            <el-button type="success" size="small" @click="handleSubmit(formName)">Lưu lại</el-button>
+            <el-button size="small" @click="handleReset(controller)">Huỷ bỏ</el-button>
+            <el-button type="success" size="small" @click="handleSubmit(controller)">Lưu lại</el-button>
           </span>
         </el-dialog>
       </div>
@@ -77,7 +77,6 @@ export default {
       dialogImageUrl: "",
       dialogVisible: false,
       formTitle: 'Thêm mới',
-      formName: 'slider',
       formLabelWidth: '120px',
       dialogFormVisible: false,
       selectStatus: foo.STATUS,
@@ -94,6 +93,9 @@ export default {
         status: 1
       }
     }
+  },
+  props: {
+    controller: { type: String, default: '' }
   },
   methods: {
     /**
@@ -118,6 +120,7 @@ export default {
      * Reset form
      */
     handleReset(formName) {
+      this.dialogFormVisible = false
       this.$refs[formName].resetFields()
       this.$refs.upload.clearFiles()
       this.form.thumbnail = ''

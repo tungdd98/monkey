@@ -4,6 +4,7 @@ import PAGINATE from './modules/paginate'
 import TIME from './modules/time'
 import STATUS from './modules/status'
 import FILTER from './modules/filter'
+import ACTION from './modules/action'
 
 const foo = {
   NOTIFICATION,
@@ -11,6 +12,7 @@ const foo = {
   PAGINATE,
   TIME,
   STATUS,
-  FILTER
+  FILTER,
+  ACTION
 }
 export default foo

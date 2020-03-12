@@ -31,7 +31,6 @@ const actions = {
         }
       }
       let result = await Axios.get('api/sliders', config)
-      console.log(result)
       commit('setLoading', false, { root: true })
       if(result.status === 200) {
         if(pagination === false) {
@@ -59,9 +58,6 @@ const actions = {
       }
     }
   },
-  alert() {
-    alert('hihi')
-  }
 }
 
 const mutations = {

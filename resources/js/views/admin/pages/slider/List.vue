@@ -10,7 +10,7 @@
         ></filters>
       </el-col>
       <el-col :span="12">
-        <edit></edit>
+        <edit :controller="controller"></edit>
       </el-col>
     </el-row>
     <div class="v-products-table">
@@ -54,7 +54,7 @@
               <div class="v-italic">{{ scope.row.updated_by }}</div>
             </template>
           </el-table-column>
-          <actions></actions>
+          <actions :controller="controller"></actions>
       </el-table>
       <pagination :total="total" :controller="controller" :per_page="per_page"></pagination>
     </div>

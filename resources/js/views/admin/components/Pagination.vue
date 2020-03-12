@@ -1,5 +1,6 @@
 <template>
   <el-pagination
+    v-if="total > 0"
     background
     class="v-pagination"
     layout="prev, pager, next"
