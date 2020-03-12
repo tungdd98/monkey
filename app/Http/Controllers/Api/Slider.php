@@ -77,6 +77,6 @@ class Slider extends Controller
      */
     public function destroy(Slider $slider)
     {
-        return response()->json(['item' => $slider]);
+        $slider->delete();
     }
 }
