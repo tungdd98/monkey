@@ -58,6 +58,9 @@ const actions = {
         flag: false
       }
     }
+  },
+  alert() {
+    alert('hihi')
   }
 }
 

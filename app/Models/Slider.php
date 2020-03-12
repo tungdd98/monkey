@@ -14,7 +14,9 @@ class Slider extends Model
         if($options['pagination'] == 'false') {
             $result = self::select($this->columns)->orderBy($options['order_by'], $options['order_dir'])->get();
         } else {
-            $result = self::select($this->columns)->orderBy($options['order_by'], $options['order_dir'])->paginate($options['per_page']);
+            $result = self::select($this->columns)
+                            ->orderBy($options['order_by'], $options['order_dir'])
+                            ->paginate($options['per_page']);
         }
         return $result;
     }
