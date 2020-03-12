@@ -77,9 +77,9 @@ const actions = {
       }
     }
   },
-  deleteItem: async ({ commit, dispatch }, id) => {
+  deleteItem: async ({ commit, dispatch }, data) => {
     try {
-      let result = await Axios.delete(`api/sliders/${id}`, id)
+      let result = await Axios.delete(`api/sliders/${data.id}`, data)
       if(result.status === 200) {
         dispatch('getList', {})
         return {

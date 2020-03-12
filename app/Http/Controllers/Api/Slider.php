@@ -10,7 +10,7 @@ use App\Http\Resources\Slider as Resource;
 class Slider extends Controller
 {
     private $model;
-    private $params = [];
+    private $controller = 'slider';
     
     public function __construct() {
         $this->model = new Model();    
@@ -77,7 +77,14 @@ class Slider extends Controller
      */
     public function destroy(Request $request)
     {
-        $params['id'] = $request->id;
+        $params = [
+            'id' => $request->id,
+            'thumbnail' => $request->thumbnail
+        ];
+        $imagePath = public_path() . "/images/" . $this->controller . "/" . $params['thumbnail'];
+        if(file_exists($imagePath)) {
+            unlink($imagePath);
+        }
         $this->model->deleteItem($params, ['task' => 'item']);
     }
 }

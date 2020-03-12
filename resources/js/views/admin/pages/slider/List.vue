@@ -135,7 +135,7 @@ export default {
       this.$fire(foo.NOTIFICATION.confirm.deleted)
       .then(res => {
         if(res.value) {
-          this.deleteItem(data.id)
+          this.deleteItem(data)
           .then(res => {
             if(res.flag) this.$fire(foo.NOTIFICATION.success.deleted)
             else this.$fire(foo.NOTIFICATION.error)
