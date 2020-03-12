@@ -75,8 +75,9 @@ class Slider extends Controller
      * @param  \App\Models\Slider  $slider
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Slider $slider)
+    public function destroy(Request $request)
     {
-        $slider->delete();
+        $params['id'] = $request->id;
+        $this->model->deleteItem($params, ['task' => 'item']);
     }
 }

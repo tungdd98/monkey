@@ -132,7 +132,16 @@ export default {
      * Xoá sản phẩm
      */
     handleDelete(data) {
-      this.deleteItem(data.id)
+      this.$fire(foo.NOTIFICATION.confirm.deleted)
+      .then(res => {
+        if(res.value) {
+          this.deleteItem(data.id)
+          .then(res => {
+            if(res.flag) this.$fire(foo.NOTIFICATION.success.deleted)
+            else this.$fire(foo.NOTIFICATION.error)
+          })
+        }
+      })
     }
   },
   components: {

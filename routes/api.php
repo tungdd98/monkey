@@ -8,4 +8,13 @@ Route::group([
     Route::get('users', 'Api\UserController');
 });
 Route::apiResource('products', 'Api\ProductsController');
-Route::apiResource('sliders', 'Api\Slider');
+
+Route::group([
+    'prefix' => 'sliders'
+], function() {
+    Route::get('/', 'Api\Slider@index')->name('slider.index');
+    Route::patch('/{id}', 'Api\Slider@update')->name('slider.update');
+    Route::delete('/{id}', 'Api\Slider@destroy')->name('slider.delete');
+});
+
+
