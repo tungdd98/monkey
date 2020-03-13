@@ -13,9 +13,11 @@ Route::group([
     'prefix' => 'sliders'
 ], function() {
     Route::get('/', 'Api\Slider@index')->name('slider.index');
+    Route::get('/{id}', 'Api\Slider@show')->name('slider.show');
     Route::patch('/{id}', 'Api\Slider@update')->name('slider.update');
     Route::delete('/{id}', 'Api\Slider@destroy')->name('slider.delete');
     Route::post('/', 'Api\Slider@store')->name('slider.store');
+    Route::post('/{id}', 'Api\Slider@update')->name('slider.edit');
 });
 
 

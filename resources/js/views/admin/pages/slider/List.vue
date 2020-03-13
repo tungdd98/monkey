@@ -19,7 +19,7 @@
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column width="50">
             <template slot-scope="scope">
-              <div class="v-status" :class="_showStatus(scope.row.status)" @click="_changeStatus(controller, scope.row)"></div>
+              <div class="v-status" :class="_showStatus(scope.row.status)" @click="_changeStatus(controller, { ...scope.row, field: 'status' })"></div>
             </template>
           </el-table-column>
           <el-table-column label="Ảnh" align="center" width="120">
@@ -56,7 +56,7 @@
           </el-table-column>
           <el-table-column fixed="right" label="Thao tác" align="center" width="120">
             <template slot-scope="scope">
-              <el-button type="primary" icon="el-icon-edit" size="small" title="Edit" circle></el-button>
+              <el-button type="primary" icon="el-icon-edit" size="small" title="Edit" circle @click="handleShow(scope.row)"></el-button>
               <el-button type="danger" icon="el-icon-delete" size="small" title="Delete" circle @click="handleDelete(scope.row)"></el-button>
             </template>
           </el-table-column>
@@ -96,7 +96,7 @@ export default {
     this.init()
   },
   methods: {
-    ...mapActions(controller, ['getList', 'deleteItem']),
+    ...mapActions(controller, ['getList', 'deleteItem', 'getItemById']),
     /**
      * Khởi tạo dữ liệu
      */
@@ -108,7 +108,7 @@ export default {
      */
     handleInputPerPage(data) {
       this.per_page = data
-      if(this.per_page === 'all') {
+      if(this.per_page === 0) {
         this.getList({
           pagination: false
         })
@@ -140,6 +140,18 @@ export default {
             if(res.flag) this.$fire(foo.NOTIFICATION.success.deleted)
             else this.$fire(foo.NOTIFICATION.error)
           })
+        }
+      })
+    },
+    /**
+     * Hiển thị sản phẩm
+     */
+    handleShow(data) {
+      this.getItemById(data.id).then(res => {
+        if(res.flag) {
+          this._limitDisplayImage(true)
+        } else {
+          this.$fire(foo.NOTIFICATION.error)
         }
       })
     }

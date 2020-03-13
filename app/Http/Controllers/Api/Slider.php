@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Slider as Model;
 use Illuminate\Http\Request;
-use App\Http\Resources\Slider as Resource;
 use App\Http\Requests\SliderRequest as MainRequest;
 class Slider extends Controller
 {
@@ -29,7 +28,7 @@ class Slider extends Controller
             'order_dir' => $request->order_dir
         ];
         $items = $this->model->getListItems(null, $options);
-        return Resource::collection($items);
+        return response()->json(['data' => $items]);
     }
 
     /**
@@ -40,8 +39,7 @@ class Slider extends Controller
      */
     public function store(MainRequest $request)
     {
-        $params = $request->all();
-        $this->model->saveItem($params, ['field' => 'add-item']);
+        $this->model->saveItem($request, ['field' => 'add-item']);
     }
 
     /**
@@ -50,9 +48,11 @@ class Slider extends Controller
      * @param  \App\Models\Slider  $slider
      * @return \Illuminate\Http\Response
      */
-    public function show(Slider $slider)
+    public function show(Request $request)
     {
-        //
+        $params['id'] = $request->id;
+        $item = $this->model->getItemById($params);
+        return response()->json(['data' => $item]);
     }
 
     /**
@@ -63,11 +63,7 @@ class Slider extends Controller
      */
     public function update(Request $request)
     {
-        $params = [
-            'id' => $request->id,
-            'status' => $request->status
-        ];
-        $this->model->saveItem($params, ['field' => 'status']);
+        $this->model->saveItem($request, ['field' => $request->field]);
     }
 
     /**

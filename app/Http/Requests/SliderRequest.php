@@ -28,9 +28,14 @@ class SliderRequest extends FormRequest
      */
     public function rules()
     {
+        $rulesThumbnail = 'bail|required|image';
+        if(!empty($this->id)) {
+            $rulesThumbnail = 'bail|image';
+        }
         return [
             'title' => 'bail|required|max:255',
-            'status' => 'bail|in:0,1'
+            'status' => 'bail|in:0,1',
+            'thumbnail' => $rulesThumbnail
         ];
     }
     /**
@@ -43,7 +48,9 @@ class SliderRequest extends FormRequest
         return [
             'title.required' => 'Tiêu đề không được để trống',
             'title.max' => 'Tiêu đề không được quá 255 ký tự',
-            'status.in' => 'Trạng thái không đúng định dạng'
+            'status.in' => 'Trạng thái không đúng định dạng',
+            'thumbnail.required' => 'Ảnh phải được tải lên',
+            'thumbnail.image' => 'Ảnh tải lên không đúng định dạng'
         ];
     }
     /**

@@ -26,7 +26,7 @@ const filter = {
     },
     {
       title: 'Tất cả',
-      value: 'all'
+      value: 0
     }
   ],
   order: [

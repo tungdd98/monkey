@@ -47,6 +47,8 @@
                     :on-preview="handlePictureCardPreview"
                     :limit="1"
                     :on-change="handleChangeUpload"
+                    :file-list="imagesList"
+                    :on-remove="handleRomove"
                   >
                     <i class="el-icon-plus"></i>
                   </el-upload>
@@ -69,7 +71,10 @@
 <script>
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import foo from '@/configs'
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
+
+const controller = 'slider'
+
 export default {
   data() {
     return {
@@ -92,14 +97,41 @@ export default {
         link: '',
         thumbnail: '',
         status: 1
-      }
+      },
+      imagesList: [],
+      isEdit: false
     }
   },
   props: {
     controller: { type: String, default: '' }
   },
+  computed: {
+    ...mapGetters({
+      currItem: `${controller}/getCurrItem`
+    })
+  },
+  watch: {
+    currItem(newItem, oldItem) {
+      if(newItem) {
+        this.dialogFormVisible = true
+        this.isEdit = true
+        this.formTitle = 'Cập nhật'
+
+        for(let i in newItem) {
+          const item = newItem[i]
+          if(['title', 'description', 'content', 'link', 'status', 'thumbnail'].includes(i)) {
+            this.form[i] = item
+          }
+        }
+        this.imagesList.push({
+          name: newItem.thumbnail,
+          url: this._getThumbnail(this.controller, newItem.thumbnail)
+        })
+      }
+    },
+  },
   methods: {
-    ...mapActions('slider', ['createItem']),
+    ...mapActions('slider', ['createItem', 'updateItem']),
     /**
      * Hiển thị dialog hình ảnh
      */
@@ -112,11 +144,7 @@ export default {
      */
     handleChangeUpload(file) {
       this.form.thumbnail = file.raw
-      if(this.form.thumbnail) {
-        document.querySelector('.el-upload.el-upload--picture-card').style = 'display: none'
-      } else {
-        document.querySelector('.el-upload.el-upload--picture-card').style = 'display: block'
-      }
+      this._limitDisplayImage(true)
     },
     /**
      * Reset form
@@ -126,6 +154,8 @@ export default {
       this.$refs[formName].resetFields()
       this.$refs.upload.clearFiles()
       this.form.thumbnail = ''
+      this.imagesList = []
+      this.$store.commit(`${controller}/setCurrItem`, null)
     },
     /**
      * Submit form
@@ -139,17 +169,38 @@ export default {
             const field = this.form[i]
             data.append(i, field)
           }
-          this.createItem(data).then(res => {
-            if(res.flag) {
-              this.$fire(foo.NOTIFICATION.success.created)
-            } else {
-              let errors = res.msg.response.data.errors
-              this._showErrors(errors)
-            }
-            this.handleReset(formName)
-          })
+          if(!this.isEdit) {
+            this.createItem(data).then(res => {
+              if(res.flag) {
+                this.$fire(foo.NOTIFICATION.success.created)
+              } else {
+                let errors = res.msg.response.data.errors
+                this._showErrors(errors)
+              }
+            })
+          } else {
+            data.append('id', this.currItem.id)
+            data.append('field', 'update-item')
+            data.append('currThumbnail', this.imagesList[0].name)
+            this.updateItem(data).then(res => {
+              if(res.flag) {
+                this.$fire(foo.NOTIFICATION.success.updated)
+              } else {
+                let errors = res.msg.response.data.errors
+                this._showErrors(errors)
+              }
+            })
+          }
+          this.handleReset(formName)
         }
       })
+    },
+    /**
+     * Khi xoá bỏ hình ảnh
+     */
+    handleRomove(file) {
+      this.form.thumbnail = ''
+      this._limitDisplayImage(false)
     }
   }
 };

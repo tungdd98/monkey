@@ -23,15 +23,35 @@ class Slider extends Model
         return $result;
     }
 
-    public function saveItem($params, $options) {
+    public function saveItem($request, $options) {
+        $params = $request->all();
         if($options['field'] == 'status') {
             self::where('id', $params['id'])->update(['status' => $params['status']]);
         }
         if($options['field'] == 'add-item') {
-            $imgName = time() . $params['thumbnail']->getClientOriginalName();
-            $params['thumbnail']->move("images/{$this->folderImg}", $imgName);
-            $params['thumbnail'] = $imgName;
+            if($request->hasFile('thumbnail')) {
+                $imgName = time() . $params['thumbnail']->getClientOriginalName();
+                $params['thumbnail']->move("images/{$this->folderImg}", $imgName);
+                $params['thumbnail'] = $imgName;
+            }
             $this->create($params);
+        }
+        if($options['field'] == 'update-item') {
+            if($request->hasFile('thumbnail')) {
+                $imgPath = "images/{$this->folderImg}/{$params['currThumbnail']}";
+                unlink($imgPath);
+                $imgName = time() . $params['thumbnail']->getClientOriginalName();
+                $params['thumbnail']->move("images/{$this->folderImg}", $imgName);
+                $params['thumbnail'] = $imgName;
+            }
+            self::where('id', $params['id'])->update([
+                'title'         => $params['title'],
+                'description'   => $params['description'],
+                'content'       => $params['content'],
+                'link'          => $params['link'],
+                'thumbnail'     => $params['thumbnail'],
+                'status'        => $params['status']
+            ]);
         }
     }
 
@@ -39,5 +59,9 @@ class Slider extends Model
         if($options['task'] == 'item') {
             self::where('id', $params['id'])->delete();
         }
+    }
+
+    public function getItemById($params) {
+        return self::select($this->columns)->where('id', $params['id'])->first();
     }
 }

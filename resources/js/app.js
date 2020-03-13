@@ -12,6 +12,7 @@ Vue.mixin({
 })
 
 Vue.config.productionTip = false
+Vue.config.productionSourceMap = false
 
 const app = new Vue({
   store,
