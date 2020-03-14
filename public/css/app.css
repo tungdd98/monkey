@@ -225,3 +225,20 @@ input {
   display: block;
 }
 
+.el-dialog__title,
+.el-form-item__label {
+  font-weight: 600;
+}
+
+.el-table th > .cell {
+  font-weight: 600;
+}
+
+.v-italic {
+  font-style: italic;
+}
+
+.v-h2 {
+  font-weight: 600;
+}
+

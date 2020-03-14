@@ -164,13 +164,5 @@ export default {
 }
 </script>
 <style lang="scss">
-.el-table th>.cell {
-  font-weight: 600;
-}
-.v-italic {
-  font-style: italic;
-}
-.v-h2 {
-  font-weight: 600;
-}
+
 </style>

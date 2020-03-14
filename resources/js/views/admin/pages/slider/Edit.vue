@@ -6,7 +6,7 @@
         <i class="el-icon-document-add"></i>
       </el-button>
       <div class="v-products-dialog__form">
-        <el-dialog :title="formTitle" :visible.sync="dialogFormVisible" :show-close="true">
+        <el-dialog :title="formTitle" :visible.sync="dialogFormVisible" :show-close="false">
           <el-form :model="form" :rules="rules" :ref="controller">
             <el-row :gutter="20">
               <el-col :span="16">
@@ -15,20 +15,20 @@
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
                   </el-input>
                 </el-form-item>
-                <el-form-item label="Link" :label-width="formLabelWidth">
+                <el-form-item label="Link" :label-width="formLabelWidth" prop="link">
                   <el-input v-model="form.link" autocomplete="off">
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
                   </el-input>
                 </el-form-item>
-                <el-form-item label="Mô tả" :label-width="formLabelWidth">
+                <el-form-item label="Mô tả" :label-width="formLabelWidth" prop="description">
                   <ckeditor :editor="editor" v-model="form.description" :config="editorConfig"></ckeditor>
                 </el-form-item>
-                <el-form-item label="Nội dung" :label-width="formLabelWidth">
+                <el-form-item label="Nội dung" :label-width="formLabelWidth" prop="content">
                   <ckeditor :editor="editor" v-model="form.content" :config="editorConfig"></ckeditor>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="Trạng thái" :label-width="formLabelWidth">
+                <el-form-item label="Trạng thái" :label-width="formLabelWidth" prop="status">
                   <el-select v-model="form.status" placeholder="--Chọn--">
                     <el-option
                       v-for="item in selectStatus"
@@ -73,7 +73,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import foo from '@/configs'
 import { mapActions, mapGetters } from 'vuex';
 
-const controller = 'slider'
+const _controller = 'slider'
 
 export default {
   data() {
@@ -92,11 +92,11 @@ export default {
       },
       form: {
         title: '',
+        link: '',
         description: '',
         content: '',
-        link: '',
+        status: 1,
         thumbnail: '',
-        status: 1
       },
       imagesList: [],
       isEdit: false
@@ -107,7 +107,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      currItem: `${controller}/getCurrItem`
+      currItem: `${_controller}/getCurrItem`
     })
   },
   watch: {
@@ -131,7 +131,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions('slider', ['createItem', 'updateItem']),
+    ...mapActions(_controller, ['createItem', 'updateItem']),
     /**
      * Hiển thị dialog hình ảnh
      */
@@ -150,12 +150,12 @@ export default {
      * Reset form
      */
     handleReset(formName) {
-      this.dialogFormVisible = false
       this.$refs[formName].resetFields()
       this.$refs.upload.clearFiles()
-      this.form.thumbnail = ''
       this.imagesList = []
-      this.$store.commit(`${controller}/setCurrItem`, null)
+      this.$store.commit(`${_controller}/setCurrItem`, null)
+      this._limitDisplayImage(false)
+      this.dialogFormVisible = false
     },
     /**
      * Submit form
@@ -206,7 +206,5 @@ export default {
 };
 </script>
 <style lang="scss">
-.el-dialog__title, .el-form-item__label {
-  font-weight: 600;
-}
+
 </style>
