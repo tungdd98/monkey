@@ -50,7 +50,8 @@ class Slider extends Model
                 'content'       => $params['content'],
                 'link'          => $params['link'],
                 'thumbnail'     => $params['thumbnail'],
-                'status'        => $params['status']
+                'status'        => $params['status'],
+                'updated_by'    => $params['updated_by']
             ]);
         }
     }

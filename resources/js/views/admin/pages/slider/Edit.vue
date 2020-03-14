@@ -107,7 +107,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      currItem: `${_controller}/getCurrItem`
+      currItem: `${_controller}/getCurrItem`,
+      user: 'auth/getUser'
     })
   },
   watch: {
@@ -127,8 +128,13 @@ export default {
           name: newItem.thumbnail,
           url: this._getThumbnail(this.controller, newItem.thumbnail)
         })
-      }
+      } 
     },
+    dialogFormVisible(newItem, oldItem) {
+      if(!newItem) {
+        this.handleReset(this.controller)
+      }
+    }
   },
   methods: {
     ...mapActions(_controller, ['createItem', 'updateItem']),
@@ -150,10 +156,10 @@ export default {
      * Reset form
      */
     handleReset(formName) {
+      this.$store.commit(`${_controller}/setCurrItem`, null)
       this.$refs[formName].resetFields()
       this.$refs.upload.clearFiles()
       this.imagesList = []
-      this.$store.commit(`${_controller}/setCurrItem`, null)
       this._limitDisplayImage(false)
       this.dialogFormVisible = false
     },
@@ -163,13 +169,13 @@ export default {
     handleSubmit(formName) {
       this.$refs[formName].validate(valid => {
         if(valid) {
-          this.dialogFormVisible = false
           let data = new FormData()
           for(let i in this.form) {
             const field = this.form[i]
             data.append(i, field)
           }
           if(!this.isEdit) {
+            data.append('created_by', this.user.name)
             this.createItem(data).then(res => {
               if(res.flag) {
                 this.$fire(foo.NOTIFICATION.success.created)
@@ -179,6 +185,7 @@ export default {
               }
             })
           } else {
+            data.append('updated_by', this.user.name)
             data.append('id', this.currItem.id)
             data.append('field', 'update-item')
             data.append('currThumbnail', this.imagesList[0].name)
