@@ -4,6 +4,9 @@ import foo from '@/configs'
 const URL = 'sliders'
 
 const state = {
+	per_page: foo.PAGINATE.per_page,
+	order_by: foo.PAGINATE.order_by,
+	order_dir: foo.PAGINATE.order_dir,
 	all: [],
 	total: 0,
 	currItem: null
@@ -50,6 +53,12 @@ const actions = {
 						all: result.data.data.data,
 						total: result.data.data.total
 					})
+					commit('setPaginate', {
+						per_page,
+						page,
+						order_by,
+						order_dir
+					})
 				}
 				return { flag: true }
 			}
@@ -67,7 +76,7 @@ const actions = {
 			data.status = data.status === 1 ? 0 : 1
 			let result = await Axios.patch(`${URL}/${data.id}`, data)
 			if(result.status === 200) {
-				dispatch('getList', {})
+				// dispatch('getList', {})
 				return {
 					flag: true
 				}
@@ -170,6 +179,12 @@ const mutations = {
 	},
 	setCurrItem: (state, data) => {
 		state.currItem = data
+	},
+	setPaginate: (state,  { per_page, page, order_by, order_dir }) => {
+		state.per_page 	= per_page
+		state.page 			= page
+		state.order_by 	= order_by
+		state.order_dir = order_dir
 	}
 }
 

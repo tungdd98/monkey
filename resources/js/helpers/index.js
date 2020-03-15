@@ -5,51 +5,36 @@ import foo from '@/configs'
 const Helpers = {
 	/**
 	 * Lấy url đường dẫn ảnh
-	 * @param {*} _controller 
-	 * @param {*} _thumbnail 
+	 * @param {*} controller 
+	 * @param {*} thumbnail 
 	 */
-	_getThumbnail(_controller, _thumbnail) {
-		return `images/${_controller}/${_thumbnail}`
+	_getThumbnail(controller, thumbnail) {
+		return `images/${controller}/${thumbnail}`
 	},
 	/**
 	 * Format thời gian
-	 * @param {*} _time 
-	 * @param {*} _type 
+	 * @param {*} time 
+	 * @param {*} type 
 	 */
-	_dateFormat(_time, _type) {
+	_dateFormat(time, type) {
 		moment.locale('vi')
-		return moment(_time).format(foo.TIME[_type])
+		return moment(time).format(foo.TIME[type])
 	},
 	/**
 	 * Hiển thị trạng thái phần tử
-	 * @param {*} _state 
+	 * @param {*} state 
 	 */
-	_showStatus(_state) {
-		return foo.STATUS[_state].class
-	},
-	/**
-	 * Thay đổi trạng thái phần tử
-	 * @param {*} _controller 
-	 * @param {*} _data 
-	 */
-	_changeStatus(_controller, _data) {
-		const _this = Vue
-		_this.$store.dispatch(`${_controller}/changeStatus`, _data)
-		.then(res => {
-			if(res.flag)
-				_this.$fire(foo.NOTIFICATION.success.updated)
-			else 
-				_this.$fire(foo.NOTIFICATION.error)
-		})
+	_showStatus(state) {
+		return foo.STATUS[state].class
 	},
 	/**
 	 * Hiển thị lỗi từ serve
-	 * @param {*} _errors 
+	 * @param {*} errors 
 	 */
-	_showErrors(_errors) {
+	_showErrors(errors) {
 		let xhtml = ''
-		for(let i in _errors) {
-			let error = _errors[i]
+		for(let i in errors) {
+			let error = errors[i]
 			xhtml += `<div style="font-size: 12px">${error[0]}</div>`
 		}
 		foo.NOTIFICATION.error.html = xhtml
@@ -58,11 +43,11 @@ const Helpers = {
 	},
 	/**
 	 * Thẻ notag
-	 * @param {*} _str 
+	 * @param {*} str 
 	 */
-	_notag(_str) {
-		if(_str && typeof(_str) === 'string') {
-			return _str.replace(/&/g, '&amp;').replace(/'/g,'&#x27;').replace(/\"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\//g, '&#x2F;')
+	_notag(str) {
+		if(str && typeof(str) === 'string') {
+			return str.replace(/&/g, '&amp;').replace(/'/g,'&#x27;').replace(/\"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\//g, '&#x2F;')
 		}
 	},
 	/**

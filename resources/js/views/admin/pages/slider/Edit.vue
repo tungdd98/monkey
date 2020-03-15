@@ -148,7 +148,7 @@ export default {
       this._limitDisplayImage(true)
     },
     /**
-     * Reset form
+     * Reset tất cả trạng thái
      */
     handleReset() {
       this.$store.commit(`${CONTROLLER}/setCurrItem`, null)
@@ -204,6 +204,9 @@ export default {
       this.form.thumbnail = ''
       this._limitDisplayImage(false)
     },
+    /**
+     * Reset form
+     */
     handleResetForm() {
       ['title', 'description', 'content', 'link', 'thumbnail'].forEach(field => {
         this.form[field] = ''

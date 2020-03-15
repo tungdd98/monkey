@@ -10,26 +10,30 @@
   ></el-pagination>
 </template>
 <script>
-import foo from '@/configs'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
-  data() {
-    return {
-      foo
-    }
-  },
   props: {
     controller: { type: String, default: '' },
     total: { type: Number, default: 0 },
-    per_page: { type: Number, default: 0 }
+  },
+  computed: {
+    ...mapState({
+      per_page: state => state.slider.per_page,
+      order_by: state => state.slider.order_by,
+      order_dir: state => state.slider.order_dir
+    }),
   },
   methods: {
     /**
      * Phân trang
      */
     handleCurrChange(val) {
+      let { order_by, order_dir, per_page } = this
       this.$store.dispatch(`${this.controller}/getList`, {
-        page: val
+        page: val,
+        order_by,
+        order_dir
       })
     }
   }

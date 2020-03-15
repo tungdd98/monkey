@@ -2,12 +2,7 @@
   <div class="v-products">
     <el-row>
       <el-col :span="12">
-        <filters 
-          :per_page="per_page" 
-          :order="order" 
-          @handleInputPerPage="handleInputPerPage"
-          @handleInputOrder="handleInputOrder"
-        ></filters>
+        <filters :controller="controller"></filters>
       </el-col>
       <el-col :span="12">
         <edit :controller="controller"></edit>
@@ -81,7 +76,10 @@ export default {
       controller: CONTROLLER,
       foo,
       per_page: foo.PAGINATE.per_page,
-      order: {}
+      order: {
+        order_by: foo.PAGINATE.order_by,
+        order_dir: foo.PAGINATE.order_dir
+      }
     }
   },
   computed: {
@@ -103,31 +101,6 @@ export default {
      */
     init(){
       this.getList({})
-    },
-    /**
-     * Lọc theo số bản ghi
-     */
-    handleInputPerPage(data) {
-      this.per_page = data
-      if(this.per_page === 0) {
-        this.getList({
-          pagination: false
-        })
-      } else {
-        this.getList({
-          per_page: this.per_page
-        })
-      }
-    },
-    /**
-     * Lọc theo options còn lại
-     */
-    handleInputOrder(data) {
-      this.getList({
-        order_by: data.order_by,
-        order_dir: data.order_dir,
-        per_page: this.per_page
-      })
     },
     /**
      * Xoá bản ghi
@@ -155,7 +128,7 @@ export default {
           this.$fire(foo.NOTIFICATION.error)
         }
       })
-    }
+    },
   },
   components: {
     Edit,
