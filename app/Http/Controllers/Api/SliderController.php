@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Slider as Model;
 use Illuminate\Http\Request;
 use App\Http\Requests\SliderRequest as MainRequest;
-class Slider extends Controller
+class SliderController extends Controller
 {
     private $model;
     private $controller = 'slider';
