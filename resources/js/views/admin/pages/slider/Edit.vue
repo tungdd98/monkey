@@ -60,7 +60,7 @@
             </el-row>
           </el-form>
           <span slot="footer" class="dialog-footer">
-            <el-button size="small" @click="handleReset(controller)">Huỷ bỏ</el-button>
+            <el-button size="small" @click="dialogFormVisible =  false">Huỷ bỏ</el-button>
             <el-button type="success" size="small" @click="handleSubmit(controller)">Lưu lại</el-button>
           </span>
         </el-dialog>
@@ -73,7 +73,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import foo from '@/configs'
 import { mapActions, mapGetters } from 'vuex';
 
-const _controller = 'slider'
+const CONTROLLER = 'slider'
 
 export default {
   data() {
@@ -107,7 +107,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      currItem: `${_controller}/getCurrItem`,
+      currItem: `${CONTROLLER}/getCurrItem`,
       user: 'auth/getUser'
     })
   },
@@ -137,7 +137,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(_controller, ['createItem', 'updateItem']),
+    ...mapActions(CONTROLLER, ['createItem', 'updateItem']),
     /**
      * Hiển thị dialog hình ảnh
      */
@@ -156,12 +156,11 @@ export default {
      * Reset form
      */
     handleReset(formName) {
-      this.$store.commit(`${_controller}/setCurrItem`, null)
+      this.$store.commit(`${CONTROLLER}/setCurrItem`, null)
       this.$refs[formName].resetFields()
       this.$refs.upload.clearFiles()
       this.imagesList = []
       this._limitDisplayImage(false)
-      this.dialogFormVisible = false
     },
     /**
      * Submit form

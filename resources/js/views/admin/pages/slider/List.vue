@@ -19,7 +19,7 @@
           <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column width="50">
             <template slot-scope="scope">
-              <div class="v-status" :class="_showStatus(scope.row.status)" @click="_changeStatus(controller, { ...scope.row, field: 'status' })"></div>
+              <status :item="scope.row" :controller="controller"></status>
             </template>
           </el-table-column>
           <el-table-column label="Ảnh" align="center" width="120">
@@ -69,15 +69,16 @@
 import Edit from './Edit'
 import Filters from '../../components/Filters'
 import Pagination from '../../components/Pagination'
+import Status from '../../components/Status'
 import { mapActions, mapState, mapGetters } from 'vuex'
 import foo from '@/configs'
 
-const controller = 'slider'
+const CONTROLLER = 'slider'
 
 export default {
   data() {
     return {
-      controller,
+      controller: CONTROLLER,
       foo,
       per_page: foo.PAGINATE.per_page,
       order: {}
@@ -88,15 +89,15 @@ export default {
       isLoading: state => state.isLoading
     }),
     ...mapGetters({
-      items: `${controller}/getAll`,
-      total: `${controller}/getTotalList`
+      items: `${CONTROLLER}/getAll`,
+      total: `${CONTROLLER}/getTotalList`
     })
   },
   created() {
     this.init()
   },
   methods: {
-    ...mapActions(controller, ['getList', 'deleteItem', 'getItemById']),
+    ...mapActions(CONTROLLER, ['getList', 'deleteItem', 'getItemById']),
     /**
      * Khởi tạo dữ liệu
      */
@@ -159,7 +160,8 @@ export default {
   components: {
     Edit,
     Filters,
-    Pagination
+    Pagination,
+    Status
   }
 }
 </script>
