@@ -24,6 +24,7 @@
         "@ckeditor/ckeditor5-vue": "^1.0.1",
         "chart.js": "^2.9.3",
         "element-ui": "^2.13.0",
+        "moment": "^2.24.0",
         "vue": "^2.6.11",
         "vue-chartjs": "^3.5.0",
         "vue-router": "^3.1.6",

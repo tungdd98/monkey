@@ -1,4 +1,6 @@
-import axios from '@/plugins/libs/axios'
+import axios from '@/plugins/axios'
+const URL = 'auth'
+
 const state = {
   user: null,
   token: null
@@ -24,7 +26,7 @@ const actions = {
    */
   async login({ commit, dispatch }, data) {
     try {
-      let result = await axios.post('auth/login', data)
+      let result = await axios.post(`${URL}/login`, data)
       if(result.status === 200) {
         dispatch('getUserLogin', result.data.token)
         return {
@@ -50,12 +52,11 @@ const actions = {
   async getUserLogin({ commit }, token) {
     commit('setToken', token)
     try {
-      let result = await axios.get('auth/users', {
+      let result = await axios.get(`${URL}/users`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       })
-      console.log(result)
       if(result.status === 200) {
         commit('setUserLogin', result.data)
         return {
@@ -108,7 +109,7 @@ const actions = {
    */
   async logout({ commit }) {
     try {
-      let result = await axios.post('auth/logout')
+      let result = await axios.post(`${URL}/logout`)
       if(result.status === 200) {
         commit('setUserLogin', null)
         commit('setToken', null)

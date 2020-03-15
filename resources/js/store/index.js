@@ -2,8 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
-import axios from '@/plugins/libs/axios'
+import axios from '@/plugins/axios'
 import auth from './modules/auth'
+import slider from './modules/slider'
 
 const store = new Vuex.Store({
   state: {
@@ -11,9 +12,14 @@ const store = new Vuex.Store({
   },
   getters: {},
   actions: {},
-  mutations: {},
+  mutations: {
+    setLoading: (state, loading) => {
+      state.isLoading = loading
+    }
+  },
   modules: {
-    auth
+    auth,
+    slider
   }
 })
 store.subscribe((mutations) => {

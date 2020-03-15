@@ -180,6 +180,65 @@ input {
   display: flex;
   justify-content: flex-end;
   background: #fff;
-  padding: 5px 0;
+  padding: 5px 0 !important;
+}
+
+.v-status {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.v-status-active {
+  background-color: #38c172;
+}
+
+.v-status-disable {
+  background-color: #e3342f;
+}
+
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+
+.el-dialog__title,
+.el-form-item__label {
+  font-weight: 600;
+}
+
+.el-table th > .cell {
+  font-weight: 600;
+}
+
+.v-italic {
+  font-style: italic;
+}
+
+.v-h2 {
+  font-weight: 600;
 }
 
