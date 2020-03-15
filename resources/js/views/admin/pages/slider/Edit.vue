@@ -60,7 +60,7 @@
             </el-row>
           </el-form>
           <span slot="footer" class="dialog-footer">
-            <el-button size="small" @click="dialogFormVisible =  false">Huỷ bỏ</el-button>
+            <el-button size="small" @click="handleReset()">Huỷ bỏ</el-button>
             <el-button type="success" size="small" @click="handleSubmit(controller)">Lưu lại</el-button>
           </span>
         </el-dialog>
@@ -128,13 +128,8 @@ export default {
           name: newItem.thumbnail,
           url: this._getThumbnail(this.controller, newItem.thumbnail)
         })
-      } 
+      }  
     },
-    dialogFormVisible(newItem, oldItem) {
-      if(!newItem) {
-        this.handleReset(this.controller)
-      }
-    }
   },
   methods: {
     ...mapActions(CONTROLLER, ['createItem', 'updateItem']),
@@ -155,12 +150,13 @@ export default {
     /**
      * Reset form
      */
-    handleReset(formName) {
+    handleReset() {
       this.$store.commit(`${CONTROLLER}/setCurrItem`, null)
-      this.$refs[formName].resetFields()
+      this.handleResetForm()
       this.$refs.upload.clearFiles()
       this.imagesList = []
       this._limitDisplayImage(false)
+      this.dialogFormVisible = false
     },
     /**
      * Submit form
@@ -197,7 +193,7 @@ export default {
               }
             })
           }
-          this.handleReset(formName)
+          this.handleReset()
         }
       })
     },
@@ -207,6 +203,12 @@ export default {
     handleRomove(file) {
       this.form.thumbnail = ''
       this._limitDisplayImage(false)
+    },
+    handleResetForm() {
+      ['title', 'description', 'content', 'link', 'thumbnail'].forEach(field => {
+        this.form[field] = ''
+      })
+      this.form.status = 1
     }
   }
 };
