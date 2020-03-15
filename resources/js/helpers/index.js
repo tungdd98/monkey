@@ -60,6 +60,22 @@ const Helpers = {
 		} else {
 			document.querySelector('.el-upload.el-upload--picture-card').style = 'display: block'
 		}
+	},
+	/**
+	 * Hiển thị menu đa cấp
+	 * @param {*} categories 
+	 * @param {*} parent_id 
+	 * @param {*} char 
+	 */
+	_showMultiCategory(categories = [], parent_id = 0, char = '') {
+		categories.forEach((value, key) => {
+			console.log(value)
+			// 
+		})
+		console.log('hello')
+	},
+	hello() {
+		return 'hihi'
 	}
 }
 export default Helpers

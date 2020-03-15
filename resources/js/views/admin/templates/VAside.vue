@@ -27,25 +27,25 @@
       <el-menu-item index="2">
         <template slot="title">
           <i class="el-icon-picture"></i>
-          <router-link to="/sliders">Slider</router-link>
+          <router-link to="/sliders">Quản lý slide</router-link>
         </template>
       </el-menu-item>
-      <el-submenu index="3">
+      <el-menu-item index="3">
+        <template slot="title">
+          <i class="el-icon-s-grid"></i>
+          <router-link to="/categories">Danh mục</router-link>
+        </template>
+      </el-menu-item>
+      <el-submenu index="4">
         <template slot="title">
           <i class="el-icon-s-goods"></i>
           <router-link to="/products">Quản lý sản phẩm</router-link>
         </template>
       </el-submenu>
-      <el-submenu index="4">
+      <el-submenu index="5">
         <template slot="title">
           <i class="el-icon-s-platform"></i>
           <router-link to="/">Nội dung</router-link>
-        </template>
-      </el-submenu>
-      <el-submenu index="5">
-        <template slot="title">
-          <i class="el-icon-s-grid"></i>
-          <router-link to="/">Danh mục</router-link>
         </template>
       </el-submenu>
       <el-submenu index="6">

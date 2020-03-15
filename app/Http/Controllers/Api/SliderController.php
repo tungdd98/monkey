@@ -12,6 +12,7 @@ class SliderController extends Controller
     private $controller = 'slider';
     
     public function __construct() {
+        $this->middleware(['auth:api']);
         $this->model = new Model();    
     }
     /**
@@ -45,7 +46,7 @@ class SliderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Slider  $slider
+     * @param  $request
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request)
@@ -69,7 +70,7 @@ class SliderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Slider  $slider
+     * @param  $request
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)

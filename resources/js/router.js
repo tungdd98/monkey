@@ -8,6 +8,7 @@ import store from '@/store'
 import Admin from '@/views/admin/Base'
 import dashboard from '@/views/admin/pages/dashboard/router'
 import slider from '@/views/admin/pages/slider/router'
+import category from '@/views/admin/pages/category/router'
 import Login from '@/views/Login'
 import Register from '@/views/Register'
 
@@ -23,7 +24,8 @@ const routes = [
     component: Admin,
     children: [
       dashboard,
-      slider
+      slider,
+      category
     ],
     meta: { requiresAuth: true }
   },

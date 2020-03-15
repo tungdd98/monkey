@@ -56,7 +56,7 @@
             </template>
           </el-table-column>
       </el-table>
-      <pagination :total="total" :controller="controller" :per_page="per_page"></pagination>
+      <pagination :total="total" :controller="controller"></pagination>
     </div>
   </div>
 </template>
@@ -75,11 +75,6 @@ export default {
     return {
       controller: CONTROLLER,
       foo,
-      per_page: foo.PAGINATE.per_page,
-      order: {
-        order_by: foo.PAGINATE.order_by,
-        order_dir: foo.PAGINATE.order_dir
-      }
     }
   },
   computed: {
@@ -135,7 +130,7 @@ export default {
     Filters,
     Pagination,
     Status
-  }
+  },
 }
 </script>
 <style lang="scss">
