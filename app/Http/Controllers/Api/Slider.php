@@ -77,9 +77,8 @@ class Slider extends Controller
         $params['id'] = $request->id;
         $item = Model::findOrFail($request->id);
         $imgPath = "images/{$this->controller}/{$item->thumbnail}";
-        if(file_exists(public_path() . $imgPath)) {
-            unlink($imgPath);
-        }
+        $msg = '';
+        unlink($imgPath);
         $this->model->deleteItem($params, ['task' => 'item']);
     }
 }

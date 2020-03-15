@@ -156,6 +156,7 @@ export default {
       this.$refs.upload.clearFiles()
       this.imagesList = []
       this._limitDisplayImage(false)
+      this.isEdit = false
       this.dialogFormVisible = false
     },
     /**
