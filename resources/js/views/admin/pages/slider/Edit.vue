@@ -60,7 +60,7 @@
             </el-row>
           </el-form>
           <span slot="footer" class="dialog-footer">
-            <el-button size="small" @click="handleReset()">Huỷ bỏ</el-button>
+            <el-button size="small" @click="handleReset(controller)">Huỷ bỏ</el-button>
             <el-button type="success" size="small" @click="handleSubmit(controller)">Lưu lại</el-button>
           </span>
         </el-dialog>
@@ -150,12 +150,14 @@ export default {
     /**
      * Reset tất cả trạng thái
      */
-    handleReset() {
+    handleReset(formName) {
       this.$store.commit(`${CONTROLLER}/setCurrItem`, null)
       this.handleResetForm()
+      this.$refs[formName].clearValidate()
       this.$refs.upload.clearFiles()
       this.imagesList = []
       this._limitDisplayImage(false)
+      this.isEdit = false
       this.dialogFormVisible = false
     },
     /**
@@ -193,7 +195,7 @@ export default {
               }
             })
           }
-          this.handleReset()
+          this.handleReset(formName)
         }
       })
     },

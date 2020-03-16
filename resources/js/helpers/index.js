@@ -60,6 +60,6 @@ const Helpers = {
 		} else {
 			document.querySelector('.el-upload.el-upload--picture-card').style = 'display: block'
 		}
-	}
+	},
 }
 export default Helpers

@@ -7,7 +7,6 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
 import foo from '@/configs'
 
 export default {
@@ -16,25 +15,23 @@ export default {
     controller: { type: String, default: '' },
   },
   computed: {
-    ...mapState({
-      per_page: state => state.slider.per_page,
-      order_by: state => state.slider.order_by,
-      order_dir: state => state.slider.order_dir
-    })
+    filters() {
+      return this.$store.getters[`${this.controller}/getFilter`]
+    }
   },
   methods: {
     /**
      * Thay đổi trạng thái phần tử
      */
     handleChangeStatus() {
-      let { per_page, order_by, order_dir } = this
       this.$store.dispatch(`${this.controller}/changeStatus`, { ...this.item, field: 'status' })
       .then(res => {
         if(res.flag) {
           this.$store.dispatch(`${this.controller}/getList`, {
-            per_page,
-            order_by,
-            order_dir
+            per_page: this.filters.per_page,
+            order_by: this.filters.order_by,
+            order_dir: this.filters.order_dir,
+            page: this.filters.page
           })
           this.$fire(foo.NOTIFICATION.success.updated)
         } else {

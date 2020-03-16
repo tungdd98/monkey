@@ -7,6 +7,7 @@ const state = {
 	per_page: foo.PAGINATE.per_page,
 	order_by: foo.PAGINATE.order_by,
 	order_dir: foo.PAGINATE.order_dir,
+	page: foo.PAGINATE.page,
 	all: [],
 	total: 0,
 	currItem: null
@@ -21,6 +22,14 @@ const getters = {
 	},
 	getCurrItem: state => {
 		return state.currItem
+	},
+	getFilter: state => {
+		return {
+			per_page: state.per_page,
+			order_by: state.order_by,
+			order_dir: state.order_dir,
+			page: state.page,
+		}
 	}
 }
 
@@ -95,7 +104,6 @@ const actions = {
 		try {
 			let result = await Axios.delete(`${URL}/${data.id}`)
 			if(result.status === 200) {
-				dispatch('getList', {})
 				return {
 					flag: true
 				}

@@ -5,8 +5,10 @@ Vue.use(Vuex)
 import axios from '@/plugins/axios'
 import auth from './modules/auth'
 import slider from './modules/slider'
+import category from './modules/category'
 
 const store = new Vuex.Store({
+  strict: process.env.NODE_ENV !== 'production',
   state: {
     isLoading: false
   },
@@ -19,7 +21,8 @@ const store = new Vuex.Store({
   },
   modules: {
     auth,
-    slider
+    slider,
+    category
   }
 })
 store.subscribe((mutations) => {
