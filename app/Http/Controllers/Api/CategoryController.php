@@ -18,8 +18,9 @@ class CategoryController extends Controller
         $this->model = new Model();    
     }
     /**
-     * Display a listing of the resource.
+     * Hiển thị danh sách 
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -35,7 +36,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Lưu phần tử 
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -46,7 +47,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Lấy thông tin phần tử
      *
      * @param  $request
      * @return \Illuminate\Http\Response
@@ -59,7 +60,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Cập nhật phần tử
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -70,7 +71,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Xoá phần tử và ảnh trong storage
      *
      * @param  $request
      * @return \Illuminate\Http\Response
@@ -93,13 +94,13 @@ class CategoryController extends Controller
         return response()->json(['data' => $items]);
     }
 
-    public function unique($categories = null, $parent_id = 0, $char = '') {
+    public function unique($categories = null, $parent_id = 0, $level = 0) {
         foreach($categories as $key => $item) {
             if($item['parent_id'] == $parent_id) {
                 $params['id'] = $parent_id;
                 $item['parent'] = $this->model->getItemById($params, ['columns' => ['title', 'id']]);
-                $item['char'] = $char;
-                $this->unique($categories, $item['id'], $char . '|---');
+                $item['level'] = $level;
+                $this->unique($categories, $item['id'], $level + 1);
             }
         }
         return $categories;

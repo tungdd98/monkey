@@ -9,7 +9,7 @@ const Helpers = {
 	 * @param {*} thumbnail 
 	 */
 	_getThumbnail(controller, thumbnail) {
-		return `images/${controller}/${thumbnail}`
+		return `/images/${controller}/${thumbnail}`
 	},
 	/**
 	 * Format thời gian

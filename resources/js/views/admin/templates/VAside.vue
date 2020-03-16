@@ -27,13 +27,13 @@
       <el-menu-item index="2">
         <template slot="title">
           <i class="el-icon-picture"></i>
-          <router-link to="/sliders">Quản lý slide</router-link>
+          <router-link to="/admin/sliders">Quản lý slide</router-link>
         </template>
       </el-menu-item>
       <el-menu-item index="3">
         <template slot="title">
           <i class="el-icon-s-grid"></i>
-          <router-link to="/categories">Danh mục</router-link>
+          <router-link to="/admin/categories">Danh mục</router-link>
         </template>
       </el-menu-item>
       <el-submenu index="4">

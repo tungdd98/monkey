@@ -98,6 +98,7 @@ export default {
         status: 1,
         thumbnail: '',
       },
+      fields: ['title', 'description', 'content', 'link', 'thumbnail'],
       imagesList: [],
       isEdit: false
     }
@@ -120,7 +121,7 @@ export default {
 
         for(let i in newItem) {
           const item = newItem[i]
-          if(['title', 'description', 'content', 'link', 'status', 'thumbnail'].includes(i)) {
+          if([...this.fields, 'status'].includes(i)) {
             this.form[i] = item
           }
         }
@@ -210,7 +211,7 @@ export default {
      * Reset form
      */
     handleResetForm() {
-      ['title', 'description', 'content', 'link', 'thumbnail'].forEach(field => {
+      this.fields.forEach(field => {
         this.form[field] = ''
       })
       this.form.status = 1
