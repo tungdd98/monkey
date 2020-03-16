@@ -60,6 +60,9 @@ export default {
           })
         }
       })
+    },
+    test() {
+      console.log('hihi')
     }
   }
 }
