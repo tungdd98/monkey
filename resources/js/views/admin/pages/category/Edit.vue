@@ -16,9 +16,14 @@
                   </el-input>
                 </el-form-item>
                 <el-form-item label="Danh mục cha" :label-width="formLabelWidth" prop="parent_id">
-                  <el-input v-model="form.parent_id" autocomplete="off">
-                    <i slot="suffix" class="el-input__icon el-icon-edit"></i>
-                  </el-input>
+                  <el-select v-model="form.parent_id" placeholder="--Chọn--" clearable v-if="selectList">
+                    <el-option
+                      v-for="item in filterSelectList"
+                      :key="item.id"
+                      :value="item.id"
+                      :label="item.title"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="Mô tả" :label-width="formLabelWidth" prop="description">
                   <ckeditor :editor="editor" v-model="form.description" :config="editorConfig"></ckeditor>
@@ -99,6 +104,7 @@ export default {
         thumbnail: '',
       },
       imagesList: [],
+      selectList: [],
       isEdit: false
     }
   },
@@ -109,7 +115,10 @@ export default {
     ...mapGetters({
       currItem: `${CONTROLLER}/getCurrItem`,
       user: 'auth/getUser'
-    })
+    }),
+    filterSelectList() {
+      return this.selectList.filter(item => item.id !== this.currItem.id)
+    }
   },
   watch: {
     currItem(newItem, oldItem) {
@@ -120,7 +129,7 @@ export default {
 
         for(let i in newItem) {
           const item = newItem[i]
-          if(['title', 'description', 'content', 'status', 'thumbnail'].includes(i)) {
+          if(['title', 'description', 'content', 'status', 'thumbnail', 'parent_id'].includes(i)) {
             this.form[i] = item
           }
         }
@@ -128,11 +137,16 @@ export default {
           name: newItem.thumbnail,
           url: this._getThumbnail(this.controller, newItem.thumbnail)
         })
+        this.getMultiCategory().then(res => {
+          if(res.flag) {
+            this.selectList = res.data
+          }
+        })
       }  
     },
   },
   methods: {
-    ...mapActions(CONTROLLER, ['createItem', 'updateItem']),
+    ...mapActions(CONTROLLER, ['createItem', 'updateItem', 'getMultiCategory']),
     /**
      * Hiển thị dialog hình ảnh
      */
@@ -158,6 +172,7 @@ export default {
       this.imagesList = []
       this._limitDisplayImage(false)
       this.isEdit = false
+      this.selectList = []
       this.dialogFormVisible = false
     },
     /**
@@ -214,7 +229,7 @@ export default {
         this.form[field] = ''
       })
       this.form.status = 1
-    }
+    },
   }
 };
 </script>

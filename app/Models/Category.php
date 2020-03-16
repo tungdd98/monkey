@@ -23,6 +23,7 @@ class Category extends Model
         return $result;
     }
 
+
     public function saveItem($request, $options) {
         $params = $request->all();
         if($options['field'] == 'status') {
@@ -62,7 +63,10 @@ class Category extends Model
         }
     }
 
-    public function getItemById($params) {
+    public function getItemById($params, $options = null) {
+        if(isset($options['columns'])) {
+            return self::select($options['columns'])->where('id', $params['id'])->first();
+        }
         return self::select($this->columns)->where('id', $params['id'])->first();
     }
 }

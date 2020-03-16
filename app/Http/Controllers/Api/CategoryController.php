@@ -54,7 +54,7 @@ class CategoryController extends Controller
     public function show(Request $request)
     {
         $params['id'] = $request->id;
-        $item = $this->model->getItemById($params);
+        $item = $this->model->getItemById($params, null);
         return response()->json(['data' => $item]);
     }
 
@@ -83,5 +83,25 @@ class CategoryController extends Controller
         $msg = '';
         unlink($imgPath);
         $this->model->deleteItem($params, ['task' => 'item']);
+    }
+    /**
+     * Đệ quy lấy parent_id
+     */
+    public function getMultiCategory() {
+        $items = Model::select(['title', 'id', 'parent_id'])->get();
+        $items = $this->unique($items);
+        return response()->json(['data' => $items]);
+    }
+
+    public function unique($categories = null, $parent_id = 0, $char = '') {
+        foreach($categories as $key => $item) {
+            if($item['parent_id'] == $parent_id) {
+                $params['id'] = $parent_id;
+                $item['parent'] = $this->model->getItemById($params, ['columns' => ['title', 'id']]);
+                $item['char'] = $char;
+                $this->unique($categories, $item['id'], $char . '|---');
+            }
+        }
+        return $categories;
     }
 }

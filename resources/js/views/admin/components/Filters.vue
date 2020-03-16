@@ -34,22 +34,19 @@ export default {
     controller: { type: String, default: '' }
   },
   computed: {
-    ...mapState({
-      per_page: state => state.slider.per_page,
-      order_by: state => state.slider.order_by,
-      order_dir: state => state.slider.order_dir
-    })
+    filters() {
+      return this.$store.getters[`${this.controller}/getFilter`]
+    }
   },
   methods: {
     /**
      * Lọc theo options
      */
     handleFilterState() {
-      let { per_page } = this
       let idx = this.optionsSort.findIndex(option => option.id === this.filter)
       let order = this.optionsSort[idx].value
       this.$store.dispatch(`${this.controller}/getList`, {
-        per_page,
+        per_page: this.filters.per_page,
         order_by: order.order_by,
         order_dir: order.order_dir
       })
@@ -58,11 +55,10 @@ export default {
      * Lọc theo số bản ghi
      */
     handleFilterPerPage() {
-      let { order_by, order_dir } = this
       this.$store.dispatch(`${this.controller}/getList`, {
         per_page: this.count,
-        order_by,
-        order_dir,
+        order_by: this.filters.order_by,
+        order_dir: this.filters.order_dir,
       })
     }
   }

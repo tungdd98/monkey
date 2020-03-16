@@ -32,11 +32,6 @@
               <div class="v-italic" v-html="scope.row.description">Mô tả: {{ scope.row.description }}</div>
             </template>
           </el-table-column>
-          <el-table-column label="Danh mục cha">
-            <template slot-scope="scope">
-              <div>{{ scope.row.parent }}</div>
-            </template>
-          </el-table-column>
           <el-table-column label="Ngày tạo">
             <template slot-scope="scope">
               <div>{{ _dateFormat(scope.row.created_at, 'short') }}</div>
@@ -83,7 +78,8 @@ export default {
     }),
     ...mapGetters({
       items: `${CONTROLLER}/getAll`,
-      total: `${CONTROLLER}/getTotalList`
+      total: `${CONTROLLER}/getTotalList`,
+      filters: `${CONTROLLER}/getFilter`,
     })
   },
   created() {
@@ -106,7 +102,14 @@ export default {
         if(res.value) {
           this.deleteItem(data)
           .then(res => {
-            if(res.flag) this.$fire(foo.NOTIFICATION.success.deleted)
+            if(res.flag) {
+              this.$store.dispatch(`${CONTROLLER}/getList`, {
+                per_page: this.filters.per_page,
+                order_by: this.filters.order_by,
+                order_dir: this.filters.order_dir,
+              })
+              this.$fire(foo.NOTIFICATION.success.deleted)
+            }
             else this.$fire(foo.NOTIFICATION.error)
           })
         }

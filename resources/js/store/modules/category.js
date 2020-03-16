@@ -1,6 +1,5 @@
 import Axios from "@/plugins/axios"
 import foo from '@/configs'
-import Vue from 'vue'
 
 const URL = 'categories'
 
@@ -8,9 +7,11 @@ const state = {
 	per_page: foo.PAGINATE.per_page,
 	order_by: foo.PAGINATE.order_by,
 	order_dir: foo.PAGINATE.order_dir,
+	page: foo.PAGINATE.page,
 	all: [],
 	total: 0,
-	currItem: null
+	currItem: null,
+	select: []
 }
 
 const getters = {
@@ -22,37 +23,24 @@ const getters = {
 	},
 	getCurrItem: state => {
 		return state.currItem
+	},
+	getFilter: state => {
+		return {
+			per_page: state.per_page,
+			order_by: state.order_by,
+			order_dir: state.order_dir,
+			page: state.page,
+		}
 	}
 }
 
 const actions = {
-	/**
-	 * Lấy danh sách danh mục cha
-	 */
-	getMultiCategory: async ({ commit, dispatch }, { categories = [], parent_id = 0, char = '' }) => {
-		categories.forEach((value, key) => {
-			if(value.parent_id === parent_id) {
-				dispatch('getItemById', { id: value.parent_id, setCurrItem: false }).then(res => {
-					if(res.flag) {
-						value.parent = res.data
-					}
-				})
-				dispatch('getMultiCategory', {
-					categories,
-					parent_id: value.id,
-					char: '|---'
-				})
-			}
-		})
-		return categories
-	},
 	/**
 	 * Lấy danh sách phần tử
 	 */
 	getList: async ({ commit, dispatch }, { per_page = foo.PAGINATE.per_page, page = foo.PAGINATE.page, order_by = foo.PAGINATE.order_by, order_dir = foo.PAGINATE.order_dir, pagination = true }) => {
 		commit('setLoading', true, { root: true })
 		try {
-			const _this = new Vue()
 			let config = {
 				params: {
 					per_page,
@@ -77,9 +65,9 @@ const actions = {
 					})
 					commit('setPaginate', {
 						per_page,
-						page,
 						order_by,
-						order_dir
+						order_dir,
+						page
 					})
 				}
 				return { flag: true }
@@ -117,7 +105,6 @@ const actions = {
 		try {
 			let result = await Axios.delete(`${URL}/${data.id}`)
 			if(result.status === 200) {
-				dispatch('getList', {})
 				return {
 					flag: true
 				}
@@ -194,6 +181,25 @@ const actions = {
 			console.log(error)
 			return { flag: false, msg: error }
 		}
+	},
+	/**
+	 * Đệ quy
+	 */
+	getMultiCategory: async ({ commit }) => {
+		try {
+			let result = await Axios.get(`${URL}/multi`)
+			if(result.status === 200) {
+				// commit('setSelectItem', result.data.data)
+				return {
+					flag: true,
+					data: result.data.data
+				}
+			}
+			return { flag: false }
+		} catch (error) {
+			console.log(error)
+			return { flag: false }
+		}
 	}
 }
 
@@ -205,12 +211,15 @@ const mutations = {
 	setCurrItem: (state, data) => {
 		state.currItem = data
 	},
-	setPaginate: (state,  { per_page, page, order_by, order_dir }) => {
+	setPaginate: (state,  { per_page, order_by, order_dir, page }) => {
 		state.per_page 	= per_page
-		state.page 			= page
 		state.order_by 	= order_by
 		state.order_dir = order_dir
+		state.page 			= page
 	},
+	setSelectItem: (state, data) => {
+		state.select = data
+	}
 }
 
 export default {

@@ -8,6 +8,7 @@ import slider from './modules/slider'
 import category from './modules/category'
 
 const store = new Vuex.Store({
+  strict: process.env.NODE_ENV !== 'production',
   state: {
     isLoading: false
   },
