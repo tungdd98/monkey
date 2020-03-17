@@ -10,7 +10,7 @@ use App\Http\Requests\ProductRequest as MainRequest;
 class ProductController extends Controller
 {
     private $model;
-    private $controller = 'slider';
+    private $controller = 'product';
     
     public function __construct() {
         $this->middleware(['auth:api']);
@@ -72,9 +72,11 @@ class ProductController extends Controller
     {
         $params['id'] = $request->id;
         $item = Model::findOrFail($request->id);
-        $imgPath = "images/{$this->controller}/{$item->thumbnail}";
-        $msg = '';
-        unlink($imgPath);
+        $images = json_decode($item->images);
+        foreach($images as $key => $image) {
+            $imgPath = "images/{$this->controller}/{$image}";
+            unlink($imgPath);
+        }
         $this->model->deleteItem($params, ['task' => 'item']);
     }
 }

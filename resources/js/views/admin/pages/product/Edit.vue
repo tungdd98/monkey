@@ -15,7 +15,7 @@
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
                   </el-input>
                 </el-form-item>
-                <el-form-item label="Hình ảnh" :label-width="formLabelWidth" prop="images">
+                <el-form-item label="Hình ảnh" :label-width="formLabelWidth">
                   <el-upload
                     action="/"
                     ref="upload"
@@ -109,7 +109,7 @@ export default {
         status: 1,
         thumbnail: '',
       },
-      fields: ['title', 'description', 'content', 'price', 'quantity', 'thumbnail'],
+      fields: ['title', 'description', 'content', 'thumbnail'],
       imagesList: [],
       images: [],
       isEdit: false
@@ -137,13 +137,18 @@ export default {
             this.form[i] = item
           }
         }
-        let images = JSON.parse(newItem.images)
-        for(let i in images) {
-          const image = images[i]
-          this.imagesList.push({
-            name: image,
-            url: this._getThumbnail(this.controller, image)
-          })
+        let images = []
+        if(newItem.images) {
+          images = JSON.parse(newItem.images)
+        }
+        if(images) {
+          for(let i in images) {
+            const image = images[i]
+            this.imagesList.push({
+              name: image,
+              url: this._getThumbnail(this.controller, image)
+            })
+          }
         }
       }  
     },
@@ -173,6 +178,7 @@ export default {
       this.$refs.upload.clearFiles()
       this.imagesList = []
       this.isEdit = false
+      this.images = []
       this.dialogFormVisible = false
     },
     /**
@@ -228,6 +234,9 @@ export default {
       this.form.status = 1
       this.form.is_hot = 0
       this.form.is_bestseller = 0
+      this.sale_up = 0
+      this.price = 0
+      this.quantity = 1
     }
   }
 };
