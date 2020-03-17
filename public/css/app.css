@@ -1,6 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Nunito);body {
   font-size: 14px;
   margin: 0;
+  font-family: "Nunito", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 html,
