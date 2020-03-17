@@ -4,6 +4,6 @@ php artisan serve
 
 ## Chạy Vue
 
-npm install
-npm run watch
+<p>npm install</p>
+<p>npm run watch</p>
 
