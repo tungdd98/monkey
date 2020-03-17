@@ -145,7 +145,7 @@ const actions = {
 	 */
 	getItemById: async ({ commit }, id) => {
 		try {
-			let result = await Axios.get(`${URL}/${id}`)
+      let result = await Axios.get(`${URL}/${id}`)
 			if(result.status === 200) {
 				commit('setCurrItem', result.data.data)
 				return {

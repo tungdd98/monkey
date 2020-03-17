@@ -10,7 +10,7 @@ use App\Http\Requests\ProductRequest as MainRequest;
 class ProductController extends Controller
 {
     private $model;
-    private $controller = 'slider';
+    private $controller = 'product';
     
     public function __construct() {
         $this->middleware(['auth:api']);
@@ -68,13 +68,31 @@ class ProductController extends Controller
         $this->model->saveItem($request, ['field' => $request->field]);
     }
 
+    /**
+     * Xoá phần tử
+     * 
+     * @param $request
+     * @return response
+     */
     public function destroy(Request $request)
     {
         $params['id'] = $request->id;
         $item = Model::findOrFail($request->id);
-        $imgPath = "images/{$this->controller}/{$item->thumbnail}";
-        $msg = '';
-        unlink($imgPath);
+        $images = json_decode($item->images);
+        foreach($images as $key => $image) {
+            $imgPath = "images/{$this->controller}/{$image}";
+            unlink($imgPath);
+        }
         $this->model->deleteItem($params, ['task' => 'item']);
+    }
+    /**
+     * Lấy danh mục của phần tử
+     * 
+     * @param 
+     * @return response
+     */
+    public function getCategoryOfItem(Request $request) {
+        $categories = $this->getCategoryOfItem($request->id, ['id', 'title']);
+        return response()->json(['data' => $categories]);
     }
 }

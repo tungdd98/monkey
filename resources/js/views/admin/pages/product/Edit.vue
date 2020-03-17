@@ -15,7 +15,17 @@
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
                   </el-input>
                 </el-form-item>
-                <el-form-item label="Hình ảnh" :label-width="formLabelWidth" prop="images">
+                <el-form-item label="Chọn danh mục" :label-width="formLabelWidth">
+                  <el-select v-model="form.categories" placeholder="--Chọn--" v-if="selectCategory" multiple collapse-tags>
+                    <el-option
+                      v-for="item in selectCategory"
+                      :key="item.id"
+                      :value="item.id"
+                      :label="item.title"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="Hình ảnh" :label-width="formLabelWidth">
                   <el-upload
                     action="/"
                     ref="upload"
@@ -23,6 +33,7 @@
                     :auto-upload="false"
                     :on-preview="handlePictureCardPreview"
                     :on-change="handleChangeUpload"
+                    :on-remove="handleRemoveUpdate"
                     :file-list="imagesList"
                   >
                     <i class="el-icon-plus"></i>
@@ -109,10 +120,13 @@ export default {
         status: 1,
         thumbnail: '',
       },
-      fields: ['title', 'description', 'content', 'price', 'quantity', 'thumbnail'],
+      fields: ['title', 'description', 'content', 'thumbnail'],
       imagesList: [],
       images: [],
-      isEdit: false
+      imagesRemove: [],
+      isEdit: false,
+      selectCategory: [],
+      categories: []
     }
   },
   computed: {
@@ -127,24 +141,38 @@ export default {
   watch: {
     currItem(newItem, oldItem) {
       if(newItem) {
+        // Thay đổi trạng thái lúc update
         this.dialogFormVisible = true
         this.isEdit = true
         this.formTitle = 'Cập nhật'
-
+        // Đổ dữ liệu lấy được
         for(let i in newItem) {
           const item = newItem[i]
           if([...this.fields, 'status', 'is_hot', 'is_bestseller'].includes(i)) {
             this.form[i] = item
           }
         }
-        let images = JSON.parse(newItem.images)
-        for(let i in images) {
-          const image = images[i]
-          this.imagesList.push({
-            name: image,
-            url: this._getThumbnail(this.controller, image)
-          })
+        let images = []
+        if(newItem.images) {
+          images = JSON.parse(newItem.images)
         }
+        if(images) {
+          for(let i in images) {
+            const image = images[i]
+            this.imagesList.push({
+              name: image,
+              url: this._getThumbnail(this.controller, image)
+            })
+          }
+        }
+        // Lấy danh sách category
+        this.$store.dispatch('category/getList', {
+          pagination: false
+        }).then(res => {
+          if(res.flag) {
+            this.selectCategory = res.data.data
+          }
+        })
       }  
     },
   },
@@ -172,7 +200,11 @@ export default {
       this.$refs[formName].clearValidate()
       this.$refs.upload.clearFiles()
       this.imagesList = []
+      this.imagesRemove = []
+      this.selectCategory = []
+      this.categories = []
       this.isEdit = false
+      this.images = []
       this.dialogFormVisible = false
     },
     /**
@@ -204,7 +236,10 @@ export default {
             data.append('updated_by', this.user.name)
             data.append('id', this.currItem.id)
             data.append('field', 'update-item')
-            data.append('currThumbnail', this.imagesList[0].name)
+            for(let i in this.imagesRemove) {
+              const image = this.imagesRemove[i]
+              data.append(`imagesRemove[${i}]`, image)
+            }
             this.updateItem(data).then(res => {
               if(res.flag) {
                 this.$fire(foo.NOTIFICATION.success.updated)
@@ -228,6 +263,17 @@ export default {
       this.form.status = 1
       this.form.is_hot = 0
       this.form.is_bestseller = 0
+      this.sale_up = 0
+      this.price = 0
+      this.quantity = 1
+    },
+    /**
+     * Xoá ảnh để update
+     */
+    handleRemoveUpdate(file) {
+      if(this.isEdit) {
+        this.imagesRemove.push(file.name)
+      }
     }
   }
 };
