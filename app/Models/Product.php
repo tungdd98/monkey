@@ -51,29 +51,42 @@ class Product extends Model
         if($options['field'] == 'add-item') {
             $images = $request->images;
             $imageStr = [];
-            foreach($images as $key => $image) {
-                $imgName = time() . $key . $image->getClientOriginalName();
-                $image->move("images/{$this->folderImg}", $imgName);
-                $imageStr[] = $imgName;
+            if($request->hasFile('images')) {
+                foreach($images as $key => $image) {
+                    $imgName = time() . $key . $image->getClientOriginalName();
+                    $image->move("images/{$this->folderImg}", $imgName);
+                    $imageStr[] = $imgName;
+                }
             }
             $params['thumbnail'] = $imageStr[0];
             $params['images'] = json_encode($imageStr);
             $this->create($params);
         }
         if($options['field'] == 'update-item') {
-            if($request->hasFile('thumbnail')) {
-                $imgPath = "images/{$this->folderImg}/{$params['currThumbnail']}";
-                unlink($imgPath);
-                $imgName = time() . $params['thumbnail']->getClientOriginalName();
-                $params['thumbnail']->move("images/{$this->folderImg}", $imgName);
-                $params['thumbnail'] = $imgName;
+            $imagesRemove = $request->imagesRemove;
+            if(count($imagesRemove) > 0) {
+                foreach($imagesRemove as $image) {
+                    $imgPath = "images/{$this->folderImg}/{$image}";
+                    unlink($imgPath);
+                }
+            }
+            $images = $request->images;
+            $imageStr = [];
+            if($request->hasFile('images')) {
+                foreach($images as $key => $image) {
+                    $imgName = time() . $key . $image->getClientOriginalName();
+                    $image->move("images/{$this->folderImg}", $imgName);
+                    $imageStr[] = $imgName;
+                }
             }
             self::where('id', $params['id'])->update([
                 'title'         => $params['title'],
                 'description'   => $params['description'],
                 'content'       => $params['content'],
-                'link'          => $params['link'],
-                'thumbnail'     => $params['thumbnail'],
+                'price'         => $params['price'],
+                'quantity'      => $params['quantity'],
+                'thumbnail'     => $imageStr[0],
+                'images'        => json_encode($imageStr),
                 'status'        => $params['status'],
                 'updated_by'    => $params['updated_by']
             ]);
