@@ -68,6 +68,12 @@ class ProductController extends Controller
         $this->model->saveItem($request, ['field' => $request->field]);
     }
 
+    /**
+     * Xoá phần tử
+     * 
+     * @param $request
+     * @return response
+     */
     public function destroy(Request $request)
     {
         $params['id'] = $request->id;
@@ -78,5 +84,15 @@ class ProductController extends Controller
             unlink($imgPath);
         }
         $this->model->deleteItem($params, ['task' => 'item']);
+    }
+    /**
+     * Lấy danh mục của phần tử
+     * 
+     * @param 
+     * @return response
+     */
+    public function getCategoryOfItem(Request $request) {
+        $categories = $this->getCategoryOfItem($request->id, ['id', 'title']);
+        return response()->json(['data' => $categories]);
     }
 }

@@ -15,6 +15,16 @@
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
                   </el-input>
                 </el-form-item>
+                <el-form-item label="Chọn danh mục" :label-width="formLabelWidth">
+                  <el-select v-model="form.categories" placeholder="--Chọn--" v-if="selectCategory" multiple collapse-tags>
+                    <el-option
+                      v-for="item in selectCategory"
+                      :key="item.id"
+                      :value="item.id"
+                      :label="item.title"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
                 <el-form-item label="Hình ảnh" :label-width="formLabelWidth">
                   <el-upload
                     action="/"
@@ -115,6 +125,8 @@ export default {
       images: [],
       imagesRemove: [],
       isEdit: false,
+      selectCategory: [],
+      categories: []
     }
   },
   computed: {
@@ -129,10 +141,11 @@ export default {
   watch: {
     currItem(newItem, oldItem) {
       if(newItem) {
+        // Thay đổi trạng thái lúc update
         this.dialogFormVisible = true
         this.isEdit = true
         this.formTitle = 'Cập nhật'
-
+        // Đổ dữ liệu lấy được
         for(let i in newItem) {
           const item = newItem[i]
           if([...this.fields, 'status', 'is_hot', 'is_bestseller'].includes(i)) {
@@ -152,6 +165,14 @@ export default {
             })
           }
         }
+        // Lấy danh sách category
+        this.$store.dispatch('category/getList', {
+          pagination: false
+        }).then(res => {
+          if(res.flag) {
+            this.selectCategory = res.data.data
+          }
+        })
       }  
     },
   },
@@ -180,6 +201,8 @@ export default {
       this.$refs.upload.clearFiles()
       this.imagesList = []
       this.imagesRemove = []
+      this.selectCategory = []
+      this.categories = []
       this.isEdit = false
       this.images = []
       this.dialogFormVisible = false

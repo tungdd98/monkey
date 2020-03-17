@@ -70,7 +70,7 @@ const actions = {
 						page
 					})
 				}
-				return { flag: true }
+				return { flag: true, data: result.data }
 			}
 			return { flag: false }
 		} catch (error) {

@@ -36,6 +36,7 @@ Route::group([
 ], function() {
     Route::get('/', 'Api\ProductController@index')->name('product.index');
     Route::get('/{id}', 'Api\ProductController@show')->name('product.show');
+    Route::get('/category/{id}', 'Api\ProductController@getCategoryOfItem')->name('product.category');
     Route::patch('/{id}', 'Api\ProductController@update')->name('product.update');
     Route::delete('/{id}', 'Api\ProductController@destroy')->name('product.delete');
     Route::post('/', 'Api\ProductController@store')->name('product.store');

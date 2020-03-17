@@ -18,6 +18,12 @@ class Category extends Model
     protected $folderImg = 'category';
 
     /**
+     * Quan hệ với bảng sản phẩm (nhiều - nhiều)
+     */
+    public function products() {
+        return $this->belongstoMany('App\Models\Product');
+    }
+    /**
      * Lấy danh sách phần tử
      * 
      * @param $params: thông tin requests

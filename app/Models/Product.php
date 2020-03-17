@@ -18,6 +18,13 @@ class Product extends Model
     protected $folderImg = 'product';
 
     /**
+     * Quan hệ với bảng danh mục(nhiều - nhiều)
+     */
+    public function categories() {
+        return $this->belongsToMany('App\Models\Category');
+    }
+
+    /**
      * Lấy danh sách phần tử
      * 
      * @param $params: thông tin requests
@@ -114,5 +121,20 @@ class Product extends Model
      */
     public function getItemById($params) {
         return self::select($this->columns)->where('id', $params['id'])->first();
+    }
+    
+    /**
+     * Lấy danh mục của sản phẩm
+     * @param $id, $fields
+     * @return 
+     */
+    public function getCategoryOfItem($id, $fields) {
+        $result = null;
+        if(isset($fields)) {
+            $result = self::find($id)->categories()->select($fields)->get();
+        } else {
+            $result = self::find($id)->categories()->get();
+        }
+        return $result;
     }
 }
