@@ -183,7 +183,7 @@ const actions = {
 		}
 	},
 	/**
-	 * Đệ quy
+	 * Đệ quy lấy danh mục 
 	 */
 	getMultiCategory: async ({ commit }) => {
 		try {

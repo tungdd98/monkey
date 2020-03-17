@@ -92,7 +92,7 @@ class ProductController extends Controller
      * @return response
      */
     public function getCategoryOfItem(Request $request) {
-        $categories = $this->getCategoryOfItem($request->id, ['id', 'title']);
+        $categories = $this->model->getCategoryOfItem($request->id, ['title']);
         return response()->json(['data' => $categories]);
     }
 }

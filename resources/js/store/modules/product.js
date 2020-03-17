@@ -177,6 +177,24 @@ const actions = {
 			console.log(error)
 			return { flag: false, msg: error }
 		}
+	},
+	/**
+	 * Lấy danh mục sản phẩm theo id
+	 */
+	getCategoryById: async ({ commit }, id) => {
+		try {
+			let result = await Axios.get(`${URL}/category/${id}`)
+			if(result.status === 200) {
+				return {
+					flag: true,
+					data: result.data.data
+				}
+			}
+			return { flag: false }
+		} catch (error) {
+			console.log(error)
+			return { flag: false }
+		}
 	}
 }
 

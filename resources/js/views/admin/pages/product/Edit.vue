@@ -16,7 +16,7 @@
                   </el-input>
                 </el-form-item>
                 <el-form-item label="Chọn danh mục" :label-width="formLabelWidth">
-                  <el-select v-model="form.categories" placeholder="--Chọn--" v-if="selectCategory" multiple collapse-tags>
+                  <el-select v-model="categories" placeholder="--Chọn--" v-if="selectCategory" multiple collapse-tags>
                     <el-option
                       v-for="item in selectCategory"
                       :key="item.id"
@@ -165,6 +165,10 @@ export default {
             })
           }
         }
+      }  
+    },
+    dialogFormVisible(newItem, oldItem) {
+      if(newItem) {
         // Lấy danh sách category
         this.$store.dispatch('category/getList', {
           pagination: false
@@ -173,11 +177,23 @@ export default {
             this.selectCategory = res.data.data
           }
         })
-      }  
-    },
+        if(!this.isEdit) {
+          this.categories = []
+        } else {
+          this.getCategoryById(this.currItem.id).then(res => {
+            if(res.flag) {
+              for(let i in res.data) {
+                const item = res.data[i]
+                this.categories.push(item.pivot.category_id)
+              }
+            }
+          })
+        }
+      }
+    }
   },
   methods: {
-    ...mapActions(CONTROLLER, ['createItem', 'updateItem']),
+    ...mapActions(CONTROLLER, ['createItem', 'updateItem', 'getCategoryById']),
     /**
      * Hiển thị dialog hình ảnh
      */
@@ -218,9 +234,15 @@ export default {
             const field = this.form[i]
             data.append(i, field)
           }
+          // Gửi list ảnh
           for(let i in this.images) {
             const image = this.images[i]
             data.append(`images[${i}]`, image)
+          }
+          // Gửi list category
+          for(let i in this.categories) {
+            const category = this.categories[i]
+            data.append(`categories[${i}]`, category)
           }
           if(!this.isEdit) {
             data.append('created_by', this.user.name)
