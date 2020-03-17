@@ -3,67 +3,78 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
+use App\Models\Product as Model;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProductRequest as MainRequest;
 
 class ProductController extends Controller
 {
+    private $model;
+    private $controller = 'slider';
+    
     public function __construct() {
         $this->middleware(['auth:api']);
+        $this->model = new Model();    
     }
     /**
-     * Display a listing of the resource.
-     *
+     * Hiển thị danh sách 
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        $products = Product::orderBy($request->order_by, $request->order_dir)->paginate($request->per_page);
-        return response()->json(['data' => $product]);
+        $options = [
+            'pagination' => $request->pagination, 
+            'per_page' => $request->per_page,
+            'order_by' => $request->order_by,
+            'order_dir' => $request->order_dir
+        ];
+        $items = $this->model->getListItems(null, $options);
+        return response()->json(['data' => $items]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Lưu phần tử 
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MainRequest $request)
     {
-        //
+        $this->model->saveItem($request, ['field' => 'add-item']);
     }
 
     /**
-     * Display the specified resource.
+     * Lấy thông tin phần tử
      *
-     * @param  \App\Models\Product  $product
+     * @param  $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(Request $request)
     {
-        //
+        $params['id'] = $request->id;
+        $item = $this->model->getItemById($params);
+        return response()->json(['data' => $item]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Cập nhật phần tử
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request)
     {
-        //
+        $this->model->saveItem($request, ['field' => $request->field]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Product $product)
+    public function destroy(Request $request)
     {
-        //
+        $params['id'] = $request->id;
+        $item = Model::findOrFail($request->id);
+        $imgPath = "images/{$this->controller}/{$item->thumbnail}";
+        $msg = '';
+        unlink($imgPath);
+        $this->model->deleteItem($params, ['task' => 'item']);
     }
 }

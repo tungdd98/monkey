@@ -16,8 +16,8 @@ class SliderController extends Controller
         $this->model = new Model();    
     }
     /**
-     * Display a listing of the resource.
-     *
+     * Hiển thị danh sách 
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -33,7 +33,7 @@ class SliderController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Lưu phần tử 
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -44,7 +44,7 @@ class SliderController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Lấy thông tin phần tử
      *
      * @param  $request
      * @return \Illuminate\Http\Response
@@ -57,7 +57,7 @@ class SliderController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Cập nhật phần tử
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -68,7 +68,7 @@ class SliderController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Xoá phần tử và ảnh trong storage
      *
      * @param  $request
      * @return \Illuminate\Http\Response

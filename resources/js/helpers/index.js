@@ -1,5 +1,3 @@
-import Vue from '@/app'
-import store from '@/store'
 import moment from 'moment'
 import foo from '@/configs'
 const Helpers = {
@@ -9,7 +7,7 @@ const Helpers = {
 	 * @param {*} thumbnail 
 	 */
 	_getThumbnail(controller, thumbnail) {
-		return `images/${controller}/${thumbnail}`
+		return `/images/${controller}/${thumbnail}`
 	},
 	/**
 	 * Format thời gian
@@ -61,5 +59,14 @@ const Helpers = {
 			document.querySelector('.el-upload.el-upload--picture-card').style = 'display: block'
 		}
 	},
+	/**
+	 * Định dạng tiền tệ
+	 * @param {*} number
+	 */
+	_formatCurrency(number) {
+		if(number)
+			return new Intl.NumberFormat(foo.CURRENCY.VN.type, { style: 'currency', currency: foo.CURRENCY.VN.currency }).format(number)
+		return null
+	}
 }
 export default Helpers

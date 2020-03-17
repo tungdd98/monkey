@@ -31,4 +31,15 @@ Route::group([
     Route::post('/{id}', 'Api\CategoryController@update')->name('category.edit');
 });
 
+Route::group([
+    'prefix' => 'products'
+], function() {
+    Route::get('/', 'Api\ProductController@index')->name('product.index');
+    Route::get('/{id}', 'Api\ProductController@show')->name('product.show');
+    Route::patch('/{id}', 'Api\ProductController@update')->name('product.update');
+    Route::delete('/{id}', 'Api\ProductController@destroy')->name('product.delete');
+    Route::post('/', 'Api\ProductController@store')->name('product.store');
+    Route::post('/{id}', 'Api\ProductController@update')->name('product.edit');
+});
+
 

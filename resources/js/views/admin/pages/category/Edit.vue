@@ -83,14 +83,20 @@ const CONTROLLER = 'category'
 export default {
   data() {
     return {
+      // Editor
       editor: ClassicEditor,
       editorConfig: {},
+      // Dialog review image
       dialogImageUrl: "",
       dialogVisible: false,
+      // Config info form
       formTitle: 'Thêm mới',
       formLabelWidth: '120px',
+      // On/off dialog
       dialogFormVisible: false,
+      // Array option status
       selectStatus: foo.STATUS,
+      // Form
       rules: {
         title: foo.RULES.title,
         thumbnail: foo.RULES.thumbnail
@@ -103,7 +109,10 @@ export default {
         status: 1,
         thumbnail: '',
       },
+      fields: ['title', 'description', 'content', 'parent_id', 'thumbnail'],
+      // List image khi hiển thị update
       imagesList: [],
+      // List category khi hiển thị dialog
       selectList: [],
       isEdit: false
     }
@@ -116,8 +125,16 @@ export default {
       currItem: `${CONTROLLER}/getCurrItem`,
       user: 'auth/getUser'
     }),
+    /**
+     * Lược bỏ những phần tử có level thấp hơn
+     */
     filterSelectList() {
-      return this.selectList.filter(item => item.id !== this.currItem.id)
+      if(this.currItem) {
+        let idx = this.selectList.findIndex(item => item.id === this.currItem.id)
+        let current = this.selectList[idx]
+        return this.selectList.filter(item => item.id !== current.id && item.level <= current.level)
+      }
+      return this.selectList
     }
   },
   watch: {
@@ -129,7 +146,7 @@ export default {
 
         for(let i in newItem) {
           const item = newItem[i]
-          if(['title', 'description', 'content', 'status', 'thumbnail', 'parent_id'].includes(i)) {
+          if([...this.fields, 'status'].includes(i)) {
             this.form[i] = item
           }
         }
@@ -137,13 +154,17 @@ export default {
           name: newItem.thumbnail,
           url: this._getThumbnail(this.controller, newItem.thumbnail)
         })
+      }
+    },
+    dialogFormVisible(newItem, oldItem) {
+      if(newItem) {
         this.getMultiCategory().then(res => {
           if(res.flag) {
             this.selectList = res.data
           }
         })
-      }  
-    },
+      }
+    }
   },
   methods: {
     ...mapActions(CONTROLLER, ['createItem', 'updateItem', 'getMultiCategory']),
@@ -225,7 +246,7 @@ export default {
      * Reset form
      */
     handleResetForm() {
-      ['title', 'description', 'content', 'parent_id', 'thumbnail'].forEach(field => {
+      this.fields.forEach(field => {
         this.form[field] = ''
       })
       this.form.status = 1

@@ -189,7 +189,6 @@ const actions = {
 		try {
 			let result = await Axios.get(`${URL}/multi`)
 			if(result.status === 200) {
-				// commit('setSelectItem', result.data.data)
 				return {
 					flag: true,
 					data: result.data.data

@@ -1,6 +1,6 @@
 import List from './List'
 export default {
   name: 'category',
-  path: '/categories',
+  path: 'categories',
   component: List
 }
