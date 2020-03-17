@@ -36,12 +36,12 @@
           <router-link to="/admin/categories">Danh mục</router-link>
         </template>
       </el-menu-item>
-      <el-submenu index="4">
+      <el-menu-item index="4">
         <template slot="title">
           <i class="el-icon-s-goods"></i>
-          <router-link to="/products">Quản lý sản phẩm</router-link>
+          <router-link to="/admin/products">Quản lý sản phẩm</router-link>
         </template>
-      </el-submenu>
+      </el-menu-item>
       <el-submenu index="5">
         <template slot="title">
           <i class="el-icon-s-platform"></i>
