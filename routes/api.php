@@ -43,4 +43,14 @@ Route::group([
     Route::post('/{id}', 'Api\ProductController@update')->name('product.edit');
 });
 
+Route::group([
+    'prefix' => 'types'
+], function() {
+    Route::get('/', 'Api\TypeController@index')->name('slider.index');
+    Route::get('/{id}', 'Api\TypeController@show')->name('slider.show');
+    Route::patch('/{id}', 'Api\TypeController@update')->name('slider.update');
+    Route::delete('/{id}', 'Api\TypeController@destroy')->name('slider.delete');
+    Route::post('/', 'Api\TypeController@store')->name('slider.store');
+    Route::post('/{id}', 'Api\TypeController@update')->name('slider.edit');
+});
 

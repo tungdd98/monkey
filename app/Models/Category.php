@@ -23,6 +23,13 @@ class Category extends Model
     public function products() {
         return $this->belongstoMany('App\Models\Product');
     }
+
+    /**
+     * Quan hệ với bảng type (1 - nhiều)
+     */
+    public function type() {
+        return $this->belongsTo('App\Models\Type');
+    }
     /**
      * Lấy danh sách phần tử
      * 
