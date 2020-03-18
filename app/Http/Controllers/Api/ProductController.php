@@ -18,18 +18,19 @@ class ProductController extends Controller
     }
     /**
      * Hiển thị danh sách 
+     * 
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         $options = [
-            'pagination' => $request->pagination, 
-            'per_page' => $request->per_page,
-            'order_by' => $request->order_by,
-            'order_dir' => $request->order_dir
+            'pagination'    => $request->pagination, 
+            'per_page'      => $request->per_page,
+            'order_by'      => $request->order_by,
+            'order_dir'     => $request->order_dir
         ];
-        $items = $this->model->getListItems(null, $options);
+        $items = $this->model->getListItems($options);
         return response()->json(['data' => $items]);
     }
 
@@ -53,8 +54,7 @@ class ProductController extends Controller
      */
     public function show(Request $request)
     {
-        $params['id'] = $request->id;
-        $item = $this->model->getItemById($params);
+        $item = $this->model->getItemById($request);
         return response()->json(['data' => $item]);
     }
 
@@ -78,14 +78,13 @@ class ProductController extends Controller
      */
     public function destroy(Request $request)
     {
-        $params['id'] = $request->id;
         $item = Model::findOrFail($request->id);
         $images = json_decode($item->images);
         foreach($images as $key => $image) {
             $imgPath = "images/{$this->controller}/{$image}";
             unlink($imgPath);
         }
-        $this->model->deleteItem($params, ['task' => 'item']);
+        $this->model->deleteItem($request, ['task' => 'item']);
     }
     /**
      * Lấy danh mục của phần tử
