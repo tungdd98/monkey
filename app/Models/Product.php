@@ -52,9 +52,11 @@ class Product extends Model
      */
     public function saveItem($request, $options) {
         $params = $request->all();
+        // Update field status
         if($options['field'] == 'status') {
             self::where('id', $params['id'])->update(['status' => $params['status']]);
         }
+        // Lưu phần tử mới
         if($options['field'] == 'add-item') {
             $images = $request->images;
             $imageStr = [];
@@ -67,24 +69,48 @@ class Product extends Model
             }
             $params['thumbnail'] = $imageStr[0];
             $params['images'] = json_encode($imageStr);
-            $this->create($params);
+            // $this->create($params);
+            $product = new Product([
+                'title' => $params['title'],
+                'description'   => $params['description'],
+                'content'       => $params['content'],
+                'price'         => $params['price'],
+                'quantity'      => $params['quantity'],
+                'thumbnail'     => $params['thumbnail'],
+                'images'        => $params['images'],
+                'status'        => $params['status'],
+            ]);
+            $product->save();
+            foreach($request->categories as $key => $value) {
+                $product->categories()->attach($value);
+            }
+            return $product;
         }
+        // Update phần tử
         if($options['field'] == 'update-item') {
-            $imagesRemove = $request->imagesRemove;
-            if(count($imagesRemove) > 0) {
-                foreach($imagesRemove as $image) {
-                    $imgPath = "images/{$this->folderImg}/{$image}";
-                    unlink($imgPath);
+            if(!empty($request->imagesRemove)) {
+                $imagesRemove = $request->imagesRemove;
+                if(count($imagesRemove) > 0) {
+                    foreach($imagesRemove as $image) {
+                        $imgPath = "images/{$this->folderImg}/{$image}";
+                        unlink($imgPath);
+                    }
                 }
             }
-            $images = $request->images;
-            $imageStr = [];
-            if($request->hasFile('images')) {
-                foreach($images as $key => $image) {
-                    $imgName = time() . $key . $image->getClientOriginalName();
-                    $image->move("images/{$this->folderImg}", $imgName);
-                    $imageStr[] = $imgName;
+            if(!empty($request->images)) {
+                $images = $request->images;
+                $imageStr = [];
+                if($request->hasFile('images')) {
+                    foreach($images as $key => $image) {
+                        $imgName = time() . $key . $image->getClientOriginalName();
+                        $image->move("images/{$this->folderImg}", $imgName);
+                        $imageStr[] = $imgName;
+                    }
                 }
+                self::where('id', $params['id'])->update([
+                    'thumbnail'     => $imageStr[0],
+                    'images'        => json_encode($imageStr),
+                ]);
             }
             self::where('id', $params['id'])->update([
                 'title'         => $params['title'],
@@ -92,11 +118,22 @@ class Product extends Model
                 'content'       => $params['content'],
                 'price'         => $params['price'],
                 'quantity'      => $params['quantity'],
-                'thumbnail'     => $imageStr[0],
-                'images'        => json_encode($imageStr),
                 'status'        => $params['status'],
                 'updated_by'    => $params['updated_by']
             ]);
+            $product = self::find($params['id']);
+            if(!empty($request->categoriesRemove)) {
+                $categoriesRemove = $request->categoriesRemove;
+                foreach($categoriesRemove as $value) {
+                    $product->categories()->detach($value);
+                }
+            }
+            if(!empty($request->categoriesUpdate)) {
+                foreach($request->categoriesUpdate as $key => $value) {
+                    $product->categories()->attach($value);
+                }
+            }
+            return $product;
         }
     }
 
@@ -129,12 +166,7 @@ class Product extends Model
      * @return 
      */
     public function getCategoryOfItem($id, $fields) {
-        $result = null;
-        if(isset($fields)) {
-            $result = self::find($id)->categories()->select($fields)->get();
-        } else {
-            $result = self::find($id)->categories()->get();
-        }
+        $result = self::find($id)->categories()->select($fields)->get();
         return $result;
     }
 }

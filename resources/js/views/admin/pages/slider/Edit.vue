@@ -1,34 +1,34 @@
 <template>
   <div class="v-products-dialog">
     <div class="v-products-dialog__add">
-      <el-button type="primary" @click="dialogFormVisible = true">
+      <el-button type="primary" @click="dialog.formVisible = true">
         Thêm mới
         <i class="el-icon-document-add"></i>
       </el-button>
       <div class="v-products-dialog__form">
-        <el-dialog :title="formTitle" :visible.sync="dialogFormVisible" :show-close="false">
+        <el-dialog :title="display.formTitle" :visible.sync="dialog.formVisible" :show-close="false">
           <el-form :model="form" :rules="rules" :ref="controller">
             <el-row :gutter="20">
               <el-col :span="16">
-                <el-form-item label="Tiêu đề" :label-width="formLabelWidth" prop="title">
+                <el-form-item label="Tiêu đề" :label-width="display.formLabelWidth" prop="title">
                   <el-input v-model="form.title" autocomplete="off">
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
                   </el-input>
                 </el-form-item>
-                <el-form-item label="Link" :label-width="formLabelWidth" prop="link">
+                <el-form-item label="Link" :label-width="display.formLabelWidth" prop="link">
                   <el-input v-model="form.link" autocomplete="off">
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
                   </el-input>
                 </el-form-item>
-                <el-form-item label="Mô tả" :label-width="formLabelWidth" prop="description">
-                  <ckeditor :editor="editor" v-model="form.description" :config="editorConfig"></ckeditor>
+                <el-form-item label="Mô tả" :label-width="display.formLabelWidth" prop="description">
+                  <ckeditor :editor="editor.type" v-model="form.description" :config="editor.config"></ckeditor>
                 </el-form-item>
-                <el-form-item label="Nội dung" :label-width="formLabelWidth" prop="content">
-                  <ckeditor :editor="editor" v-model="form.content" :config="editorConfig"></ckeditor>
+                <el-form-item label="Nội dung" :label-width="display.formLabelWidth" prop="content">
+                  <ckeditor :editor="editor.type" v-model="form.content" :config="editor.config"></ckeditor>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="Trạng thái" :label-width="formLabelWidth" prop="status">
+                <el-form-item label="Trạng thái" :label-width="display.formLabelWidth" prop="status">
                   <el-select v-model="form.status" placeholder="--Chọn--">
                     <el-option
                       v-for="item in selectStatus"
@@ -38,7 +38,7 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="Hình ảnh" :label-width="formLabelWidth" prop="thumbnail">
+                <el-form-item label="Hình ảnh" :label-width="display.formLabelWidth" prop="thumbnail">
                   <el-upload
                     action="/"
                     ref="upload"
@@ -48,12 +48,12 @@
                     :limit="1"
                     :on-change="handleChangeUpload"
                     :file-list="imagesList"
-                    :on-remove="handleRomove"
+                    :on-remove="handleRemove"
                   >
                     <i class="el-icon-plus"></i>
                   </el-upload>
-                  <el-dialog :visible.sync="dialogVisible">
-                    <img width="100%" :src="dialogImageUrl" alt />
+                  <el-dialog :visible.sync="dialog.visible">
+                    <img width="100%" :src="dialog.imageUrl" alt />
                   </el-dialog>
                 </el-form-item>
               </el-col>
@@ -78,14 +78,20 @@ const CONTROLLER = 'slider'
 export default {
   data() {
     return {
-      editor: ClassicEditor,
-      editorConfig: {},
-      dialogImageUrl: "",
-      dialogVisible: false,
-      formTitle: 'Thêm mới',
-      formLabelWidth: '120px',
-      dialogFormVisible: false,
-      selectStatus: foo.STATUS,
+      isEdit: false,
+      editor: {
+        type: ClassicEditor,
+        config: {}
+      },
+      dialog: {
+        imageUrl: '',
+        visible: false,
+        formVisible: false
+      },
+      display: {
+        formTitle: 'Thêm mới',
+        formLabelWidth: '120px'
+      },
       rules: {
         title: foo.RULES.title,
         thumbnail: foo.RULES.thumbnail
@@ -95,12 +101,11 @@ export default {
         link: '',
         description: '',
         content: '',
-        status: 1,
         thumbnail: '',
+        status: 1,
       },
-      fields: ['title', 'description', 'content', 'link', 'thumbnail'],
+      selectStatus: foo.STATUS,
       imagesList: [],
-      isEdit: false
     }
   },
   props: {
@@ -113,21 +118,22 @@ export default {
     })
   },
   watch: {
-    currItem(newItem, oldItem) {
-      if(newItem) {
-        this.dialogFormVisible = true
+    currItem(val, oldVal) {
+      if(val) {
+        this.dialog.formVisible = true
         this.isEdit = true
-        this.formTitle = 'Cập nhật'
+        this.display.formTitle = 'Cập nhật'
 
-        for(let i in newItem) {
-          const item = newItem[i]
-          if([...this.fields, 'status'].includes(i)) {
-            this.form[i] = item
+        // Hiển thị thông tin item
+        Object.entries(val).forEach(([key, value]) => {
+          if(value && ['title', 'description', 'content', 'link', 'thumbnail', 'status'].includes(key)) {
+            this.form[key] = value
           }
-        }
+        })
+        // Hiển thị danh sách ảnh 
         this.imagesList.push({
-          name: newItem.thumbnail,
-          url: this._getThumbnail(this.controller, newItem.thumbnail)
+          name: val.thumbnail,
+          url: this._getThumbnail(this.controller, val.thumbnail)
         })
       }  
     },
@@ -138,8 +144,8 @@ export default {
      * Hiển thị dialog hình ảnh
      */
     handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
+      this.dialog.imageUrl = file.url
+      this.dialog.visible = true
     },
     /**
      * Upload hình ảnh (giới hạn 1 hình ảnh)
@@ -159,7 +165,7 @@ export default {
       this.imagesList = []
       this._limitDisplayImage(false)
       this.isEdit = false
-      this.dialogFormVisible = false
+      this.dialog.formVisible = false
     },
     /**
      * Submit form
@@ -168,10 +174,8 @@ export default {
       this.$refs[formName].validate(valid => {
         if(valid) {
           let data = new FormData()
-          for(let i in this.form) {
-            const field = this.form[i]
-            data.append(i, field)
-          }
+          Object.entries(this.form).forEach(([key, value]) => data.append(key, value))
+          
           if(!this.isEdit) {
             data.append('created_by', this.user.name)
             this.createItem(data).then(res => {
@@ -183,10 +187,10 @@ export default {
               }
             })
           } else {
-            data.append('updated_by', this.user.name)
-            data.append('id', this.currItem.id)
-            data.append('field', 'update-item')
-            data.append('currThumbnail', this.imagesList[0].name)
+            data.append('id',             this.currItem.id)
+            data.append('updated_by',     this.user.name)
+            data.append('currThumbnail',  this.imagesList[0].name)
+            data.append('field',          'update-item')
             this.updateItem(data).then(res => {
               if(res.flag) {
                 this.$fire(foo.NOTIFICATION.success.updated)
@@ -201,9 +205,9 @@ export default {
       })
     },
     /**
-     * Khi xoá bỏ hình ảnh
+     * Giới hạn upload hình ảnh khi xoá bỏ hình ảnh
      */
-    handleRomove(file) {
+    handleRemove(file) {
       this.form.thumbnail = ''
       this._limitDisplayImage(false)
     },
@@ -211,7 +215,7 @@ export default {
      * Reset form
      */
     handleResetForm() {
-      this.fields.forEach(field => {
+      ['title', 'description', 'content', 'link', 'thumbnail'].forEach(field => {
         this.form[field] = ''
       })
       this.form.status = 1

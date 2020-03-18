@@ -42,13 +42,7 @@ const actions = {
 		commit('setLoading', true, { root: true })
 		try {
 			let config = {
-				params: {
-					per_page,
-					page,
-					order_by,
-					order_dir,
-					pagination
-				}
+				params: { per_page, page, order_by, order_dir, pagination }
 			}
 			let result = await Axios.get(`${URL}`, config)
 			commit('setLoading', false, { root: true })
@@ -63,12 +57,7 @@ const actions = {
 						all: result.data.data.data,
 						total: result.data.data.total
 					})
-					commit('setPaginate', {
-						per_page,
-						order_by,
-						order_dir,
-						page
-					})
+					commit('setPaginate', { per_page, order_by, order_dir, page })
 				}
 				return { flag: true, data: result.data }
 			}
@@ -86,16 +75,11 @@ const actions = {
 			data.status = data.status === 1 ? 0 : 1
 			let result = await Axios.patch(`${URL}/${data.id}`, data)
 			if(result.status === 200) {
-				// dispatch('getList', {})
-				return {
-					flag: true
-				}
+				return { flag: true }
 			}
 		} catch (error) {
 			console.log(error)
-			return {
-				flag: false
-			}
+			return { flag: false }
 		}
 	},
 	/**
@@ -105,18 +89,12 @@ const actions = {
 		try {
 			let result = await Axios.delete(`${URL}/${data.id}`)
 			if(result.status === 200) {
-				return {
-					flag: true
-				}
+				return { flag: true }
 			}
-			return {
-				flag: false
-			}
+			return { flag: false }
 		} catch (error) {
 			console.log(error)
-			return {
-				flag: false
-			}
+			return { flag: false }
 		}
 	},
 	/**
@@ -127,18 +105,11 @@ const actions = {
 			let result = await Axios.post(`${URL}`, data)
 			if(result.status === 200) {
 				dispatch('getList', {})
-				return {
-					flag: true
-				}
+				return { flag: true }
 			}
-			return {
-				flag: false
-			}
+			return { flag: false }
 		} catch (error) {
-			return {
-				flag: false,
-				msg: error
-			}
+			return { flag: false, msg: error }
 		}
 	},
 	/**
@@ -151,19 +122,12 @@ const actions = {
 				if(setCurrItem) {
 					commit('setCurrItem', result.data.data)
 				}
-				return {
-					flag: true,
-					data: result.data.data
-				}
+				return { flag: true, data: result.data.data }
 			}
-			return {
-				flag: false
-			}
+			return { flag: false }
 		} catch (error) {
 			console.log(error)
-			return {
-				flag: false
-			}
+			return { flag: false }
 		}
 	},
 	/**
@@ -183,16 +147,13 @@ const actions = {
 		}
 	},
 	/**
-	 * Đệ quy
+	 * Đệ quy lấy danh mục 
 	 */
 	getMultiCategory: async ({ commit }) => {
 		try {
 			let result = await Axios.get(`${URL}/multi`)
 			if(result.status === 200) {
-				return {
-					flag: true,
-					data: result.data.data
-				}
+				return { flag: true, data: result.data.data }
 			}
 			return { flag: false }
 		} catch (error) {

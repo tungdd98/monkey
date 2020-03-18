@@ -15,8 +15,8 @@
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
                   </el-input>
                 </el-form-item>
-                <el-form-item label="Chọn danh mục" :label-width="formLabelWidth">
-                  <el-select v-model="form.categories" placeholder="--Chọn--" v-if="selectCategory" multiple collapse-tags>
+                <el-form-item label="Danh mục" :label-width="formLabelWidth" prop="category">
+                  <el-select v-model="categories" placeholder="--Chọn--" v-if="selectCategory" multiple collapse-tags>
                     <el-option
                       v-for="item in selectCategory"
                       :key="item.id"
@@ -107,6 +107,7 @@ export default {
       selectStatus: foo.STATUS,
       rules: {
         title: foo.RULES.title,
+        // category: foo.RULES.category
       },
       form: {
         title: '',
@@ -126,7 +127,9 @@ export default {
       imagesRemove: [],
       isEdit: false,
       selectCategory: [],
-      categories: []
+      categories: [],
+      categoriesRemove: [],
+      categoriesDefault: []
     }
   },
   computed: {
@@ -150,6 +153,9 @@ export default {
           const item = newItem[i]
           if([...this.fields, 'status', 'is_hot', 'is_bestseller'].includes(i)) {
             this.form[i] = item
+            if(!item) {
+              this.form[i] = ''
+            }
           }
         }
         let images = []
@@ -165,6 +171,10 @@ export default {
             })
           }
         }
+      }  
+    },
+    dialogFormVisible(newItem, oldItem) {
+      if(newItem) {
         // Lấy danh sách category
         this.$store.dispatch('category/getList', {
           pagination: false
@@ -173,11 +183,24 @@ export default {
             this.selectCategory = res.data.data
           }
         })
-      }  
-    },
+        if(!this.isEdit) {
+          this.categories = []
+        } else {
+          this.getCategoryById(this.currItem.id).then(res => {
+            if(res.flag) {
+              for(let i in res.data) {
+                const item = res.data[i]
+                this.categories.push(item.pivot.category_id)
+              }
+              this.categoriesDefault = this.categories
+            }
+          })
+        }
+      }
+    }
   },
   methods: {
-    ...mapActions(CONTROLLER, ['createItem', 'updateItem']),
+    ...mapActions(CONTROLLER, ['createItem', 'updateItem', 'getCategoryById']),
     /**
      * Hiển thị dialog hình ảnh
      */
@@ -203,6 +226,8 @@ export default {
       this.imagesRemove = []
       this.selectCategory = []
       this.categories = []
+      this.categoriesRemove = []
+      this.categoriesDefault = []
       this.isEdit = false
       this.images = []
       this.dialogFormVisible = false
@@ -218,12 +243,19 @@ export default {
             const field = this.form[i]
             data.append(i, field)
           }
+          // Gửi list ảnh
           for(let i in this.images) {
             const image = this.images[i]
             data.append(`images[${i}]`, image)
           }
+
           if(!this.isEdit) {
             data.append('created_by', this.user.name)
+            // Gửi list category
+            for(let i in this.categories) {
+              const category = this.categories[i]
+              data.append(`categories[${i}]`, category)
+            }
             this.createItem(data).then(res => {
               if(res.flag) {
                 this.$fire(foo.NOTIFICATION.success.created)
@@ -233,12 +265,31 @@ export default {
               }
             })
           } else {
+            let categoriesUpdate = this._deduplicate(this.categories, this.categoriesDefault)
+            let categoriesRemove = this._deduplicate(this.categoriesDefault, this.categories)
             data.append('updated_by', this.user.name)
             data.append('id', this.currItem.id)
             data.append('field', 'update-item')
-            for(let i in this.imagesRemove) {
-              const image = this.imagesRemove[i]
-              data.append(`imagesRemove[${i}]`, image)
+            // Gửi list ảnh muốn xoá
+            if(this.imagesRemove.length > 0) {
+              for(let i in this.imagesRemove) {
+                const image = this.imagesRemove[i]
+                data.append(`imagesRemove[${i}]`, image)
+              }
+            }
+            // Gửi list category muốn xoá
+            if(categoriesRemove.length > 0) {
+              for(let i in categoriesRemove) {
+                const category = categoriesRemove[i]
+                data.append(`categoriesRemove[${i}]`, category)
+              }
+            }
+            // Gửi list category muốn cập nhật
+            if(categoriesUpdate.length > 0) {
+              for(let i in categoriesUpdate) {
+                const category = categoriesUpdate[i]
+                data.append(`categoriesUpdate[${i}]`, category)
+              }
             }
             this.updateItem(data).then(res => {
               if(res.flag) {
@@ -274,7 +325,7 @@ export default {
       if(this.isEdit) {
         this.imagesRemove.push(file.name)
       }
-    }
+    },
   }
 };
 </script>

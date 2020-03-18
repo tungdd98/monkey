@@ -26,12 +26,12 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $options = [
-            'pagination' => $request->pagination, 
-            'per_page' => $request->per_page,
-            'order_by' => $request->order_by,
-            'order_dir' => $request->order_dir
+            'pagination'    => $request->pagination, 
+            'per_page'      => $request->per_page,
+            'order_by'      => $request->order_by,
+            'order_dir'     => $request->order_dir
         ];
-        $items = $this->model->getListItems(null, $options);
+        $items = $this->model->getListItems($options);
         return response()->json(['data' => $items]);
     }
 
@@ -54,8 +54,7 @@ class CategoryController extends Controller
      */
     public function show(Request $request)
     {
-        $params['id'] = $request->id;
-        $item = $this->model->getItemById($params, null);
+        $item = $this->model->getItemById($request, null);
         return response()->json(['data' => $item]);
     }
 
@@ -78,10 +77,8 @@ class CategoryController extends Controller
      */
     public function destroy(Request $request)
     {
-        $params['id'] = $request->id;
         $item = Model::findOrFail($request->id);
         $imgPath = "images/{$this->controller}/{$item->thumbnail}";
-        $msg = '';
         unlink($imgPath);
         $this->model->deleteItem($params, ['task' => 'item']);
     }
@@ -94,6 +91,14 @@ class CategoryController extends Controller
         return response()->json(['data' => $items]);
     }
 
+    /**
+     * Hàm đệ quy lấy category
+     * 
+     * @param $categories
+     * @param $parent_id
+     * @param $level
+     * @return $categories
+     */
     public function unique($categories = null, $parent_id = 0, $level = 0) {
         foreach($categories as $key => $item) {
             if($item['parent_id'] == $parent_id) {

@@ -41,7 +41,8 @@ class ProductController extends Controller
      */
     public function store(MainRequest $request)
     {
-        $this->model->saveItem($request, ['field' => 'add-item']);
+        $item = $this->model->saveItem($request, ['field' => 'add-item']);
+        return response()->json(['item' => $item]);
     }
 
     /**
@@ -65,7 +66,8 @@ class ProductController extends Controller
      */
     public function update(Request $request)
     {
-        $this->model->saveItem($request, ['field' => $request->field]);
+        $item = $this->model->saveItem($request, ['field' => $request->field]);
+        return response()->json(['item' => $item]);
     }
 
     /**
@@ -92,7 +94,7 @@ class ProductController extends Controller
      * @return response
      */
     public function getCategoryOfItem(Request $request) {
-        $categories = $this->getCategoryOfItem($request->id, ['id', 'title']);
+        $categories = $this->model->getCategoryOfItem($request->id, ['title']);
         return response()->json(['data' => $categories]);
     }
 }
