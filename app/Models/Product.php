@@ -31,7 +31,7 @@ class Product extends Model
      * @param $options: tên task
      * @return array
      */
-    public function getListItems($params = null, $options = null) {
+    public function getListItems($options = null) {
         $result = null;
         if($options['pagination'] == 'false') {
             $result = self::select($this->columns)->orderBy($options['order_by'], $options['order_dir'])->get();
@@ -52,24 +52,23 @@ class Product extends Model
      */
     public function saveItem($request, $options) {
         $params = $request->all();
-        // Update field status
+        // Update status
         if($options['field'] == 'status') {
             self::where('id', $params['id'])->update(['status' => $params['status']]);
         }
         // Lưu phần tử mới
         if($options['field'] == 'add-item') {
             $images = $request->images;
-            $imageStr = [];
+            $imagesStr = [];
             if($request->hasFile('images')) {
                 foreach($images as $key => $image) {
                     $imgName = time() . $key . $image->getClientOriginalName();
                     $image->move("images/{$this->folderImg}", $imgName);
-                    $imageStr[] = $imgName;
+                    $imagesStr[] = $imgName;
                 }
             }
-            $params['thumbnail'] = $imageStr[0];
-            $params['images'] = json_encode($imageStr);
-            // $this->create($params);
+            $params['thumbnail'] = $imagesStr[0];
+            $params['images'] = json_encode($imagesStr);
             $product = new Product([
                 'title' => $params['title'],
                 'description'   => $params['description'],
@@ -79,6 +78,7 @@ class Product extends Model
                 'thumbnail'     => $params['thumbnail'],
                 'images'        => $params['images'],
                 'status'        => $params['status'],
+                'created_by'    => $params['created_by']
             ]);
             $product->save();
             foreach($request->categories as $key => $value) {
@@ -123,8 +123,7 @@ class Product extends Model
             ]);
             $product = self::find($params['id']);
             if(!empty($request->categoriesRemove)) {
-                $categoriesRemove = $request->categoriesRemove;
-                foreach($categoriesRemove as $value) {
+                foreach($request->categoriesRemove as $key => $value) {
                     $product->categories()->detach($value);
                 }
             }
@@ -144,9 +143,9 @@ class Product extends Model
      * @param $options: tên task
      * @return void
      */
-    public function deleteItem($params, $options) {
+    public function deleteItem($request, $options) {
         if($options['task'] == 'item') {
-            self::where('id', $params['id'])->delete();
+            self::where('id', $request->id)->delete();
         }
     }
 
@@ -156,12 +155,13 @@ class Product extends Model
      * @param $params: thông tin requests
      * @return void
      */
-    public function getItemById($params) {
-        return self::select($this->columns)->where('id', $params['id'])->first();
+    public function getItemById($request) {
+        return self::select($this->columns)->where('id', $request->id)->first();
     }
     
     /**
      * Lấy danh mục của sản phẩm
+     * 
      * @param $id, $fields
      * @return 
      */

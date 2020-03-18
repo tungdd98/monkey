@@ -1,21 +1,21 @@
 <template>
   <div class="v-products-dialog">
     <div class="v-products-dialog__add">
-      <el-button type="primary" @click="dialogFormVisible = true">
+      <el-button type="primary" @click="dialog.formVisible = true">
         Thêm mới
         <i class="el-icon-document-add"></i>
       </el-button>
       <div class="v-products-dialog__form">
-        <el-dialog :title="formTitle" :visible.sync="dialogFormVisible" :show-close="false">
+        <el-dialog :title="display.formTitle" :visible.sync="dialog.formVisible" :show-close="false">
           <el-form :model="form" :rules="rules" :ref="controller">
             <el-row :gutter="20">
               <el-col :span="16">
-                <el-form-item label="Tiêu đề" :label-width="formLabelWidth" prop="title">
+                <el-form-item label="Tiêu đề" :label-width="display.formLabelWidth" prop="title">
                   <el-input v-model="form.title" autocomplete="off">
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
                   </el-input>
                 </el-form-item>
-                <el-form-item label="Danh mục" :label-width="formLabelWidth" prop="category">
+                <el-form-item label="Danh mục" :label-width="display.formLabelWidth" prop="category">
                   <el-select v-model="categories" placeholder="--Chọn--" v-if="selectCategory" multiple collapse-tags>
                     <el-option
                       v-for="item in selectCategory"
@@ -25,7 +25,7 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="Hình ảnh" :label-width="formLabelWidth">
+                <el-form-item label="Hình ảnh" :label-width="display.formLabelWidth">
                   <el-upload
                     action="/"
                     ref="upload"
@@ -38,19 +38,19 @@
                   >
                     <i class="el-icon-plus"></i>
                   </el-upload>
-                  <el-dialog :visible.sync="dialogVisible">
-                    <img width="100%" :src="dialogImageUrl" alt />
+                  <el-dialog :visible.sync="dialog.visible">
+                    <img width="100%" :src="dialog.imageUrl" alt />
                   </el-dialog>
                 </el-form-item>
-                <el-form-item label="Mô tả" :label-width="formLabelWidth" prop="description">
-                  <ckeditor :editor="editor" v-model="form.description" :config="editorConfig"></ckeditor>
+                <el-form-item label="Mô tả" :label-width="display.formLabelWidth" prop="description">
+                  <ckeditor :editor="editor.type" v-model="form.description" :config="editor.config"></ckeditor>
                 </el-form-item>
-                <el-form-item label="Nội dung" :label-width="formLabelWidth" prop="content">
-                  <ckeditor :editor="editor" v-model="form.content" :config="editorConfig"></ckeditor>
+                <el-form-item label="Nội dung" :label-width="display.formLabelWidth" prop="content">
+                  <ckeditor :editor="editor.type" v-model="form.content" :config="editor.config"></ckeditor>
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="Trạng thái" :label-width="formLabelWidth" prop="status">
+                <el-form-item label="Trạng thái" :label-width="display.formLabelWidth" prop="status">
                   <el-select v-model="form.status" placeholder="--Chọn--">
                     <el-option
                       v-for="item in selectStatus"
@@ -60,17 +60,17 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="Đơn giá" :label-width="formLabelWidth" prop="price">
+                <el-form-item label="Đơn giá" :label-width="display.formLabelWidth" prop="price">
                   <el-input v-model.number="form.price" autocomplete="off">
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
                   </el-input>
                 </el-form-item>
-                <el-form-item label="Số lượng" :label-width="formLabelWidth">
+                <el-form-item label="Số lượng" :label-width="display.formLabelWidth">
                   <el-input v-model.number="form.quantity" autocomplete="off">
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
                   </el-input>
                 </el-form-item>
-                <el-form-item label="Giảm giá" :label-width="formLabelWidth">
+                <el-form-item label="Giảm giá" :label-width="display.formLabelWidth">
                   <el-input v-model.number="form.sale_up" autocomplete="off">
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
                   </el-input>
@@ -97,13 +97,20 @@ const CONTROLLER = 'product'
 export default {
   data() {
     return {
-      editor: ClassicEditor,
-      editorConfig: {},
-      dialogImageUrl: "",
-      dialogVisible: false,
-      formTitle: 'Thêm mới',
-      formLabelWidth: '120px',
-      dialogFormVisible: false,
+      isEdit: false,
+      editor: {
+        type: ClassicEditor,
+        config: {}
+      },
+      dialog: {
+        imageUrl: '',
+        visible: false,
+        formVisible: false
+      },
+      display: {
+        formTitle: 'Thêm mới',
+        formLabelWidth: '120px'
+      },
       selectStatus: foo.STATUS,
       rules: {
         title: foo.RULES.title,
@@ -113,22 +120,20 @@ export default {
         title: '',
         description: '',
         content: '',
+        thumbnail: '',
         quantity: 1,
         price: 0,
         sale_up: 0,
         is_hot: 0,
         is_bestseller: 0,
         status: 1,
-        thumbnail: '',
       },
       fields: ['title', 'description', 'content', 'thumbnail'],
       imagesList: [],
       images: [],
       imagesRemove: [],
-      isEdit: false,
       selectCategory: [],
       categories: [],
-      categoriesRemove: [],
       categoriesDefault: []
     }
   },
@@ -142,56 +147,35 @@ export default {
     controller: { type: String, default: '' }
   },
   watch: {
-    currItem(newItem, oldItem) {
-      if(newItem) {
-        // Thay đổi trạng thái lúc update
-        this.dialogFormVisible = true
+    currItem(val, oldVal) {
+      if(val) {
+        this.dialog.formVisible = true
         this.isEdit = true
-        this.formTitle = 'Cập nhật'
-        // Đổ dữ liệu lấy được
-        for(let i in newItem) {
-          const item = newItem[i]
-          if([...this.fields, 'status', 'is_hot', 'is_bestseller'].includes(i)) {
-            this.form[i] = item
-            if(!item) {
-              this.form[i] = ''
-            }
-          }
-        }
-        let images = []
-        if(newItem.images) {
-          images = JSON.parse(newItem.images)
-        }
-        if(images) {
-          for(let i in images) {
-            const image = images[i]
-            this.imagesList.push({
-              name: image,
-              url: this._getThumbnail(this.controller, image)
-            })
-          }
-        }
-      }  
-    },
-    dialogFormVisible(newItem, oldItem) {
-      if(newItem) {
-        // Lấy danh sách category
-        this.$store.dispatch('category/getList', {
-          pagination: false
-        }).then(res => {
-          if(res.flag) {
-            this.selectCategory = res.data.data
+        this.display.formTitle = 'Cập nhật'
+        
+        // Hiển thị thông tin item
+        Object.entries(val).forEach(([key, value]) => {
+          if(value && ['title', 'description', 'content', 'thumbnail', 'quantity', 'price', 'sale_up', 'is_hot', 'is_bestseller', 'status'].includes(key)) {
+            this.form[key] = value
           }
         })
+        // Hiển thị danh sách ảnh
+        JSON.parse(val.images).forEach(image => {
+          this.imagesList.push({
+            name: image,
+            url: this._getThumbnail(this.controller, image)
+          })
+        })
+      }  
+    },
+    'dialog.formVisible': function(val, oldVal) {
+      if(val) {
         if(!this.isEdit) {
           this.categories = []
         } else {
           this.getCategoryById(this.currItem.id).then(res => {
             if(res.flag) {
-              for(let i in res.data) {
-                const item = res.data[i]
-                this.categories.push(item.pivot.category_id)
-              }
+              res.data.forEach(item => this.categories.push(item.pivot.category_id))
               this.categoriesDefault = this.categories
             }
           })
@@ -199,14 +183,24 @@ export default {
       }
     }
   },
+  created() {
+    // Lấy danh sách category
+    this.$store.dispatch('category/getList', {
+      pagination: false
+    }).then(res => {
+      if(res.flag) {
+        this.selectCategory = res.data.data
+      }
+    })
+  },
   methods: {
     ...mapActions(CONTROLLER, ['createItem', 'updateItem', 'getCategoryById']),
     /**
      * Hiển thị dialog hình ảnh
      */
     handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
+      this.dialog.imageUrl = file.url
+      this.dialog.visible = true
     },
     /**
      * Upload hình ảnh 
@@ -222,15 +216,13 @@ export default {
       this.handleResetForm()
       this.$refs[formName].clearValidate()
       this.$refs.upload.clearFiles()
+      this.images = []
       this.imagesList = []
       this.imagesRemove = []
-      this.selectCategory = []
       this.categories = []
-      this.categoriesRemove = []
       this.categoriesDefault = []
       this.isEdit = false
-      this.images = []
-      this.dialogFormVisible = false
+      this.dialog.formVisible = false
     },
     /**
      * Submit form
@@ -239,23 +231,12 @@ export default {
       this.$refs[formName].validate(valid => {
         if(valid) {
           let data = new FormData()
-          for(let i in this.form) {
-            const field = this.form[i]
-            data.append(i, field)
-          }
-          // Gửi list ảnh
-          for(let i in this.images) {
-            const image = this.images[i]
-            data.append(`images[${i}]`, image)
-          }
+          Object.entries(this.form).forEach(([key, value]) => data.append(key, value))
+          this.images.forEach((value, key) => data.append(`images[${key}]`, value))
 
           if(!this.isEdit) {
             data.append('created_by', this.user.name)
-            // Gửi list category
-            for(let i in this.categories) {
-              const category = this.categories[i]
-              data.append(`categories[${i}]`, category)
-            }
+            this.categories.forEach((value, key) => data.append(`categories[${key}]`, value))
             this.createItem(data).then(res => {
               if(res.flag) {
                 this.$fire(foo.NOTIFICATION.success.created)
@@ -267,30 +248,12 @@ export default {
           } else {
             let categoriesUpdate = this._deduplicate(this.categories, this.categoriesDefault)
             let categoriesRemove = this._deduplicate(this.categoriesDefault, this.categories)
-            data.append('updated_by', this.user.name)
             data.append('id', this.currItem.id)
+            data.append('updated_by', this.user.name)
             data.append('field', 'update-item')
-            // Gửi list ảnh muốn xoá
-            if(this.imagesRemove.length > 0) {
-              for(let i in this.imagesRemove) {
-                const image = this.imagesRemove[i]
-                data.append(`imagesRemove[${i}]`, image)
-              }
-            }
-            // Gửi list category muốn xoá
-            if(categoriesRemove.length > 0) {
-              for(let i in categoriesRemove) {
-                const category = categoriesRemove[i]
-                data.append(`categoriesRemove[${i}]`, category)
-              }
-            }
-            // Gửi list category muốn cập nhật
-            if(categoriesUpdate.length > 0) {
-              for(let i in categoriesUpdate) {
-                const category = categoriesUpdate[i]
-                data.append(`categoriesUpdate[${i}]`, category)
-              }
-            }
+            this.imagesRemove.forEach((value, key) => data.append(`imagesRemove[${key}]`, value))
+            categoriesRemove.forEach((value, key) => data.append(`categoriesRemove[${key}]`, value))
+            categoriesUpdate.forEach((value, key) => data.append(`categoriesUpdate[${key}]`, value))
             this.updateItem(data).then(res => {
               if(res.flag) {
                 this.$fire(foo.NOTIFICATION.success.updated)
@@ -308,15 +271,15 @@ export default {
      * Reset form
      */
     handleResetForm() {
-      this.fields.forEach(field => {
+      ['title', 'description', 'content', 'thumbnail'].forEach(field => {
         this.form[field] = ''
       })
-      this.form.status = 1
-      this.form.is_hot = 0
-      this.form.is_bestseller = 0
-      this.sale_up = 0
-      this.price = 0
-      this.quantity = 1
+      this.form.status          = 1
+      this.form.is_hot          = 0
+      this.form.is_bestseller   = 0
+      this.form.sale_up         = 0
+      this.form.price           = 0
+      this.form.quantity        = 1
     },
     /**
      * Xoá ảnh để update
