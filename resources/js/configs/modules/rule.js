@@ -12,6 +12,9 @@ const rules = {
   ],
   thumbnail: [
     { required: true, message: 'Vui lòng tải lên hình ảnh', trigger: 'blur' },
+  ],
+  category: [
+    { required: true, message: 'Vui lòng chọn danh mục', trigger: 'blur' },
   ]
 }
 export default rules

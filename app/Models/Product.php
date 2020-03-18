@@ -80,14 +80,15 @@ class Product extends Model
                 'images'        => $params['images'],
                 'status'        => $params['status'],
             ]);
-            foreach($request->categories as $key => $category) {
-                $product->categories()->attach(Category::find($category));
-            }
             $product->save();
+            foreach($request->categories as $key => $value) {
+                $product->categories()->attach($value);
+            }
+            return $product;
         }
         // Update phần tử
         if($options['field'] == 'update-item') {
-            if(isset($request->imagesRemove)) {
+            if(!empty($request->imagesRemove)) {
                 $imagesRemove = $request->imagesRemove;
                 if(count($imagesRemove) > 0) {
                     foreach($imagesRemove as $image) {
@@ -96,14 +97,20 @@ class Product extends Model
                     }
                 }
             }
-            $images = $request->images;
-            $imageStr = [];
-            if($request->hasFile('images')) {
-                foreach($images as $key => $image) {
-                    $imgName = time() . $key . $image->getClientOriginalName();
-                    $image->move("images/{$this->folderImg}", $imgName);
-                    $imageStr[] = $imgName;
+            if(!empty($request->images)) {
+                $images = $request->images;
+                $imageStr = [];
+                if($request->hasFile('images')) {
+                    foreach($images as $key => $image) {
+                        $imgName = time() . $key . $image->getClientOriginalName();
+                        $image->move("images/{$this->folderImg}", $imgName);
+                        $imageStr[] = $imgName;
+                    }
                 }
+                self::where('id', $params['id'])->update([
+                    'thumbnail'     => $imageStr[0],
+                    'images'        => json_encode($imageStr),
+                ]);
             }
             self::where('id', $params['id'])->update([
                 'title'         => $params['title'],
@@ -111,12 +118,22 @@ class Product extends Model
                 'content'       => $params['content'],
                 'price'         => $params['price'],
                 'quantity'      => $params['quantity'],
-                'thumbnail'     => $imageStr[0],
-                'images'        => json_encode($imageStr),
                 'status'        => $params['status'],
                 'updated_by'    => $params['updated_by']
             ]);
-            $product = self::find($params['id'])->categories()->attach($params['categories']);
+            $product = self::find($params['id']);
+            if(!empty($request->categoriesRemove)) {
+                $categoriesRemove = $request->categoriesRemove;
+                foreach($categoriesRemove as $value) {
+                    $product->categories()->detach($value);
+                }
+            }
+            if(!empty($request->categoriesUpdate)) {
+                foreach($request->categoriesUpdate as $key => $value) {
+                    $product->categories()->attach($value);
+                }
+            }
+            return $product;
         }
     }
 

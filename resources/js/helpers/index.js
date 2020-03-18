@@ -67,6 +67,13 @@ const Helpers = {
 		if(number)
 			return new Intl.NumberFormat(foo.CURRENCY.VN.type, { style: 'currency', currency: foo.CURRENCY.VN.currency }).format(number)
 		return null
+	},
+	/**
+	 * Loại bỏ phần tử lặp trong mảng
+	 * @param {*} arr
+	 */
+	_deduplicate(arrStart, arrFilter) {
+		return arrStart.filter(value => arrFilter.indexOf(value) === -1)
 	}
 }
 export default Helpers
