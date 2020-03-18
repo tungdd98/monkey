@@ -30,7 +30,7 @@ class Category extends Model
      * @param $options: tên task
      * @return array
      */
-    public function getListItems($params = null, $options = null) {
+    public function getListItems($options = null) {
         $result = null;
         if($options['pagination'] == 'false') {
             $result = self::select($this->columns)->orderBy($options['order_by'], $options['order_dir'])->get();
@@ -51,9 +51,11 @@ class Category extends Model
      */
     public function saveItem($request, $options) {
         $params = $request->all();
+        // Update status
         if($options['field'] == 'status') {
             self::where('id', $params['id'])->update(['status' => $params['status']]);
         }
+        // Thêm phần tử mới
         if($options['field'] == 'add-item') {
             if($request->hasFile('thumbnail')) {
                 $imgName = time() . $params['thumbnail']->getClientOriginalName();
@@ -62,6 +64,7 @@ class Category extends Model
             }
             $this->create($params);
         }
+        // Update phần tử
         if($options['field'] == 'update-item') {
             if($request->hasFile('thumbnail')) {
                 $imgPath = "images/{$this->folderImg}/{$params['currThumbnail']}";
@@ -89,9 +92,9 @@ class Category extends Model
      * @param $options: tên task
      * @return void
      */
-    public function deleteItem($params, $options) {
+    public function deleteItem($request, $options) {
         if($options['task'] == 'item') {
-            self::where('id', $params['id'])->delete();
+            self::where('id', $request->id)->delete();
         }
     }
 
@@ -101,10 +104,10 @@ class Category extends Model
      * @param $params: thông tin requests
      * @return void
      */
-    public function getItemById($params, $options = null) {
+    public function getItemById($request, $options = null) {
         if(isset($options['columns'])) {
-            return self::select($options['columns'])->where('id', $params['id'])->first();
+            return self::select($options['columns'])->where('id', $request->id)->first();
         }
-        return self::select($this->columns)->where('id', $params['id'])->first();
+        return self::select($this->columns)->where('id', $request->id)->first();
     }
 }

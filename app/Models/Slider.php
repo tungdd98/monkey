@@ -20,11 +20,10 @@ class Slider extends Model
     /**
      * Lấy danh sách phần tử
      * 
-     * @param $params: thông tin requests
-     * @param $options: tên task
+     * @param $options: tham số truyền vào
      * @return array
      */
-    public function getListItems($params = null, $options = null) {
+    public function getListItems($options = null) {
         $result = null;
         if($options['pagination'] == 'false') {
             $result = self::select($this->columns)->orderBy($options['order_by'], $options['order_dir'])->get();
@@ -45,9 +44,11 @@ class Slider extends Model
      */
     public function saveItem($request, $options) {
         $params = $request->all();
+        // Update status
         if($options['field'] == 'status') {
             self::where('id', $params['id'])->update(['status' => $params['status']]);
         }
+        // Thêm phần tử mới
         if($options['field'] == 'add-item') {
             if($request->hasFile('thumbnail')) {
                 $imgName = time() . $params['thumbnail']->getClientOriginalName();
@@ -56,6 +57,7 @@ class Slider extends Model
             }
             $this->create($params);
         }
+        // Update phần tử
         if($options['field'] == 'update-item') {
             if($request->hasFile('thumbnail')) {
                 $imgPath = "images/{$this->folderImg}/{$params['currThumbnail']}";
@@ -79,23 +81,23 @@ class Slider extends Model
     /**
      * Xoá phần tử
      * 
-     * @param $params: thông tin requests
-     * @param $options: tên task
+     * @param $params
+     * @param $options
      * @return void
      */
-    public function deleteItem($params, $options) {
+    public function deleteItem($request, $options) {
         if($options['task'] == 'item') {
-            self::where('id', $params['id'])->delete();
+            self::where('id', $request->id)->delete();
         }
     }
 
     /**
      * Lấy phần tử theo id
      * 
-     * @param $params: thông tin requests
+     * @param $requests
      * @return void
      */
-    public function getItemById($params) {
-        return self::select($this->columns)->where('id', $params['id'])->first();
+    public function getItemById($request) {
+        return self::select($this->columns)->where('id', $request->id)->first();
     }
 }
