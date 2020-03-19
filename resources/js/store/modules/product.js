@@ -157,6 +157,21 @@ const actions = {
 			console.log(error)
 			return { flag: false }
 		}
+	},
+	/**
+	 * Lấy danh mục sản phẩm theo id
+	 */
+	getTypeById: async ({ commit }, id) => {
+		try {
+			let result = await Axios.get(`${URL}/type/${id}`)
+			if(result.status === 200) {
+				return { flag: true, data: result.data.data }
+			}
+			return { flag: false }
+		} catch (error) {
+			console.log(error)
+			return { flag: false }
+		}
 	}
 }
 

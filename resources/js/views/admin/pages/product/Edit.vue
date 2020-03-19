@@ -75,6 +75,16 @@
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
                   </el-input>
                 </el-form-item>
+                <el-form-item label="Loại sản phẩm" :label-width="display.formLabelWidth">
+                  <el-select v-model="types" placeholder="--Chọn--" v-if="selectType" multiple collapse-tags>
+                    <el-option
+                      v-for="item in selectType"
+                      :key="item.id"
+                      :value="item.id"
+                      :label="item.title"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
               </el-col>
             </el-row>
           </el-form>
@@ -134,7 +144,10 @@ export default {
       imagesRemove: [],
       selectCategory: [],
       categories: [],
-      categoriesDefault: []
+      categoriesDefault: [],
+      selectType: [],
+      types: [],
+      typesDefault: []
     }
   },
   computed: {
@@ -172,11 +185,18 @@ export default {
       if(val) {
         if(!this.isEdit) {
           this.categories = []
+          this.types      = []
         } else {
           this.getCategoryById(this.currItem.id).then(res => {
             if(res.flag) {
               res.data.forEach(item => this.categories.push(item.pivot.category_id))
               this.categoriesDefault = this.categories
+            }
+          })
+          this.getTypeById(this.currItem.id).then(res => {
+            if(res.flag) {
+              res.data.forEach(item => this.types.push(item.pivot.type_id))
+              this.typesDefault = this.types
             }
           })
         }
@@ -192,9 +212,17 @@ export default {
         this.selectCategory = res.data.data
       }
     })
+    // Lấy danh sách loại sản phẩm
+    this.$store.dispatch('type/getList', {
+      pagination: false
+    }).then(res => {
+      if(res.flag) {
+        this.selectType = res.data.data
+      }
+    })
   },
   methods: {
-    ...mapActions(CONTROLLER, ['createItem', 'updateItem', 'getCategoryById']),
+    ...mapActions(CONTROLLER, ['createItem', 'updateItem', 'getCategoryById', 'getTypeById']),
     /**
      * Hiển thị dialog hình ảnh
      */
@@ -221,6 +249,8 @@ export default {
       this.imagesRemove = []
       this.categories = []
       this.categoriesDefault = []
+      this.types = []
+      this.typesDefault = []
       this.isEdit = false
       this.dialog.formVisible = false
     },
@@ -237,6 +267,7 @@ export default {
           if(!this.isEdit) {
             data.append('created_by', this.user.name)
             this.categories.forEach((value, key) => data.append(`categories[${key}]`, value))
+            this.types.forEach((value, key) => data.append(`types[${key}]`, value))
             this.createItem(data).then(res => {
               if(res.flag) {
                 this.$fire(foo.NOTIFICATION.success.created)
@@ -248,12 +279,19 @@ export default {
           } else {
             let categoriesUpdate = this._deduplicate(this.categories, this.categoriesDefault)
             let categoriesRemove = this._deduplicate(this.categoriesDefault, this.categories)
+
+            let typesUpdate = this._deduplicate(this.types, this.typesDefault)
+            let typesRemove = this._deduplicate(this.typesDefault, this.types)
+
             data.append('id', this.currItem.id)
             data.append('updated_by', this.user.name)
             data.append('field', 'update-item')
             this.imagesRemove.forEach((value, key) => data.append(`imagesRemove[${key}]`, value))
             categoriesRemove.forEach((value, key) => data.append(`categoriesRemove[${key}]`, value))
             categoriesUpdate.forEach((value, key) => data.append(`categoriesUpdate[${key}]`, value))
+
+            typesRemove.forEach((value, key) => data.append(`typesRemove[${key}]`, value))
+            typesUpdate.forEach((value, key) => data.append(`typesUpdate[${key}]`, value))
             this.updateItem(data).then(res => {
               if(res.flag) {
                 this.$fire(foo.NOTIFICATION.success.updated)

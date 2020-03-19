@@ -27,8 +27,8 @@ class Category extends Model
     /**
      * Quan hệ với bảng type (1 - nhiều)
      */
-    public function type() {
-        return $this->belongsTo('App\Models\Type');
+    public function category_type() {
+        return $this->belongsTo('App\Models\Type', 'type_id', 'id');
     }
     /**
      * Lấy danh sách phần tử

@@ -7,6 +7,7 @@ import auth from './modules/auth'
 import slider from './modules/slider'
 import category from './modules/category'
 import product from './modules/product'
+import category_type from './modules/category_type'
 import type from './modules/type'
 
 const store = new Vuex.Store({
@@ -26,6 +27,7 @@ const store = new Vuex.Store({
     slider,
     category,
     product,
+    category_type,
     type
   }
 })

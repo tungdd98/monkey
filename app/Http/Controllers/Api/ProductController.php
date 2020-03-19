@@ -86,6 +86,7 @@ class ProductController extends Controller
         }
         $this->model->deleteItem($request, ['task' => 'item']);
     }
+
     /**
      * Lấy danh mục của phần tử
      * 
@@ -94,6 +95,17 @@ class ProductController extends Controller
      */
     public function getCategoryOfItem(Request $request) {
         $categories = $this->model->getCategoryOfItem($request->id, ['title']);
+        return response()->json(['data' => $categories]);
+    }
+
+    /**
+     * Lấy loại sản phẩm của phần tử
+     * 
+     * @param 
+     * @return response
+     */
+    public function getTypeOfItem(Request $request) {
+        $categories = $this->model->getTypeOfItem($request->id, ['title']);
         return response()->json(['data' => $categories]);
     }
 }

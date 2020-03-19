@@ -182,7 +182,7 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('type/getList', { pagination: false }).then(res => {
+    this.$store.dispatch('category_type/getList', { pagination: false }).then(res => {
       if(res.flag) {
         this.selectType = res.data.data
       }

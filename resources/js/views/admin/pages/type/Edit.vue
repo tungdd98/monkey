@@ -9,7 +9,7 @@
         <el-dialog :title="display.formTitle" :visible.sync="dialog.formVisible" :show-close="false">
           <el-form :model="form" :rules="rules" :ref="controller">
             <el-row :gutter="20">
-              <el-col :span="24">
+              <el-col :span="16">
                 <el-form-item label="Tiêu đề" :label-width="display.formLabelWidth" prop="title">
                   <el-input v-model="form.title" autocomplete="off">
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
@@ -19,6 +19,18 @@
                   <el-input v-model="form.note" autocomplete="off">
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
                   </el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="Trạng thái" :label-width="display.formLabelWidth" prop="status">
+                  <el-select v-model="form.status" placeholder="--Chọn--">
+                    <el-option
+                      v-for="item in selectStatus"
+                      :key="item.title"
+                      :value="item.value"
+                      :label="item.title"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -56,7 +68,9 @@ export default {
       form: {
         title: '',
         note: '',
+        status: 1
       },
+      selectStatus: foo.STATUS,
     }
   },
   props: {

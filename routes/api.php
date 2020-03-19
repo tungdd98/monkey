@@ -36,11 +36,23 @@ Route::group([
 ], function() {
     Route::get('/', 'Api\ProductController@index')->name('product.index');
     Route::get('/category/{id}', 'Api\ProductController@getCategoryOfItem')->name('product.category');
+    Route::get('/type/{id}', 'Api\ProductController@getTypeOfItem')->name('product.type');
     Route::get('/{id}', 'Api\ProductController@show')->name('product.show');
     Route::patch('/{id}', 'Api\ProductController@update')->name('product.update');
     Route::delete('/{id}', 'Api\ProductController@destroy')->name('product.delete');
     Route::post('/', 'Api\ProductController@store')->name('product.store');
     Route::post('/{id}', 'Api\ProductController@update')->name('product.edit');
+});
+
+Route::group([
+    'prefix' => 'category_types'
+], function() {
+    Route::get('/', 'Api\CategoryTypeController@index')->name('slider.index');
+    Route::get('/{id}', 'Api\CategoryTypeController@show')->name('slider.show');
+    Route::patch('/{id}', 'Api\CategoryTypeController@update')->name('slider.update');
+    Route::delete('/{id}', 'Api\CategoryTypeController@destroy')->name('slider.delete');
+    Route::post('/', 'Api\CategoryTypeController@store')->name('slider.store');
+    Route::post('/{id}', 'Api\CategoryTypeController@update')->name('slider.edit');
 });
 
 Route::group([

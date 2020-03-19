@@ -13,14 +13,14 @@ class Type extends Model
      * $folderImg: đường dẫn chứa ảnh
      */
     protected $table = 'types';
-    protected $fillable = ['title', 'note', 'created_by', 'created_at', 'updated_by', 'updated_at'];
-    protected $columns = ['id', 'title', 'note', 'created_by', 'created_at', 'updated_by', 'updated_at'];
+    protected $fillable = ['title', 'note', 'created_at', 'updated_at', 'status'];
+    protected $columns = ['id', 'title', 'note', 'created_at', 'updated_at', 'status'];
 
     /**
-     * Quan hệ với bảng category (1 - nhiều)
+     * Quan hệ với bảng sản phẩm (nhiều - nhiều)
      */
-    public function categories() {
-        return $this->hasMany('App\Models\Category');
+    public function products() {
+        return $this->belongstoMany('App\Models\Product');
     }
 
     /**
@@ -63,6 +63,7 @@ class Type extends Model
             self::where('id', $params['id'])->update([
                 'title' => $params['title'],
                 'note'  => $params['note'],
+                'status'=> $params['status']
             ]);
         }
     }

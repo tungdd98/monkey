@@ -25,6 +25,13 @@ class Product extends Model
     }
 
     /**
+     * Quan hệ với bảng loại sản phẩm(nhiều - nhiều)
+     */
+    public function types() {
+        return $this->belongsToMany('App\Models\Type');
+    }
+
+    /**
      * Lấy danh sách phần tử
      * 
      * @param $params: thông tin requests
@@ -84,6 +91,11 @@ class Product extends Model
             foreach($request->categories as $key => $value) {
                 $product->categories()->attach($value);
             }
+            if(!empty($request->types)) {
+                foreach($request->types as $key => $value) {
+                    $product->types()->attach($value);
+                }
+            }
             return $product;
         }
         // Update phần tử
@@ -132,6 +144,17 @@ class Product extends Model
                     $product->categories()->attach($value);
                 }
             }
+
+            if(!empty($request->typesRemove)) {
+                foreach($request->typesRemove as $key => $value) {
+                    $product->types()->detach($value);
+                }
+            }
+            if(!empty($request->typesUpdate)) {
+                foreach($request->typesUpdate as $key => $value) {
+                    $product->types()->attach($value);
+                }
+            }
             return $product;
         }
     }
@@ -167,6 +190,17 @@ class Product extends Model
      */
     public function getCategoryOfItem($id, $fields) {
         $result = self::find($id)->categories()->select($fields)->get();
+        return $result;
+    }
+
+    /**
+     * Lấy loại sản phẩm
+     * 
+     * @param $id, $fields
+     * @return 
+     */
+    public function getTypeOfItem($id, $fields) {
+        $result = self::find($id)->types()->select($fields)->get();
         return $result;
     }
 }

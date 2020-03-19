@@ -12,6 +12,11 @@
       <el-table v-loading="isLoading" :data="items" v-if="items">
         <el-table-column type="index" width="50" align="center"></el-table-column>
         <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column width="50">
+          <template slot-scope="scope">
+            <status :item="scope.row" :controller="controller"></status>
+          </template>
+        </el-table-column>
         <el-table-column label="Tiêu đề">
           <template slot-scope="scope">
             <div class="v-h2">{{ _notag(scope.row.title) }}</div>
