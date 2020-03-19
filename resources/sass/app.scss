@@ -20,13 +20,13 @@ a {
 button, input {
   font-family: inherit !important;
 }
-.el-main::-webkit-scrollbar {
+.el-main::-webkit-scrollbar, .v-aside::-webkit-scrollbar {
   width: 6px;
 }
-.el-main::-webkit-scrollbar-track {
+.el-main::-webkit-scrollbar-track, .v-aside::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
-.el-main::-webkit-scrollbar-thumb {
+.el-main::-webkit-scrollbar-thumb, .v-aside::-webkit-scrollbar-thumb {
   background-color: darkgrey;
   outline: 1px solid slategrey;
 }
@@ -60,7 +60,7 @@ button, input {
     color: #fff;
     transition: 0.2s ease;
   }
-  li:hover a {
+  a:hover {
     color: $blue;
   }
 }
@@ -198,4 +198,7 @@ button, input {
 }
 .v-h2 {
   font-weight: 600;
+}
+.active-link {
+  color: $blue !important; 
 }
