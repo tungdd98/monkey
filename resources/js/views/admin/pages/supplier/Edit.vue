@@ -115,7 +115,7 @@ export default {
 
         // Hiển thị thông tin item
         Object.entries(val).forEach(([key, value]) => {
-          if(value && ['title', 'note'].includes(key)) {
+          if(value && ['title', 'description', 'content', 'address', 'phone', 'gmail', 'status'].includes(key)) {
             this.form[key] = value
           }
         })
@@ -174,7 +174,7 @@ export default {
      * Reset form
      */
     handleResetForm() {
-      ['title', 'note'].forEach(field => {
+      ['title', 'description', 'content', 'address', 'phone', 'gmail'].forEach(field => {
         this.form[field] = ''
       })
     }

@@ -16,6 +16,10 @@ class Unit extends Model
     protected $fillable = ['title', 'note', 'created_by', 'updated_by', 'created_at', 'updated_at', 'status'];
     protected $columns = ['id', 'title', 'note', 'created_by', 'updated_by', 'created_at', 'updated_at', 'status'];
 
+    public function products() {
+        return $this->hasMany('App\Models\Product');
+    }
+
     /**
      * Lấy danh sách phần tử
      * 

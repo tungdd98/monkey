@@ -12,10 +12,14 @@ class Supplier extends Model
      * $columns: các field được lựa chọn lấy thông tin
      * $folderImg: đường dẫn chứa ảnh
      */
-    protected $table = 'supplier';
-    protected $fillable = ['title', 'description', 'content', 'address', 'phone', 'gmail', 'created_at', 'updated_at', 'status'];
-    protected $columns = ['id', 'title', 'description', 'content', 'address', 'phone', 'gmail', 'created_at', 'updated_at', 'status'];
+    protected $table = 'suppliers';
+    protected $fillable = ['title', 'description', 'content', 'address', 'phone', 'gmail', 'created_at', 'updated_at', 'created_by', 'updated_by', 'status'];
+    protected $columns = ['id', 'title', 'description', 'content', 'address', 'phone', 'gmail', 'created_by', 'updated_by', 'created_at', 'updated_at', 'status'];
 
+    public function products() {
+        return $this->hasMany('App\Models\Product');
+    }
+    
     /**
      * Lấy danh sách phần tử
      * 
@@ -61,7 +65,7 @@ class Supplier extends Model
                 'phone'         => $params['phone'],
                 'gmail'         => $params['gmail'],
                 'status'        => $params['status'],
-                'update_by'     => $params['updated_by']
+                'updated_by'     => $params['updated_by']
             ]);
         }
     }

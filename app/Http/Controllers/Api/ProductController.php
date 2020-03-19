@@ -105,7 +105,29 @@ class ProductController extends Controller
      * @return response
      */
     public function getTypeOfItem(Request $request) {
-        $categories = $this->model->getTypeOfItem($request->id, ['title']);
-        return response()->json(['data' => $categories]);
+        $types = $this->model->getTypeOfItem($request->id, ['title']);
+        return response()->json(['data' => $types]);
+    }
+
+    /**
+     * Lấy đơn vị tính
+     * 
+     * @param 
+     * @return response
+     */
+    public function getUnitOfItem(Request $request) {
+        $units = $this->model->getUnitOfItem($request->id, ['id', 'title']);
+        return response()->json(['data' => $units]);
+    }
+
+    /**
+     * Lấy nhà sản xuất
+     * 
+     * @param 
+     * @return response
+     */
+    public function getSupplierOfItem(Request $request) {
+        $suppliers = $this->model->getSupplierOfItem($request->id, ['id', 'title']);
+        return response()->json(['data' => $suppliers]);
     }
 }

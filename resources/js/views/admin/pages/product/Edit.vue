@@ -86,7 +86,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="Đơn vị tính" :label-width="display.formLabelWidth">
-                  <el-select v-model="unit.value" placeholder="--Chọn--" v-if="type.select" collapse-tags>
+                  <el-select v-model="form.unit_id" placeholder="--Chọn--" v-if="type.select" collapse-tags>
                     <el-option
                       v-for="item in unit.select"
                       :key="item.id"
@@ -96,7 +96,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="Nhà sản xuất" :label-width="display.formLabelWidth">
-                  <el-select v-model="supplier.value" placeholder="--Chọn--" v-if="supplier.select" collapse-tags>
+                  <el-select v-model="form.supplier_id" placeholder="--Chọn--" v-if="supplier.select" collapse-tags>
                     <el-option
                       v-for="item in supplier.select"
                       :key="item.id"
@@ -151,6 +151,8 @@ export default {
         description: '',
         content: '',
         thumbnail: '',
+        unit_id: '',
+        supplier_id: '',
         price: 0,
         sale_up: 0,
         quantity: 1,
@@ -171,11 +173,9 @@ export default {
       },
       unit: {
         select: [],
-        value: ''
       },
       supplier: {
         select: [],
-        value: ''
       }
     }
   },
@@ -216,17 +216,17 @@ export default {
           this.category.list = []
           this.type.list     = []
         } else {
-          this.getCategoryById(this.currItem.id).then(res => {
-            if(res.flag) {
-              res.data.forEach(item => this.category.list.push(item.pivot.category_id))
-              this.category.default = this.category.list
-            }
-          })
-          this.getTypeById(this.currItem.id).then(res => {
-            if(res.flag) {
-              res.data.forEach(item => this.type.list.push(item.pivot.type_id))
-              this.type.default = this.type.list
-            }
+          ['category', 'type', 'unit', 'supplier'].forEach(value => {
+            this.getPropertyById({ id: this.currItem.id, property: value }).then(res => {
+              if(res.flag) {
+                if(['category', 'type'].includes(value)) {
+                  res.data.forEach(item => this[value].list.push(item.pivot[`${value}_id`]))
+                  this[value].default = this[value].list
+                } else {
+                  res.data.forEach(item => this.form[`${value}_id`] = item.id)
+                }
+              }
+            })
           })
         }
       }
@@ -249,9 +249,25 @@ export default {
         this.type.select = res.data.data
       }
     })
+    // Lấy danh sách đơn vị tính
+    this.$store.dispatch('unit/getList', {
+      pagination: false
+    }).then(res => {
+      if(res.flag) {
+        this.unit.select = res.data.data
+      }
+    })
+    // Lấy danh sách nhà sản xuất
+    this.$store.dispatch('supplier/getList', {
+      pagination: false
+    }).then(res => {
+      if(res.flag) {
+        this.supplier.select = res.data.data
+      }
+    })
   },
   methods: {
-    ...mapActions(CONTROLLER, ['createItem', 'updateItem', 'getCategoryById', 'getTypeById']),
+    ...mapActions(CONTROLLER, ['createItem', 'updateItem', 'getPropertyById']),
     /**
      * Hiển thị dialog hình ảnh
      */

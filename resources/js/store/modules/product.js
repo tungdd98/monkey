@@ -144,26 +144,11 @@ const actions = {
 		}
 	},
 	/**
-	 * Lấy danh mục sản phẩm theo id
+	 * Lấy thuộc tính sản phẩm
 	 */
-	getCategoryById: async ({ commit }, id) => {
+	getPropertyById: async ({ commit }, { id, property }) => {
 		try {
-			let result = await Axios.get(`${URL}/category/${id}`)
-			if(result.status === 200) {
-				return { flag: true, data: result.data.data }
-			}
-			return { flag: false }
-		} catch (error) {
-			console.log(error)
-			return { flag: false }
-		}
-	},
-	/**
-	 * Lấy danh mục sản phẩm theo id
-	 */
-	getTypeById: async ({ commit }, id) => {
-		try {
-			let result = await Axios.get(`${URL}/type/${id}`)
+			let result = await Axios.get(`${URL}/${property}/${id}`)
 			if(result.status === 200) {
 				return { flag: true, data: result.data.data }
 			}

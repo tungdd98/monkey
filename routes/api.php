@@ -37,6 +37,8 @@ Route::group([
     Route::get('/', 'Api\ProductController@index')->name('product.index');
     Route::get('/category/{id}', 'Api\ProductController@getCategoryOfItem')->name('product.category');
     Route::get('/type/{id}', 'Api\ProductController@getTypeOfItem')->name('product.type');
+    Route::get('/unit/{id}', 'Api\ProductController@getUnitOfItem')->name('product.unit');
+    Route::get('/supplier/{id}', 'Api\ProductController@getSupplierOfItem')->name('product.supplier');
     Route::get('/{id}', 'Api\ProductController@show')->name('product.show');
     Route::patch('/{id}', 'Api\ProductController@update')->name('product.update');
     Route::delete('/{id}', 'Api\ProductController@destroy')->name('product.delete');
@@ -80,10 +82,10 @@ Route::group([
 Route::group([
     'prefix' => 'suppliers'
 ], function() {
-    Route::get('/', 'Api\Supplier@index')->name('supplier.index');
-    Route::get('/{id}', 'Api\Supplier@show')->name('supplier.show');
-    Route::patch('/{id}', 'Api\Supplier@update')->name('supplier.update');
-    Route::delete('/{id}', 'Api\Supplier@destroy')->name('supplier.delete');
-    Route::post('/', 'Api\Supplier@store')->name('supplier.store');
-    Route::post('/{id}', 'Api\Supplier@update')->name('supplier.edit');
+    Route::get('/', 'Api\SupplierController@index')->name('supplier.index');
+    Route::get('/{id}', 'Api\SupplierController@show')->name('supplier.show');
+    Route::patch('/{id}', 'Api\SupplierController@update')->name('supplier.update');
+    Route::delete('/{id}', 'Api\SupplierController@destroy')->name('supplier.delete');
+    Route::post('/', 'Api\SupplierController@store')->name('supplier.store');
+    Route::post('/{id}', 'Api\SupplierController@update')->name('supplier.edit');
 });

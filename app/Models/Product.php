@@ -31,6 +31,13 @@ class Product extends Model
         return $this->belongsToMany('App\Models\Type');
     }
 
+    public function units() {
+        return $this->belongsTo('App\Models\Unit', 'unit_id', 'id');
+    }
+
+    public function suppliers() {
+        return $this->belongsTo('App\Models\Supplier', 'supplier_id', 'id');
+    }
     /**
      * Lấy danh sách phần tử
      * 
@@ -209,6 +216,28 @@ class Product extends Model
      */
     public function getTypeOfItem($id, $fields) {
         $result = self::find($id)->types()->select($fields)->get();
+        return $result;
+    }
+
+    /**
+     * Lấy đơn vị
+     * 
+     * @param $id, $fields
+     * @return 
+     */
+    public function getUnitOfItem($id, $fields) {
+        $result = self::find($id)->units()->select($fields)->get();
+        return $result;
+    }
+
+    /**
+     * Lấy nhà sản xuất
+     * 
+     * @param $id, $fields
+     * @return 
+     */
+    public function getSupplierOfItem($id, $fields) {
+        $result = self::find($id)->suppliers()->select($fields)->get();
         return $result;
     }
 }
