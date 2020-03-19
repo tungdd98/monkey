@@ -7,8 +7,10 @@ import auth from './modules/auth'
 import slider from './modules/slider'
 import category from './modules/category'
 import product from './modules/product'
-import category_type from './modules/category_type'
 import type from './modules/type'
+import unit from './modules/unit'
+import supplier from './modules/supplier'
+import article from './modules/article'
 
 const store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
@@ -27,8 +29,10 @@ const store = new Vuex.Store({
     slider,
     category,
     product,
-    category_type,
-    type
+    type,
+    article,
+    unit,
+    supplier
   }
 })
 store.subscribe((mutations) => {

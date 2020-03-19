@@ -70,7 +70,7 @@
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
                   </el-input>
                 </el-form-item>
-                <el-form-item label="Giảm giá" :label-width="display.formLabelWidth">
+                <el-form-item label="Giảm giá (%)" :label-width="display.formLabelWidth">
                   <el-input v-model.number="form.sale_up" autocomplete="off">
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
                   </el-input>

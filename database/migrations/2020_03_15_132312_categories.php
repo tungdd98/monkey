@@ -16,7 +16,6 @@ class Categories extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('type_id')->unsigned()->default(0);
-            $table->foreign('type_id')->references('id')->on('category_types')->onDelete('cascade');
             $table->integer('parent_id')->unsigned()->nullable();
             $table->string('title')->nullable();
             $table->string('description')->nullable();

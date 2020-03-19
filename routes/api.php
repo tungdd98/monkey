@@ -45,24 +45,45 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'category_types'
+    'prefix' => 'types'
 ], function() {
-    Route::get('/', 'Api\CategoryTypeController@index')->name('slider.index');
-    Route::get('/{id}', 'Api\CategoryTypeController@show')->name('slider.show');
-    Route::patch('/{id}', 'Api\CategoryTypeController@update')->name('slider.update');
-    Route::delete('/{id}', 'Api\CategoryTypeController@destroy')->name('slider.delete');
-    Route::post('/', 'Api\CategoryTypeController@store')->name('slider.store');
-    Route::post('/{id}', 'Api\CategoryTypeController@update')->name('slider.edit');
+    Route::get('/', 'Api\TypeController@index')->name('type.index');
+    Route::get('/{id}', 'Api\TypeController@show')->name('type.show');
+    Route::patch('/{id}', 'Api\TypeController@update')->name('type.update');
+    Route::delete('/{id}', 'Api\TypeController@destroy')->name('type.delete');
+    Route::post('/', 'Api\TypeController@store')->name('type.store');
+    Route::post('/{id}', 'Api\TypeController@update')->name('type.edit');
 });
 
 Route::group([
-    'prefix' => 'types'
+    'prefix' => 'articles'
 ], function() {
-    Route::get('/', 'Api\TypeController@index')->name('slider.index');
-    Route::get('/{id}', 'Api\TypeController@show')->name('slider.show');
-    Route::patch('/{id}', 'Api\TypeController@update')->name('slider.update');
-    Route::delete('/{id}', 'Api\TypeController@destroy')->name('slider.delete');
-    Route::post('/', 'Api\TypeController@store')->name('slider.store');
-    Route::post('/{id}', 'Api\TypeController@update')->name('slider.edit');
+    Route::get('/', 'Api\ArticleController@index')->name('article.index');
+    Route::get('/{id}', 'Api\ArticleController@show')->name('article.show');
+    Route::patch('/{id}', 'Api\ArticleController@update')->name('article.update');
+    Route::delete('/{id}', 'Api\ArticleController@destroy')->name('article.delete');
+    Route::post('/', 'Api\ArticleController@store')->name('article.store');
+    Route::post('/{id}', 'Api\ArticleController@update')->name('article.edit');
 });
 
+Route::group([
+    'prefix' => 'units'
+], function() {
+    Route::get('/', 'Api\UnitController@index')->name('unit.index');
+    Route::get('/{id}', 'Api\UnitController@show')->name('unit.show');
+    Route::patch('/{id}', 'Api\UnitController@update')->name('unit.update');
+    Route::delete('/{id}', 'Api\UnitController@destroy')->name('unit.delete');
+    Route::post('/', 'Api\UnitController@store')->name('unit.store');
+    Route::post('/{id}', 'Api\UnitController@update')->name('unit.edit');
+});
+
+Route::group([
+    'prefix' => 'suppliers'
+], function() {
+    Route::get('/', 'Api\Supplier@index')->name('supplier.index');
+    Route::get('/{id}', 'Api\Supplier@show')->name('supplier.show');
+    Route::patch('/{id}', 'Api\Supplier@update')->name('supplier.update');
+    Route::delete('/{id}', 'Api\Supplier@destroy')->name('supplier.delete');
+    Route::post('/', 'Api\Supplier@store')->name('supplier.store');
+    Route::post('/{id}', 'Api\Supplier@update')->name('supplier.edit');
+});

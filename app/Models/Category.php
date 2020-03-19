@@ -13,8 +13,8 @@ class Category extends Model
      * $folderImg: đường dẫn chứa ảnh
      */
     protected $table = 'categories';
-    protected $fillable = ['title', 'type_id', 'parent_id', 'description', 'content', 'thumbnail', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at'];
-    protected $columns = ['id', 'title', 'type_id', 'description', 'content', 'thumbnail', 'parent_id', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at'];
+    protected $fillable = ['title', 'parent_id', 'description', 'content', 'thumbnail', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at'];
+    protected $columns = ['id', 'title', 'description', 'content', 'thumbnail', 'parent_id', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at'];
     protected $folderImg = 'category';
 
     /**
@@ -24,12 +24,6 @@ class Category extends Model
         return $this->belongstoMany('App\Models\Product');
     }
 
-    /**
-     * Quan hệ với bảng type (1 - nhiều)
-     */
-    public function category_type() {
-        return $this->belongsTo('App\Models\Type', 'type_id', 'id');
-    }
     /**
      * Lấy danh sách phần tử
      * 
@@ -88,7 +82,6 @@ class Category extends Model
                 'thumbnail'     => $params['thumbnail'],
                 'status'        => $params['status'],
                 'updated_by'    => $params['updated_by'],
-                'type_id'       => $params['type_id']
             ]);
         }
     }

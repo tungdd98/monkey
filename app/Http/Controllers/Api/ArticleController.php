@@ -3,84 +3,81 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Article;
+use App\Models\Article as Model;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\ArticleRequest as MainRequest;
 class ArticleController extends Controller
 {
+    private $model;
+    private $controller = 'article';
+    
+    public function __construct() {
+        $this->middleware(['auth:api']);
+        $this->model = new Model();    
+    }
     /**
-     * Display a listing of the resource.
-     *
+     * Hiển thị danh sách 
+     * 
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $options = [
+            'pagination'    => $request->pagination, 
+            'per_page'      => $request->per_page,
+            'order_by'      => $request->order_by,
+            'order_dir'     => $request->order_dir
+        ];
+        $items = $this->model->getListItems($options);
+        return response()->json(['data' => $items]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Lưu phần tử 
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MainRequest $request)
     {
-        //
+        $this->model->saveItem($request, ['field' => 'add-item']);
     }
 
     /**
-     * Display the specified resource.
+     * Lấy thông tin phần tử
      *
-     * @param  \App\Models\Article  $article
+     * @param  $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Article $article)
+    public function show(Request $request)
     {
-        //
+        $item = $this->model->getItemById($request);
+        return response()->json(['data' => $item]);
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Article  $article
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Article $article)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Cập nhật phần tử
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Article $article)
+    public function update(Request $request)
     {
-        //
+        $this->model->saveItem($request, ['field' => $request->field]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Xoá phần tử và ảnh trong storage
      *
-     * @param  \App\Models\Article  $article
+     * @param  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Article $article)
+    public function destroy(Request $request)
     {
-        //
+        $item = Model::findOrFail($request->id);
+        $imgPath = "images/{$this->controller}/{$item->thumbnail}";
+        unlink($imgPath);
+        $this->model->deleteItem($request, ['task' => 'item']);
     }
 }

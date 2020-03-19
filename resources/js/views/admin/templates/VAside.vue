@@ -37,10 +37,10 @@
         </template>
         <el-menu-item-group>
           <el-menu-item index="3-1">
-            <router-link to="/admin/category_types" active-class="active-link">Loại danh mục</router-link>
+            <router-link to="/admin/categories" active-class="active-link">Sản phẩm</router-link>
           </el-menu-item>
           <el-menu-item index="3-2">
-            <router-link to="/admin/categories" active-class="active-link">Danh sách danh mục</router-link>
+            Tin tức
           </el-menu-item>
         </el-menu-item-group>
       </el-submenu>
@@ -56,12 +56,18 @@
           <el-menu-item index="4-2">
             <router-link to="/admin/products" active-class="active-link">Danh sách sản phẩm</router-link>
           </el-menu-item>
+          <el-menu-item index="4-3">
+            <router-link to="/admin/units" active-class="active-link">Đơn vị tính</router-link>
+          </el-menu-item>
+          <el-menu-item index="4-4">
+            <router-link to="/admin/suppliers" active-class="active-link">Nhà cung cấp</router-link>
+          </el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-menu-item index="5">
         <template slot="title">
           <i class="el-icon-s-platform"></i>
-          <router-link to="/">Quản lý bài viết</router-link>
+          <router-link to="/admin/articles">Quản lý bài viết</router-link>
         </template>
       </el-menu-item>
       <el-submenu index="6">
