@@ -35,7 +35,7 @@ class CategoryRequest extends FormRequest
         return [
             'title' => 'bail|required|max:255',
             'status' => 'bail|in:0,1',
-            'thumbnail' => $rulesThumbnail
+            // 'thumbnail' => $rulesThumbnail
         ];
     }
     /**

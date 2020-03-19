@@ -13,8 +13,8 @@ class Product extends Model
      * $folderImg: đường dẫn chứa ảnh
      */
     protected $table = 'products';
-    protected $fillable = ['title', 'description', 'content', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at', 'price', 'sale_up', 'quantity', 'is_hot', 'is_bestseller', 'thumbnail', 'images'];
-    protected $columns = ['id', 'title', 'description', 'content', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at', 'price', 'sale_up', 'quantity', 'is_hot', 'is_bestseller', 'thumbnail', 'images'];
+    protected $fillable = ['title', 'code', 'description', 'content', 'thumbnail', 'images', 'price', 'sale_up', 'quantity', 'status', 'unit_id', 'supplier_id', 'created_by', 'updated_by'];
+    protected $columns = ['id', 'title', 'code', 'description', 'content', 'thumbnail', 'images', 'price', 'sale_up', 'quantity', 'status', 'unit_id', 'supplier_id', 'created_by', 'updated_by'];
     protected $folderImg = 'product';
 
     /**
@@ -24,6 +24,20 @@ class Product extends Model
         return $this->belongsToMany('App\Models\Category');
     }
 
+    /**
+     * Quan hệ với bảng loại sản phẩm(nhiều - nhiều)
+     */
+    public function types() {
+        return $this->belongsToMany('App\Models\Type');
+    }
+
+    public function units() {
+        return $this->belongsTo('App\Models\Unit', 'unit_id', 'id');
+    }
+
+    public function suppliers() {
+        return $this->belongsTo('App\Models\Supplier', 'supplier_id', 'id');
+    }
     /**
      * Lấy danh sách phần tử
      * 
@@ -70,19 +84,28 @@ class Product extends Model
             $params['thumbnail'] = $imagesStr[0];
             $params['images'] = json_encode($imagesStr);
             $product = new Product([
-                'title' => $params['title'],
+                'title'         => $params['title'],
+                'code'          => $params['code'],
                 'description'   => $params['description'],
                 'content'       => $params['content'],
-                'price'         => $params['price'],
-                'quantity'      => $params['quantity'],
                 'thumbnail'     => $params['thumbnail'],
                 'images'        => $params['images'],
+                'price'         => $params['price'],
+                'sale_up'       => $params['sale_up'],
+                'quantity'      => $params['quantity'],
                 'status'        => $params['status'],
+                'unit_id'       => $params['unit_id'],
+                'supplier_id'   => $params['supplier_id'],
                 'created_by'    => $params['created_by']
             ]);
             $product->save();
             foreach($request->categories as $key => $value) {
                 $product->categories()->attach($value);
+            }
+            if(!empty($request->types)) {
+                foreach($request->types as $key => $value) {
+                    $product->types()->attach($value);
+                }
             }
             return $product;
         }
@@ -114,11 +137,15 @@ class Product extends Model
             }
             self::where('id', $params['id'])->update([
                 'title'         => $params['title'],
+                'code'          => $params['code'],
                 'description'   => $params['description'],
                 'content'       => $params['content'],
                 'price'         => $params['price'],
+                'sale_up'       => $params['sale_up'],
                 'quantity'      => $params['quantity'],
                 'status'        => $params['status'],
+                'unit_id'       => $params['unit_id'],
+                'supplier_id'   => $params['supplier_id'],
                 'updated_by'    => $params['updated_by']
             ]);
             $product = self::find($params['id']);
@@ -130,6 +157,17 @@ class Product extends Model
             if(!empty($request->categoriesUpdate)) {
                 foreach($request->categoriesUpdate as $key => $value) {
                     $product->categories()->attach($value);
+                }
+            }
+
+            if(!empty($request->typesRemove)) {
+                foreach($request->typesRemove as $key => $value) {
+                    $product->types()->detach($value);
+                }
+            }
+            if(!empty($request->typesUpdate)) {
+                foreach($request->typesUpdate as $key => $value) {
+                    $product->types()->attach($value);
                 }
             }
             return $product;
@@ -167,6 +205,39 @@ class Product extends Model
      */
     public function getCategoryOfItem($id, $fields) {
         $result = self::find($id)->categories()->select($fields)->get();
+        return $result;
+    }
+
+    /**
+     * Lấy loại sản phẩm
+     * 
+     * @param $id, $fields
+     * @return 
+     */
+    public function getTypeOfItem($id, $fields) {
+        $result = self::find($id)->types()->select($fields)->get();
+        return $result;
+    }
+
+    /**
+     * Lấy đơn vị
+     * 
+     * @param $id, $fields
+     * @return 
+     */
+    public function getUnitOfItem($id, $fields) {
+        $result = self::find($id)->units()->select($fields)->get();
+        return $result;
+    }
+
+    /**
+     * Lấy nhà sản xuất
+     * 
+     * @param $id, $fields
+     * @return 
+     */
+    public function getSupplierOfItem($id, $fields) {
+        $result = self::find($id)->suppliers()->select($fields)->get();
         return $result;
     }
 }

@@ -23,6 +23,7 @@ class Category extends Model
     public function products() {
         return $this->belongstoMany('App\Models\Product');
     }
+
     /**
      * Lấy danh sách phần tử
      * 
@@ -80,7 +81,7 @@ class Category extends Model
                 'parent_id'     => $params['parent_id'],
                 'thumbnail'     => $params['thumbnail'],
                 'status'        => $params['status'],
-                'updated_by'    => $params['updated_by']
+                'updated_by'    => $params['updated_by'],
             ]);
         }
     }
@@ -104,10 +105,10 @@ class Category extends Model
      * @param $params: thông tin requests
      * @return void
      */
-    public function getItemById($request, $options = null) {
+    public function getItemById($params, $options = null) {
         if(isset($options['columns'])) {
-            return self::select($options['columns'])->where('id', $request->id)->first();
+            return self::select($options['columns'])->where('id', $params['id'])->first();
         }
-        return self::select($this->columns)->where('id', $request->id)->first();
+        return self::select($this->columns)->where('id', $params['id'])->first();
     }
 }

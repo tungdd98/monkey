@@ -10,6 +10,10 @@ import dashboard from '@/views/admin/pages/dashboard/router'
 import slider from '@/views/admin/pages/slider/router'
 import category from '@/views/admin/pages/category/router'
 import product from '@/views/admin/pages/product/router'
+import type from '@/views/admin/pages/type/router'
+import unit from '@/views/admin/pages/unit/router'
+import supplier from '@/views/admin/pages/supplier/router'
+import article from '@/views/admin/pages/article/router'
 import Login from '@/views/Login'
 import Register from '@/views/Register'
 
@@ -27,7 +31,11 @@ const routes = [
       dashboard,
       slider,
       category,
-      product
+      product,
+      type,
+      unit,
+      supplier,
+      article,
     ],
     meta: { requiresAuth: true }
   },

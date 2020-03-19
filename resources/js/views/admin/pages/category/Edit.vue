@@ -100,7 +100,7 @@ export default {
       selectStatus: foo.STATUS,
       rules: {
         title: foo.RULES.title,
-        thumbnail: foo.RULES.thumbnail
+        // thumbnail: foo.RULES.thumbnail,
       },
       form: {
         title: '',

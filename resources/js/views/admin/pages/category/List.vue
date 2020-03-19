@@ -17,19 +17,9 @@
               <status :item="scope.row" :controller="controller"></status>
             </template>
           </el-table-column>
-          <el-table-column label="Ảnh" align="center" width="120">
-            <template slot-scope="scope">
-              <el-image
-                style="width: 80px; height: 80px"
-                fit="cover"
-                :src="_getThumbnail(controller, scope.row.thumbnail)"
-              ></el-image>
-            </template>
-          </el-table-column>
           <el-table-column label="Tiêu đề">
             <template slot-scope="scope">
               <div class="v-h2">{{ _notag(scope.row.title) }}</div>
-              <div class="v-italic" v-html="scope.row.description">Mô tả: {{ scope.row.description }}</div>
             </template>
           </el-table-column>
           <el-table-column label="Ngày tạo">

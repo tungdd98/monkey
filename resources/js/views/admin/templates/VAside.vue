@@ -30,24 +30,46 @@
           <router-link to="/admin/sliders">Quản lý slide</router-link>
         </template>
       </el-menu-item>
-      <el-menu-item index="3">
+      <el-submenu index="3">
         <template slot="title">
           <i class="el-icon-s-grid"></i>
-          <router-link to="/admin/categories">Danh mục</router-link>
+          <span>Quản lý danh mục</span>
         </template>
-      </el-menu-item>
-      <el-menu-item index="4">
+        <el-menu-item-group>
+          <el-menu-item index="3-1">
+            <router-link to="/admin/categories" active-class="active-link">Sản phẩm</router-link>
+          </el-menu-item>
+          <el-menu-item index="3-2">
+            Tin tức
+          </el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+      <el-submenu index="4">
         <template slot="title">
-          <i class="el-icon-s-goods"></i>
-          <router-link to="/admin/products">Quản lý sản phẩm</router-link>
+          <i class="el-icon-s-cooperation"></i>
+          <span>Quản lý sản phẩm</span>
         </template>
-      </el-menu-item>
-      <el-submenu index="5">
+        <el-menu-item-group>
+          <el-menu-item index="4-1">
+            <router-link to="/admin/types" active-class="active-link">Loại sản phẩm</router-link>
+          </el-menu-item>
+          <el-menu-item index="4-2">
+            <router-link to="/admin/products" active-class="active-link">Danh sách sản phẩm</router-link>
+          </el-menu-item>
+          <el-menu-item index="4-3">
+            <router-link to="/admin/units" active-class="active-link">Đơn vị tính</router-link>
+          </el-menu-item>
+          <el-menu-item index="4-4">
+            <router-link to="/admin/suppliers" active-class="active-link">Nhà cung cấp</router-link>
+          </el-menu-item>
+        </el-menu-item-group>
+      </el-submenu>
+      <el-menu-item index="5">
         <template slot="title">
           <i class="el-icon-s-platform"></i>
-          <router-link to="/">Nội dung</router-link>
+          <router-link to="/admin/articles">Quản lý bài viết</router-link>
         </template>
-      </el-submenu>
+      </el-menu-item>
       <el-submenu index="6">
         <template slot="title">
           <i class="el-icon-s-order"></i>

@@ -54,7 +54,8 @@ class CategoryController extends Controller
      */
     public function show(Request $request)
     {
-        $item = $this->model->getItemById($request, null);
+        $params['id'] = $request->id;
+        $item = $this->model->getItemById($params, null);
         return response()->json(['data' => $item]);
     }
 
@@ -80,7 +81,7 @@ class CategoryController extends Controller
         $item = Model::findOrFail($request->id);
         $imgPath = "images/{$this->controller}/{$item->thumbnail}";
         unlink($imgPath);
-        $this->model->deleteItem($params, ['task' => 'item']);
+        $this->model->deleteItem($request, ['task' => 'item']);
     }
     /**
      * Đệ quy lấy parent_id
