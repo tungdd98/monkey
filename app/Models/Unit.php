@@ -13,8 +13,8 @@ class Unit extends Model
      * $folderImg: đường dẫn chứa ảnh
      */
     protected $table = 'units';
-    protected $fillable = ['title', 'note', 'created_at', 'updated_at', 'status'];
-    protected $columns = ['id', 'title', 'note', 'created_at', 'updated_at', 'status'];
+    protected $fillable = ['title', 'note', 'created_by', 'updated_by', 'created_at', 'updated_at', 'status'];
+    protected $columns = ['id', 'title', 'note', 'created_by', 'updated_by', 'created_at', 'updated_at', 'status'];
 
     /**
      * Lấy danh sách phần tử

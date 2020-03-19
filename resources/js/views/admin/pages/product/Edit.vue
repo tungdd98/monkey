@@ -16,9 +16,9 @@
                   </el-input>
                 </el-form-item>
                 <el-form-item label="Danh mục" :label-width="display.formLabelWidth" prop="category">
-                  <el-select v-model="categories" placeholder="--Chọn--" v-if="selectCategory" multiple collapse-tags>
+                  <el-select v-model="category.list" placeholder="--Chọn--" v-if="category.select" multiple collapse-tags>
                     <el-option
-                      v-for="item in selectCategory"
+                      v-for="item in category.select"
                       :key="item.id"
                       :value="item.id"
                       :label="item.title"
@@ -76,9 +76,29 @@
                   </el-input>
                 </el-form-item>
                 <el-form-item label="Loại sản phẩm" :label-width="display.formLabelWidth">
-                  <el-select v-model="types" placeholder="--Chọn--" v-if="selectType" multiple collapse-tags>
+                  <el-select v-model="type.list" placeholder="--Chọn--" v-if="type.select" multiple collapse-tags>
                     <el-option
-                      v-for="item in selectType"
+                      v-for="item in type.select"
+                      :key="item.id"
+                      :value="item.id"
+                      :label="item.title"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="Đơn vị tính" :label-width="display.formLabelWidth">
+                  <el-select v-model="unit.value" placeholder="--Chọn--" v-if="type.select" collapse-tags>
+                    <el-option
+                      v-for="item in unit.select"
+                      :key="item.id"
+                      :value="item.id"
+                      :label="item.title"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="Nhà sản xuất" :label-width="display.formLabelWidth">
+                  <el-select v-model="supplier.value" placeholder="--Chọn--" v-if="supplier.select" collapse-tags>
+                    <el-option
+                      v-for="item in supplier.select"
                       :key="item.id"
                       :value="item.id"
                       :label="item.title"
@@ -124,30 +144,39 @@ export default {
       selectStatus: foo.STATUS,
       rules: {
         title: foo.RULES.title,
-        // category: foo.RULES.category
       },
       form: {
         title: '',
+        code: '',
         description: '',
         content: '',
         thumbnail: '',
-        quantity: 1,
         price: 0,
         sale_up: 0,
-        is_hot: 0,
-        is_bestseller: 0,
+        quantity: 1,
         status: 1,
       },
-      fields: ['title', 'description', 'content', 'thumbnail'],
       imagesList: [],
       images: [],
       imagesRemove: [],
-      selectCategory: [],
-      categories: [],
-      categoriesDefault: [],
-      selectType: [],
-      types: [],
-      typesDefault: []
+      category: {
+        select: [],
+        list: [],
+        default: []
+      },
+      type: {
+        select: [],
+        list: [],
+        default: []
+      },
+      unit: {
+        select: [],
+        value: ''
+      },
+      supplier: {
+        select: [],
+        value: ''
+      }
     }
   },
   computed: {
@@ -168,7 +197,7 @@ export default {
         
         // Hiển thị thông tin item
         Object.entries(val).forEach(([key, value]) => {
-          if(value && ['title', 'description', 'content', 'thumbnail', 'quantity', 'price', 'sale_up', 'is_hot', 'is_bestseller', 'status'].includes(key)) {
+          if(value && ['title', 'code', 'description', 'content', 'thumbnail', 'quantity', 'price', 'sale_up', 'status'].includes(key)) {
             this.form[key] = value
           }
         })
@@ -184,19 +213,19 @@ export default {
     'dialog.formVisible': function(val, oldVal) {
       if(val) {
         if(!this.isEdit) {
-          this.categories = []
-          this.types      = []
+          this.category.list = []
+          this.type.list     = []
         } else {
           this.getCategoryById(this.currItem.id).then(res => {
             if(res.flag) {
-              res.data.forEach(item => this.categories.push(item.pivot.category_id))
-              this.categoriesDefault = this.categories
+              res.data.forEach(item => this.category.list.push(item.pivot.category_id))
+              this.category.default = this.category.list
             }
           })
           this.getTypeById(this.currItem.id).then(res => {
             if(res.flag) {
-              res.data.forEach(item => this.types.push(item.pivot.type_id))
-              this.typesDefault = this.types
+              res.data.forEach(item => this.type.list.push(item.pivot.type_id))
+              this.type.default = this.type.list
             }
           })
         }
@@ -209,7 +238,7 @@ export default {
       pagination: false
     }).then(res => {
       if(res.flag) {
-        this.selectCategory = res.data.data
+        this.category.select = res.data.data
       }
     })
     // Lấy danh sách loại sản phẩm
@@ -217,7 +246,7 @@ export default {
       pagination: false
     }).then(res => {
       if(res.flag) {
-        this.selectType = res.data.data
+        this.type.select = res.data.data
       }
     })
   },
@@ -247,10 +276,10 @@ export default {
       this.images = []
       this.imagesList = []
       this.imagesRemove = []
-      this.categories = []
-      this.categoriesDefault = []
-      this.types = []
-      this.typesDefault = []
+      this.category.list = []
+      this.category.default = []
+      this.type.list = []
+      this.type.default = []
       this.isEdit = false
       this.dialog.formVisible = false
     },
@@ -266,8 +295,8 @@ export default {
 
           if(!this.isEdit) {
             data.append('created_by', this.user.name)
-            this.categories.forEach((value, key) => data.append(`categories[${key}]`, value))
-            this.types.forEach((value, key) => data.append(`types[${key}]`, value))
+            this.category.list.forEach((value, key) => data.append(`categories[${key}]`, value))
+            this.type.list.forEach((value, key) => data.append(`types[${key}]`, value))
             this.createItem(data).then(res => {
               if(res.flag) {
                 this.$fire(foo.NOTIFICATION.success.created)
@@ -277,11 +306,11 @@ export default {
               }
             })
           } else {
-            let categoriesUpdate = this._deduplicate(this.categories, this.categoriesDefault)
-            let categoriesRemove = this._deduplicate(this.categoriesDefault, this.categories)
+            let categoriesUpdate = this._deduplicate(this.category.list, this.category.default)
+            let categoriesRemove = this._deduplicate(this.category.default, this.category.list)
 
-            let typesUpdate = this._deduplicate(this.types, this.typesDefault)
-            let typesRemove = this._deduplicate(this.typesDefault, this.types)
+            let typesUpdate = this._deduplicate(this.type.list, this.type.default)
+            let typesRemove = this._deduplicate(this.type.default, this.type.list)
 
             data.append('id', this.currItem.id)
             data.append('updated_by', this.user.name)
@@ -309,15 +338,13 @@ export default {
      * Reset form
      */
     handleResetForm() {
-      ['title', 'description', 'content', 'thumbnail'].forEach(field => {
+      ['title', 'code', 'description', 'content', 'thumbnail'].forEach(field => {
         this.form[field] = ''
       })
-      this.form.status          = 1
-      this.form.is_hot          = 0
-      this.form.is_bestseller   = 0
-      this.form.sale_up         = 0
       this.form.price           = 0
+      this.form.sale_up         = 0
       this.form.quantity        = 1
+      this.form.status          = 1
     },
     /**
      * Xoá ảnh để update
