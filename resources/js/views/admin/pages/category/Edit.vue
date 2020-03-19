@@ -15,16 +15,32 @@
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
                   </el-input>
                 </el-form-item>
-                <el-form-item label="Danh mục cha" :label-width="display.formLabelWidth" prop="parent_id">
-                  <el-select v-model="form.parent_id" placeholder="--Chọn--" clearable v-if="selectCategory">
-                    <el-option
-                      v-for="item in filterSelectCategory"
-                      :key="item.id"
-                      :value="item.id"
-                      :label="item.title"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
+                <el-row :gutter="20">
+                  <el-col :span="12">
+                    <el-form-item label="Danh mục cha" :label-width="display.formLabelWidth" prop="parent_id">
+                      <el-select v-model="form.parent_id" placeholder="--Chọn--" clearable v-if="selectCategory">
+                        <el-option
+                          v-for="item in filterSelectCategory"
+                          :key="item.id"
+                          :value="item.id"
+                          :label="item.title"
+                        ></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="Loại danh mục" :label-width="display.formLabelWidth" prop="type" style="float: right">
+                      <el-select v-model="form.type_id" placeholder="--Chọn--" clearable v-if="selectType">
+                        <el-option
+                          v-for="item in selectType"
+                          :key="item.id"
+                          :value="item.id"
+                          :label="item.title"
+                        ></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
                 <el-form-item label="Mô tả" :label-width="display.formLabelWidth" prop="description">
                   <ckeditor :editor="editor.type" v-model="form.description" :config="editor.config"></ckeditor>
                 </el-form-item>
@@ -100,7 +116,7 @@ export default {
       selectStatus: foo.STATUS,
       rules: {
         title: foo.RULES.title,
-        thumbnail: foo.RULES.thumbnail
+        thumbnail: foo.RULES.thumbnail,
       },
       form: {
         title: '',
@@ -108,10 +124,12 @@ export default {
         description: '',
         content: '',
         thumbnail: '',
+        type_id: '',
         status: 1,
       },
       imagesList: [],
       selectCategory: [],
+      selectType: []
     }
   },
   props: {
@@ -142,7 +160,7 @@ export default {
         this.display.formTitle = 'Cập nhật'
 
         Object.entries(val).forEach(([key, value]) => {
-          if(value && ['title', 'description', 'content', 'parent_id', 'status', 'thumbnail'].includes(key)) {
+          if(value && ['title', 'type_id', 'description', 'content', 'parent_id', 'status', 'thumbnail'].includes(key)) {
             this.form[key] = value
           }
         })
@@ -162,6 +180,13 @@ export default {
         })
       }
     }
+  },
+  created() {
+    this.$store.dispatch('type/getList', { pagination: false }).then(res => {
+      if(res.flag) {
+        this.selectType = res.data.data
+      }
+    })
   },
   methods: {
     ...mapActions(CONTROLLER, ['createItem', 'updateItem', 'getMultiCategory']),
@@ -241,7 +266,7 @@ export default {
      * Reset form
      */
     handleResetForm() {
-      ['title', 'description', 'content', 'thumbnail'].forEach(field => {
+      ['title', 'type_id', 'description', 'content', 'thumbnail'].forEach(field => {
         this.form[field] = ''
       })
       this.form.status = 1

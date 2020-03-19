@@ -13,8 +13,8 @@ class Category extends Model
      * $folderImg: đường dẫn chứa ảnh
      */
     protected $table = 'categories';
-    protected $fillable = ['title', 'parent_id', 'description', 'content', 'thumbnail', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at'];
-    protected $columns = ['id', 'title', 'description', 'content', 'thumbnail', 'parent_id', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at'];
+    protected $fillable = ['title', 'type_id', 'parent_id', 'description', 'content', 'thumbnail', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at'];
+    protected $columns = ['id', 'title', 'type_id', 'description', 'content', 'thumbnail', 'parent_id', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at'];
     protected $folderImg = 'category';
 
     /**
@@ -87,7 +87,8 @@ class Category extends Model
                 'parent_id'     => $params['parent_id'],
                 'thumbnail'     => $params['thumbnail'],
                 'status'        => $params['status'],
-                'updated_by'    => $params['updated_by']
+                'updated_by'    => $params['updated_by'],
+                'type_id'       => $params['type_id']
             ]);
         }
     }
@@ -111,10 +112,10 @@ class Category extends Model
      * @param $params: thông tin requests
      * @return void
      */
-    public function getItemById($request, $options = null) {
+    public function getItemById($params, $options = null) {
         if(isset($options['columns'])) {
-            return self::select($options['columns'])->where('id', $request->id)->first();
+            return self::select($options['columns'])->where('id', $params['id'])->first();
         }
-        return self::select($this->columns)->where('id', $request->id)->first();
+        return self::select($this->columns)->where('id', $params['id'])->first();
     }
 }

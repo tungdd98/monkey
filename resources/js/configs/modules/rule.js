@@ -15,6 +15,9 @@ const rules = {
   ],
   category: [
     { required: true, message: 'Vui lòng chọn danh mục', trigger: 'blur' },
+  ],
+  type: [
+    { required: true, message: 'Vui lòng chọn loại danh mục', trigger: 'blur' },
   ]
 }
 export default rules

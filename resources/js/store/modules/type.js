@@ -58,7 +58,7 @@ const actions = {
 					})
 					commit('setPaginate', { per_page, page, order_by, order_dir })
 				}
-				return { flag: true }
+				return { flag: true, data: result.data }
 			}
 			return { flag: false }
 		} catch (error) {
@@ -119,7 +119,7 @@ const actions = {
 			let result = await Axios.get(`${URL}/${id}`)
 			if(result.status === 200) {
 				commit('setCurrItem', result.data.data)
-				return { flag: true }
+				return { flag: true, data: result.data }
 			}
 			return { flag: false }
 		} catch (error) {
