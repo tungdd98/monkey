@@ -16,7 +16,6 @@
       <div class="v-login-actions">
         <div class="register">
           <router-link to="/register">Đăng ký</router-link>
-          <router-link to="/register">Test lần cuối</router-link>
         </div>
       </div>
     </div>
