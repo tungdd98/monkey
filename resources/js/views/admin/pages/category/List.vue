@@ -31,7 +31,7 @@
               icon="el-icon-delete"
               circle
               title="Delete"
-              @click="() => handleDelete(node, data)">
+              @click="() => handleDelete(data)">
             </el-button>
           </div>
         </div>
@@ -76,7 +76,7 @@ export default {
      * Khởi tạo dữ liệu
      */
     init(){
-      this.getList()
+      this.getList({ action: 'tree' })
     },
     /**
      * Xoá bản ghi

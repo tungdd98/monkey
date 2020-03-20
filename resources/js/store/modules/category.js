@@ -34,10 +34,15 @@ const actions = {
 	/**
 	 * Lấy danh sách phần tử
 	 */
-	getList: async ({ commit, dispatch }) => {
+	getList: async ({ commit, dispatch }, { action = 'all' }) => {
 		commit('setLoading', true, { root: true })
 		try {
-			let result = await Axios.get(`${URL}`)
+			let configs = {
+				params: {
+					action
+				}
+			}
+			let result = await Axios.get(`${URL}`, configs)
 			commit('setLoading', false, { root: true })
 			if(result.status === 200) {
 				commit('setList', result.data.data)
@@ -69,7 +74,7 @@ const actions = {
 	 */
 	deleteItem: async ({ commit, dispatch }, data) => {
 		try {
-			let result = await Axios.delete(`${URL}/${data.id}`)
+			let result = await Axios.post(`${URL}/delete`, data)
 			if(result.status === 200) {
 				dispatch('getList')
 				return { flag: true }

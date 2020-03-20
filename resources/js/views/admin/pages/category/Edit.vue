@@ -88,16 +88,17 @@ export default {
         content: '',
         status: 1,
       },
-      selectCategory: [],
+      selectCategory: []
     }
   },
   props: {
-    controller: { type: String, default: '' }
+    controller: { type: String, default: '' },
   },
   computed: {
     ...mapGetters({
       currItem: `${CONTROLLER}/getCurrItem`,
-      user: 'auth/getUser'
+      items: `${CONTROLLER}/getAll`,
+      user: 'auth/getUser',
     }),
   },
   watch: {
@@ -114,9 +115,17 @@ export default {
         })
       }
     },
+    'dialog.formVisible': function(val, oldVal) {
+      if(val) {
+        this.queue(this.items)
+        if(this.currItem) {
+          this.selectCategory = this.selectCategory.filter((value, key) => value.id !== this.currItem.id)
+        }
+      }
+    }
   },
   methods: {
-    ...mapActions(CONTROLLER, ['createItem', 'updateItem']),
+    ...mapActions(CONTROLLER, ['getList', 'createItem', 'updateItem']),
     /**
      * Reset tất cả trạng thái
      */
@@ -124,6 +133,7 @@ export default {
       this.$store.commit(`${CONTROLLER}/setCurrItem`, null)
       this.handleResetForm()
       this.$refs[formName].clearValidate()
+      this.selectCategory = []
       this.isEdit = false
       this.dialog.formVisible = false
     },
@@ -172,6 +182,20 @@ export default {
       })
       this.form.status = 1
     },
+    /**
+     * Đệ quy lấy select category
+     */
+    queue(categories) {
+      categories.forEach((value, key) => {
+        this.selectCategory.push({
+          id: value.id,
+          title: value.title,
+        })
+        if(value.children) {
+          this.queue(value.children)
+        }
+      })
+    }
   }
 };
 </script>

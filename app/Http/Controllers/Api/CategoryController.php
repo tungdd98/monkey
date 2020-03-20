@@ -14,7 +14,7 @@ class CategoryController extends Controller
     private $controller = 'category';
     
     public function __construct() {
-        // $this->middleware(['auth:api']);
+        $this->middleware(['auth:api']);
         $this->model = new Model();    
     }
     /**
@@ -23,9 +23,14 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $items = Model::get()->toTree();
+        $items = null;
+        if($request->action == 'tree') {
+            $items = Model::get()->toTree();
+        } else if($request->action == 'all') {
+            $items = Model::get();
+        }
         return response()->json(['data' => $items]);
     }
 
@@ -72,7 +77,6 @@ class CategoryController extends Controller
      */
     public function destroy(Request $request)
     {
-        $item = Model::findOrFail($request->id);
         $this->model->deleteItem($request, ['task' => 'item']);
     }
 }

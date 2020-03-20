@@ -8,7 +8,7 @@ use Kalnoy\Nestedset\NodeTrait;
 class Category extends Model
 {
     use NodeTrait;
-    protected $guarded = [];
+    // protected $guarded = [];
     /**
      * $table: tên bảng tham chiếu
      * $fillable: các field được cập nhật
@@ -66,9 +66,16 @@ class Category extends Model
     public function deleteItem($request, $options) {
         if($options['task'] == 'item') {
             self::where('id', $request->id)->delete();
+            $this->deleteQueue($request->children);
         }
     }
 
+    public function deleteQueue($items) {
+        foreach($items as $key => $value) {
+            self::where('id', $value['id'])->delete();
+            $this->deleteQueue($value['children']);
+        }
+    }
     /**
      * Lấy phần tử theo id
      * 
