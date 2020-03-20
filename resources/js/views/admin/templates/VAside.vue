@@ -30,20 +30,12 @@
           <router-link to="/admin/sliders">Quản lý slide</router-link>
         </template>
       </el-menu-item>
-      <el-submenu index="3">
+      <el-menu-item index="3">
         <template slot="title">
           <i class="el-icon-s-grid"></i>
-          <span>Quản lý danh mục</span>
+          <router-link to="/admin/categories">Quản lý danh mục</router-link>
         </template>
-        <el-menu-item-group>
-          <el-menu-item index="3-1">
-            <router-link to="/admin/categories" active-class="active-link">Sản phẩm</router-link>
-          </el-menu-item>
-          <el-menu-item index="3-2">
-            Tin tức
-          </el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
+      </el-menu-item>
       <el-submenu index="4">
         <template slot="title">
           <i class="el-icon-s-cooperation"></i>

@@ -18,11 +18,19 @@ import Login from '@/views/Login'
 import Register from '@/views/Register'
 
 import Home from '@/views/home/Base'
+import index from '@/views/home/pages/index/router'
+import faq from '@/views/home/pages/faq/router'
+import contact from '@/views/home/pages/contact/router'
+
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: Home
+    component: Home,
+    children: [
+      index,
+      faq,
+      contact
+    ]
   },
   {
     path: '/admin',

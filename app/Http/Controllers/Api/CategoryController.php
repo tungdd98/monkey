@@ -25,13 +25,12 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $options = [
-            'pagination'    => $request->pagination, 
-            'per_page'      => $request->per_page,
-            'order_by'      => $request->order_by,
-            'order_dir'     => $request->order_dir
-        ];
-        $items = $this->model->getListItems($options);
+        $items = null;
+        if($request->action == 'tree') {
+            $items = Model::get()->toTree();
+        } else if($request->action == 'all') {
+            $items = Model::get();
+        }
         return response()->json(['data' => $items]);
     }
 
@@ -78,37 +77,6 @@ class CategoryController extends Controller
      */
     public function destroy(Request $request)
     {
-        $item = Model::findOrFail($request->id);
-        $imgPath = "images/{$this->controller}/{$item->thumbnail}";
-        unlink($imgPath);
         $this->model->deleteItem($request, ['task' => 'item']);
-    }
-    /**
-     * Đệ quy lấy parent_id
-     */
-    public function getMultiCategory() {
-        $items = Model::select(['title', 'id', 'parent_id'])->get();
-        $items = $this->unique($items);
-        return response()->json(['data' => $items]);
-    }
-
-    /**
-     * Hàm đệ quy lấy category
-     * 
-     * @param $categories
-     * @param $parent_id
-     * @param $level
-     * @return $categories
-     */
-    public function unique($categories = null, $parent_id = 0, $level = 0) {
-        foreach($categories as $key => $item) {
-            if($item['parent_id'] == $parent_id) {
-                $params['id'] = $parent_id;
-                $item['parent'] = $this->model->getItemById($params, ['columns' => ['title', 'id']]);
-                $item['level'] = $level;
-                $this->unique($categories, $item['id'], $level + 1);
-            }
-        }
-        return $categories;
     }
 }

@@ -234,11 +234,9 @@ export default {
   },
   created() {
     // Lấy danh sách category
-    this.$store.dispatch('category/getList', {
-      pagination: false
-    }).then(res => {
+    this.$store.dispatch('category/getList', {}).then(res => {
       if(res.flag) {
-        this.category.select = res.data.data
+        this.category.select = res.data
       }
     })
     // Lấy danh sách loại sản phẩm
@@ -246,7 +244,7 @@ export default {
       pagination: false
     }).then(res => {
       if(res.flag) {
-        this.type.select = res.data.data
+        this.type.select = res.data
       }
     })
     // Lấy danh sách đơn vị tính

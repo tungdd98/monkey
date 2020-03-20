@@ -1,47 +1,41 @@
 <template>
   <div class="v-products">
-    <el-row>
-      <el-col :span="12">
-        <filters :controller="controller"></filters>
-      </el-col>
-      <el-col :span="12">
-        <edit :controller="controller"></edit>
-      </el-col>
-    </el-row>
+    <edit :controller="controller"></edit>
     <div class="v-products-table">
-      <el-table v-loading="isLoading" :data="items" v-if="items">
-        <el-table-column type="index" width="50" align="center"></el-table-column>
-          <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column width="50">
-            <template slot-scope="scope">
-              <status :item="scope.row" :controller="controller"></status>
-            </template>
-          </el-table-column>
-          <el-table-column label="Tiêu đề">
-            <template slot-scope="scope">
-              <div class="v-h2">{{ _notag(scope.row.title) }}</div>
-            </template>
-          </el-table-column>
-          <el-table-column label="Ngày tạo">
-            <template slot-scope="scope">
-              <div>{{ _dateFormat(scope.row.created_at, 'short') }}</div>
-              <div class="v-italic">{{ scope.row.created_by }}</div>
-            </template>
-          </el-table-column>
-          <el-table-column label="Cập nhật lần cuối">
-            <template slot-scope="scope">
-              <div>{{ _dateFormat(scope.row.updated_at, 'short') }}</div>
-              <div class="v-italic">{{ scope.row.updated_by }}</div>
-            </template>
-          </el-table-column>
-          <el-table-column fixed="right" label="Thao tác" align="center" width="120">
-            <template slot-scope="scope">
-              <el-button type="primary" icon="el-icon-edit" size="small" title="Edit" circle @click="handleShow(scope.row)"></el-button>
-              <el-button type="danger" icon="el-icon-delete" size="small" title="Delete" circle @click="handleDelete(scope.row)"></el-button>
-            </template>
-          </el-table-column>
-      </el-table>
-      <pagination :total="total" :controller="controller"></pagination>
+      <el-tree 
+        v-if="items" 
+        :data="items" 
+        :props="defaultProps"
+        show-checkbox
+        default-expand-all
+        node-key="id"
+        :expand-on-click-node="false"
+        class="tree-category"
+      >
+        <div class="custom-tree-node" slot-scope="{ node, data }">
+          <div>
+            {{ node.label }}
+          </div>
+          <div>
+            <el-button
+              type="primary"
+              size="mini"
+              icon="el-icon-edit"
+              title="Edit"
+              circle
+              @click="() => handleShow(data)">
+            </el-button>
+            <el-button
+              type="danger"
+              size="mini"
+              icon="el-icon-delete"
+              circle
+              title="Delete"
+              @click="() => handleDelete(data)">
+            </el-button>
+          </div>
+        </div>
+      </el-tree>
     </div>
   </div>
 </template>
@@ -59,6 +53,10 @@ export default {
   data() {
     return {
       controller: CONTROLLER,
+      defaultProps: {
+        children: 'children',
+        label: 'title'
+      }
     }
   },
   computed: {
@@ -67,8 +65,6 @@ export default {
     }),
     ...mapGetters({
       items: `${CONTROLLER}/getAll`,
-      total: `${CONTROLLER}/getTotalList`,
-      filters: `${CONTROLLER}/getFilter`,
     })
   },
   created() {
@@ -80,7 +76,7 @@ export default {
      * Khởi tạo dữ liệu
      */
     init(){
-      this.getList({})
+      this.getList({ action: 'tree' })
     },
     /**
      * Xoá bản ghi
@@ -92,11 +88,6 @@ export default {
           this.deleteItem(data)
           .then(res => {
             if(res.flag) {
-              this.$store.dispatch(`${CONTROLLER}/getList`, {
-                per_page: this.filters.per_page,
-                order_by: this.filters.order_by,
-                order_dir: this.filters.order_dir,
-              })
               this.$fire(foo.NOTIFICATION.success.deleted)
             }
             else this.$fire(foo.NOTIFICATION.error)
@@ -109,9 +100,7 @@ export default {
      */
     handleShow(data) {
       this.getItemById({ id: data.id }).then(res => {
-        if(res.flag) {
-          this._limitDisplayImage(true)
-        } else {
+        if(!res.flag) {
           this.$fire(foo.NOTIFICATION.error)
         }
       })
@@ -126,5 +115,18 @@ export default {
 }
 </script>
 <style lang="scss">
-
+.v-products-table .tree-category{
+  padding: 10px;
+}
+.el-tree-node__content {
+  height: 35px !important;
+}
+.custom-tree-node {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 5px;
+  margin: 5px 0;
+}
 </style>

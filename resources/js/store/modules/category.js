@@ -4,10 +4,6 @@ import foo from '@/configs'
 const URL = 'categories'
 
 const state = {
-	per_page: foo.PAGINATE.per_page,
-	order_by: foo.PAGINATE.order_by,
-	order_dir: foo.PAGINATE.order_dir,
-	page: foo.PAGINATE.page,
 	all: [],
 	total: 0,
 	currItem: null,
@@ -38,28 +34,19 @@ const actions = {
 	/**
 	 * Lấy danh sách phần tử
 	 */
-	getList: async ({ commit, dispatch }, { per_page = foo.PAGINATE.per_page, page = foo.PAGINATE.page, order_by = foo.PAGINATE.order_by, order_dir = foo.PAGINATE.order_dir, pagination = true }) => {
+	getList: async ({ commit, dispatch }, { action = 'all' }) => {
 		commit('setLoading', true, { root: true })
 		try {
-			let config = {
-				params: { per_page, page, order_by, order_dir, pagination }
+			let configs = {
+				params: {
+					action
+				}
 			}
-			let result = await Axios.get(`${URL}`, config)
+			let result = await Axios.get(`${URL}`, configs)
 			commit('setLoading', false, { root: true })
 			if(result.status === 200) {
-				if(!pagination) {
-					commit('setList', {
-						all: result.data.data.data,
-						total: result.data.data.length
-					})
-				} else {
-					commit('setList', {
-						all: result.data.data.data,
-						total: result.data.data.total
-					})
-					commit('setPaginate', { per_page, order_by, order_dir, page })
-				}
-				return { flag: true, data: result.data }
+				commit('setList', result.data.data)
+				return { flag: true, data: result.data.data }
 			}
 			return { flag: false }
 		} catch (error) {
@@ -87,8 +74,9 @@ const actions = {
 	 */
 	deleteItem: async ({ commit, dispatch }, data) => {
 		try {
-			let result = await Axios.delete(`${URL}/${data.id}`)
+			let result = await Axios.post(`${URL}/delete`, data)
 			if(result.status === 200) {
+				dispatch('getList')
 				return { flag: true }
 			}
 			return { flag: false }
@@ -104,7 +92,7 @@ const actions = {
 		try {
 			let result = await Axios.post(`${URL}`, data)
 			if(result.status === 200) {
-				dispatch('getList', {})
+				dispatch('getList')
 				return { flag: true }
 			}
 			return { flag: false }
@@ -137,7 +125,7 @@ const actions = {
 		try {
 			let result = await Axios.post(`${URL}/${data.id}`, data)
 			if(result.status === 200) {
-				dispatch('getList', {})
+				dispatch('getList')
 				return { flag: true }
 			}
 			return { flag: false }
@@ -146,36 +134,14 @@ const actions = {
 			return { flag: false, msg: error }
 		}
 	},
-	/**
-	 * Đệ quy lấy danh mục 
-	 */
-	getMultiCategory: async ({ commit }) => {
-		try {
-			let result = await Axios.get(`${URL}/multi`)
-			if(result.status === 200) {
-				return { flag: true, data: result.data.data }
-			}
-			return { flag: false }
-		} catch (error) {
-			console.log(error)
-			return { flag: false }
-		}
-	}
 }
 
 const mutations = {
-	setList: (state, { all, total }) => {
-		state.all = all
-		state.total = total
+	setList: (state, data) => {
+		state.all = data
 	},
 	setCurrItem: (state, data) => {
 		state.currItem = data
-	},
-	setPaginate: (state,  { per_page, order_by, order_dir, page }) => {
-		state.per_page 	= per_page
-		state.order_by 	= order_by
-		state.order_dir = order_dir
-		state.page 			= page
 	},
 	setSelectItem: (state, data) => {
 		state.select = data

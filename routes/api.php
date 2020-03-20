@@ -23,11 +23,10 @@ Route::group([
     'prefix' => 'categories'
 ], function() {
     Route::get('/', 'Api\CategoryController@index')->name('category.index');
-    Route::get('/multi', 'Api\CategoryController@getMultiCategory')->name('category.multi');
     Route::get('/{id}', 'Api\CategoryController@show')->name('category.show');
     Route::patch('/{id}', 'Api\CategoryController@update')->name('category.update');
-    Route::delete('/{id}', 'Api\CategoryController@destroy')->name('category.delete');
     Route::post('/', 'Api\CategoryController@store')->name('category.store');
+    Route::post('/delete', 'Api\CategoryController@destroy')->name('category.delete');
     Route::post('/{id}', 'Api\CategoryController@update')->name('category.edit');
 });
 

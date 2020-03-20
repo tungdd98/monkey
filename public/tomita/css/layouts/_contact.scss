@@ -1,0 +1,251 @@
+#map {
+    height: 510px;
+    margin-top: 10px;
+	border: 8px solid #fff;
+    .gm-style-iw{
+		& + button{
+			margin-top: 5px !important;
+			img{
+				display: none !important;
+			}
+			&:after{
+				font-family: eleganticons;
+				content: "\4d";
+				font-size: 24px;
+				line-height: 1;
+			}
+		}
+	}
+	.infowindow{
+		padding-top: 10px;
+		font-family: $f2;
+		.name{
+			font-weight: bold;
+			font-size: 14px;
+			text-transform: uppercase;
+			margin-bottom: 10px;
+			color: $c1;
+		}
+		.ct-line{
+			margin-bottom: 7px;
+			font-size: 14px;
+			color: $c-text;
+			line-height: 20px;
+			i{
+				font-size: 21px;
+				margin-top: 2px;
+			}
+			a{
+				transition: 0.2s;
+				&:hover{
+					color: $c1;
+				}
+			}
+		}
+	}
+	@media (max-width: 991px) {
+		margin-top: 20px;
+	}
+	@media (max-width: 767px) {
+		height:400px;
+	}
+}
+.head-brach{
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 18px;
+	margin-bottom: 20px;
+	margin-top: 10px;
+	color: $c1;
+	display: flex;
+	align-items: center;
+	img{
+		margin-right: 15px;
+		flex: 0 0 24px;
+	}
+	@media (max-width: 767px) {
+		font-size: 16px;
+	}
+}
+.list-location{
+	max-height: 462px;
+	overflow-y: auto;
+	position: relative;
+	margin-top: 1px;
+	&:before{
+		content: '';
+		position: absolute;
+		top: -1.5px;
+		left: calc(50% - 4px);
+		width: 0;
+		height: 0;
+		border-left: 8px solid transparent;
+		border-right: 8px solid transparent;
+		border-top: 8px solid #fbfbfb;
+		z-index: 1;
+	}
+	&:after{
+		content: '';
+		position: absolute;
+		top: -1.5px;
+		left: calc(50% - 5px);
+		width: 0;
+		height: 0;
+		border-left: 9px solid transparent;
+		border-right: 9px solid transparent;
+		border-top: 9px solid $c-bd;
+	}
+}
+.list-location::-webkit-scrollbar {
+  width: 6px;
+  background: #ebebeb; 
+}
+
+/* Track */
+.list-location::-webkit-scrollbar-track {
+  border-radius: 15px;
+}
+ 
+/* Handle */
+.list-location::-webkit-scrollbar-thumb {
+  background: #f15725; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.list-location::-webkit-scrollbar-thumb:hover {
+  background: #f15725; 
+}
+.map-item{
+	padding: 18px 10px 8px 45px;
+	cursor: pointer;
+	border-bottom: 1px solid $c-bd;
+	background-color: #fff;
+	&:hover,&.act{
+		background-color: #f2f2f2;
+	}
+	&:first-child{
+		border-top: 1px solid $c-bd;
+		padding-top: 18px;
+	}
+	&:last-child{
+		margin-bottom: 0;
+	}
+	.name{
+		text-transform: uppercase;
+		font-weight: bold;
+		position: relative;
+		margin-bottom: 10px;
+		&:before{
+			content: "\e081";
+			position: absolute;
+			font-family: eleganticons;
+			font-size: 18px;
+			left: -30px;
+			top: 0px;
+		}
+		i{
+			display: inline-block;
+			margin-right: 15px;
+		}
+	}
+	.ct-line{
+		line-height: 24px;
+		margin-bottom: 5px;
+		a{
+			color: $c1;
+		}
+	}
+	@media (max-width: 767px) {
+		.name{
+			font-size: 16px;
+		}
+		.ct-line{
+			line-height: 26px;
+		}
+	}
+}
+.title-contact{
+	text-transform: uppercase;
+	font-size: 22px;
+	font-weight: bold;
+	color: $c1;
+	margin-bottom: 20px;
+	@media (max-width: 767px) {
+		font-size: 18px;
+	}
+}
+.form-contact{
+	.form-group{
+		margin-bottom: 10px;
+		.form-control{
+			box-shadow: none;
+			border: 1px solid $c-bd;
+			background-color: $bg2;
+			font-size: 14px;
+			height: 44px;
+			padding-bottom: 10px;
+			&::placeholder{
+				color: $c2;
+			}
+		}
+		textarea{
+			height: auto !important;
+		}
+	}
+}
+.btn-contact{
+	text-align: right;
+	margin-top: 20px;
+	button{
+		color: #fff;
+		background-color: $c1;
+		height: 45px;
+		width: 155px;
+		padding-bottom: 3px;
+		border-radius: 30px;
+		font-weight: bold;
+		font-size: 16px;
+		transition: 0.2s;
+		border: 1px solid $c1;
+		&:hover{
+			background-color: #fff;
+			color: $c1;
+		}
+	}
+	@media (max-width: 991px) {
+		text-align: center;
+		
+	}
+}
+.info-contact{
+	ul{
+		li{
+			display: flex;
+			align-items: center;
+			padding: 18px 0;
+			border-bottom: 1px dotted #dedede;
+			font-size: 16px;
+			&:nth-child(1){
+				padding-top: 10px;
+			}
+			span{
+				color: $c1;
+				flex: 0 0 20px;
+				margin-right: 10px;
+				font-size: 18px;
+			}
+			a{
+				&:hover{
+					color: $c1;
+				}
+			}
+		}
+	}
+	@media (max-width: 991px) {
+		margin-top: 30px;
+		ul li{
+			font-size: 14px;
+		}
+	}
+}
