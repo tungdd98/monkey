@@ -160,7 +160,7 @@ const actions = {
 			console.log(error)
 			return { flag: false }
 		}
-	}
+	},
 }
 
 const mutations = {

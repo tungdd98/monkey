@@ -129,7 +129,8 @@ export default {
       if(this.currItem) {
         let idx = this.selectCategory.findIndex(item => item.id === this.currItem.id)
         let current = this.selectCategory[idx]
-        return this.selectCategory.filter(item => item.id !== current.id && item.level <= current.level)
+        console.log(current)
+        // return this.selectCategory.filter(item => item.id !== current.id && item.level <= current.level)
       }
       return this.selectCategory
     }
@@ -146,22 +147,19 @@ export default {
             this.form[key] = value
           }
         })
-
         this.imagesList.push({
           name: val.thumbnail,
           url: this._getThumbnail(this.controller, val.thumbnail)
         })
       }
     },
-    'dialog.formVisible': function(val, oldVal) {
-      if(val) {
-        this.getMultiCategory().then(res => {
-          if(res.flag) {
-            this.selectCategory = res.data
-          }
-        })
+  },
+  created() {
+    this.getMultiCategory().then(res => {
+      if(res.flag) {
+        this.selectCategory = res.data
       }
-    }
+    })
   },
   methods: {
     ...mapActions(CONTROLLER, ['createItem', 'updateItem', 'getMultiCategory']),
@@ -188,7 +186,6 @@ export default {
       this.$refs[formName].clearValidate()
       this.$refs.upload.clearFiles()
       this.imagesList = []
-      this.selectCategory = []
       this._limitDisplayImage(false)
       this.isEdit = false
       this.dialog.formVisible = false
@@ -241,7 +238,7 @@ export default {
      * Reset form
      */
     handleResetForm() {
-      ['title', 'description', 'content', 'thumbnail'].forEach(field => {
+      ['title', 'description', 'content', 'thumbnail', 'parent_id'].forEach(field => {
         this.form[field] = ''
       })
       this.form.status = 1

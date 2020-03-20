@@ -14,7 +14,7 @@ class CategoryController extends Controller
     private $controller = 'category';
     
     public function __construct() {
-        $this->middleware(['auth:api']);
+        // $this->middleware(['auth:api']);
         $this->model = new Model();    
     }
     /**
@@ -80,15 +80,17 @@ class CategoryController extends Controller
     {
         $item = Model::findOrFail($request->id);
         $imgPath = "images/{$this->controller}/{$item->thumbnail}";
-        unlink($imgPath);
+        if(file_exists(public_path() . $imgPath)) {
+            unlink($imgPath);
+        }
         $this->model->deleteItem($request, ['task' => 'item']);
     }
     /**
      * Đệ quy lấy parent_id
      */
-    public function getMultiCategory() {
+    public function getMultiCategory(Request $request) {
         $items = Model::select(['title', 'id', 'parent_id'])->get();
-        $items = $this->unique($items);
+        // $items = $this->unique($items);
         return response()->json(['data' => $items]);
     }
 
@@ -101,14 +103,31 @@ class CategoryController extends Controller
      * @return $categories
      */
     public function unique($categories = null, $parent_id = 0, $level = 0) {
+        $newCategory = [];
         foreach($categories as $key => $item) {
             if($item['parent_id'] == $parent_id) {
                 $params['id'] = $parent_id;
-                $item['parent'] = $this->model->getItemById($params, ['columns' => ['title', 'id']]);
+                $item['parent'] = $this->model->getItemById($params, ['columns' => ['title', 'id', 'parent_id']]);
                 $item['level'] = $level;
+                // $newCategory[] = $item;
+                // unset($categories[$key]);
                 $this->unique($categories, $item['id'], $level + 1);
             }
         }
         return $categories;
+    }
+    public function unique2($categories = null, $parent_id = 0, $level = 0) {
+        $newCategory = [];
+        foreach($categories as $key => $item) {
+            if($item['parent_id'] == $parent_id) {
+                $params['id'] = $parent_id;
+                $item['parent'] = $this->model->getItemById($params, ['columns' => ['title', 'id', 'parent_id']]);
+                $item['level'] = $level;
+                $newCategory[] = $item;
+                unset($categories[$key]);
+                $this->unique($categories, $item['id'], $level + 1);
+            }
+        }
+        return $newCategory;
     }
 }

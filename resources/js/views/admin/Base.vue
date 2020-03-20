@@ -1,5 +1,5 @@
 <template>
-  <el-container class="full-height">
+  <el-container class="full-height" id="v-admin">
     <v-aside></v-aside>
     <el-container class="v-body">
       <v-header></v-header>

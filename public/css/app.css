@@ -1,7 +1,7 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);body {
+@import url(https://fonts.googleapis.com/css?family=Nunito);#v-admin {
   font-size: 14px;
   margin: 0;
-  font-family: "Nunito", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Nunito", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
 }
 
 html,
@@ -83,6 +83,7 @@ input {
 .v-header {
   box-shadow: 0 2px 2px 0 rgba(60, 75, 100, 0.14), 0 3px 1px -2px rgba(60, 75, 100, 0.12), 0 1px 5px 0 rgba(60, 75, 100, 0.2);
   background: #fff;
+  color: #333 !important;
 }
 
 .v-header-top {
@@ -112,6 +113,7 @@ input {
   align-items: center;
   justify-content: flex-end;
   border-top: 1px solid #ddd;
+  background-color: transparent !important;
 }
 
 /* Breadcrumb */
