@@ -19,9 +19,11 @@ class Categories extends Migration
             $table->string('title')->nullable();
             $table->string('description')->nullable();
             $table->string('content')->nullable();
+            $table->string('link')->nullable();
             $table->tinyInteger('status')->default(1)->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
+            $table->string('type')->nullable();
             NestedSet::columns($table);
             $table->timestamps();
         });

@@ -16,8 +16,8 @@ class Category extends Model
      * $folderImg: đường dẫn chứa ảnh
      */
     protected $table = 'categories';
-    protected $fillable = ['title', 'parent_id', 'description', 'content', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at'];
-    protected $columns = ['id', 'title', 'description', 'content', 'parent_id', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at'];
+    protected $fillable = ['title', 'parent_id', 'type', 'description', 'content', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at'];
+    protected $columns = ['id', 'title', 'description', 'content', 'parent_id', 'type', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at'];
 
     /**
      * Quan hệ với bảng sản phẩm (nhiều - nhiều)
@@ -52,6 +52,7 @@ class Category extends Model
                 'parent_id'     => $params['parent_id'],
                 'status'        => $params['status'],
                 'updated_by'    => $params['updated_by'],
+                'type'          => $params['type']
             ]);
         }
     }

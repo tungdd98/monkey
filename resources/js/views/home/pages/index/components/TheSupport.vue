@@ -3,12 +3,12 @@
 		<div class="container">
 			<div class="list-item">
 				<div class="item-sup-home">
-					<img src="images/ic-sp-home1.png" alt />
+					<img src="tomita/images/ic-sp-home1.png" alt />
 					<h3 class="title">Hệ thống cửa hàng</h3>
 					<span class="desc">Danh sách các cửa hàng</span>
 				</div>
 				<div class="item-sup-home">
-					<img src="images/ic-sp-home2.png" alt />
+					<img src="tomita/images/ic-sp-home2.png" alt />
 					<h3 class="title">Trung tâm chăm sóc khách hàng</h3>
 					<p class="desc">
 						<span>
@@ -20,7 +20,7 @@
 					</p>
 				</div>
 				<div class="item-sup-home">
-					<img src="images/ic-sp-home3.png" alt />
+					<img src="tomita/images/ic-sp-home3.png" alt />
 					<h3 class="title">Tomita Mart Membership</h3>
 					<span class="desc">“Ưu đãi xứng tầm”</span>
 				</div>

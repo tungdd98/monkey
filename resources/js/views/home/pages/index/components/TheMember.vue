@@ -8,22 +8,22 @@
 							<strong>Tomita farm</strong>
 							<span>Family</span>
 						</div>
-						<img src="images/logo-member1.png" alt />
+						<img src="tomita/images/logo-member1.png" alt />
 					</div>
 				</div>
 				<div class="col-lg-8">
 					<div class="list-member">
 						<a href title>
-							<img src="images/logo-member2.png" alt />
+							<img src="tomita/images/logo-member2.png" alt />
 						</a>
 						<a href title>
-							<img src="images/logo-member3.png" alt />
+							<img src="tomita/images/logo-member3.png" alt />
 						</a>
 						<a href title>
-							<img src="images/logo-member4.png" alt />
+							<img src="tomita/images/logo-member4.png" alt />
 						</a>
 						<a href title>
-							<img src="images/logo-member5.png" alt />
+							<img src="tomita/images/logo-member5.png" alt />
 						</a>
 					</div>
 				</div>

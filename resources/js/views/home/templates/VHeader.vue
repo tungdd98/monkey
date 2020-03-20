@@ -9,60 +9,24 @@
 						</a>
 					</div>
 					<ul>
-						<li class="active">
-							<router-link to="/" class="smooth">Trang chủ</router-link>
-						</li>
-						<li>
-							<a class="smooth" href="product.html" title>
-								Sản phẩm
-								<i class="arrow_triangle-down"></i>
-							</a>
-							<ul>
-								<li class="active">
-									<a class="smooth" href="#" title>Thực phẩm tươi sống</a>
-								</li>
-								<li>
-									<a class="smooth" href="#" title>Hoa quả</a>
-								</li>
-								<li>
-									<a class="smooth" href="#" title>Đồ khô</a>
-								</li>
-								<li>
-									<a class="smooth" href="#" title>Gia vị</a>
-								</li>
-								<li>
-									<a class="smooth" href="#" title>Hóa mỹ phẩm hữu cơ</a>
-								</li>
-								<li>
-									<a class="smooth" href="#" title>Bánh kẹo</a>
-								</li>
-								<li>
-									<a class="smooth" href="#" title>Đồ gia dụng</a>
+						<li v-for="item in menuLeft" :key="item.id">
+							<router-link :to="item.url" class="smooth">{{ item.title }}</router-link>
+							<ul v-if="item.children && item.children.length > 0">
+								<li v-for="item in item.children" :key="item.id">
+									<router-link to="/" class="smooth">{{ item.title }}</router-link>
 								</li>
 							</ul>
 						</li>
-						<li>
-							<a class="smooth" href="promotion.html" title>khuyến mãi</a>
-						</li>
-						<li>
-							<a class="smooth" href="#" title>về chúng tôi</a>
-						</li>
 					</ul>
 				</nav>
-				<a href="index.html" class="logo">
-					<img src="images/logo.png" alt />
+				<a href="#" class="logo">
+					<img src="tomita/images/logo.png" alt />
 				</a>
 				<div class="head-right">
 					<nav class="d-nav">
 						<ul>
-							<li>
-								<router-link to="/faq" class="smooth">Hỗ trợ</router-link>
-							</li>
-							<li>
-								<a class="smooth" href="news.html" title>tin tức</a>
-							</li>
-							<li>
-								<router-link to="/contact" class="smooth">Liên hệ</router-link>
+							<li v-for="item in menuRight" :key="item.id">
+								<router-link :to="item.url" class="smooth">{{ item.title }}</router-link>
 							</li>
 						</ul>
 					</nav>
@@ -81,17 +45,10 @@
 							</div>
 						</div>
 						<div class="head-lang">
-							<img src="images/lang-vi.jpg" alt />
+							<img src="/tomita/images/lang-vi.jpg" alt />
 							<ul>
-								<li class="active">
-									<a href title>
-										<img src="images/lang-vi.jpg" alt />Tiếng Việt
-									</a>
-								</li>
-								<li>
-									<a href title>
-										<img src="images/lang-japan.jpg" alt />Tiếng Nhật
-									</a>
+								<li v-for="item in menuRight" :key="item.id">
+									<router-link to="/" class="smooth">{{ item.title }}</router-link>
 								</li>
 							</ul>
 						</div>
@@ -111,22 +68,40 @@
 	</header>
 </template>
 <script>
-import { mapActions } from 'vuex';
+import { mapActions } from "vuex";
+import foo from '@/configs'
 
 export default {
 	data() {
 		return {
-			items: []
-		}
+			items: [],
+		};
 	},
 	computed: {
-		
+		menuLeft() {
+			return this.items.filter((value, key) => key <= 3);
+		},
+		menuRight() {
+			return this.items.filter((value, key) => key > 3);
+		}
 	},
 	created() {
+		this.getList({ action: "tree" }).then(res => {
+			if (res.flag) {
+				this.items = res.data;
+				this.items.forEach((value, key) => {
+					Object.entries(foo.URL).forEach(([idx, val]) => {
+						if(value.type === idx) {
+							value['url'] = val
+						}
+					})
+				})
+			}
+		});
 	},
 	methods: {
-		...mapActions('category', ['getList'])
-	},
+		...mapActions("category", ["getList"])
+	}
 };
 </script>
 <style>
