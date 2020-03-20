@@ -25,9 +25,9 @@ class Products extends Migration
             $table->float('sale_up')->nullable()->default(0);
             $table->integer('quantity')->nullable()->default(1);
             $table->tinyInteger('status')->nullable()->default(1);
-            $table->bigInteger('unit_id')->unsigned();
+            $table->bigInteger('unit_id')->unsigned()->nullable();
             $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade');
-            $table->bigInteger('supplier_id')->unsigned();
+            $table->bigInteger('supplier_id')->unsigned()->nullable();
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
             $table->tinyInteger('is_bestseller')->nullable()->default(0);
             $table->string('created_by')->nullable();
