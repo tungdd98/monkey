@@ -18,7 +18,7 @@
                 <el-form-item label="Danh mục cha" :label-width="display.formLabelWidth" prop="parent_id">
                   <el-select v-model="form.parent_id" placeholder="--Chọn--" clearable v-if="selectCategory">
                     <el-option
-                      v-for="item in filterSelectCategory"
+                      v-for="item in selectCategory"
                       :key="item.id"
                       :value="item.id"
                       :label="item.title"
@@ -42,24 +42,6 @@
                       :label="item.title"
                     ></el-option>
                   </el-select>
-                </el-form-item>
-                <el-form-item label="Hình ảnh" :label-width="display.formLabelWidth" prop="thumbnail">
-                  <el-upload
-                    action="/"
-                    ref="upload"
-                    list-type="picture-card"
-                    :auto-upload="false"
-                    :on-preview="handlePictureCardPreview"
-                    :limit="1"
-                    :on-change="handleChangeUpload"
-                    :file-list="imagesList"
-                    :on-remove="handleRemove"
-                  >
-                    <i class="el-icon-plus"></i>
-                  </el-upload>
-                  <el-dialog :visible.sync="dialog.visible">
-                    <img width="100%" :src="dialog.imageUrl" alt />
-                  </el-dialog>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -89,8 +71,6 @@ export default {
         config: {}
       },
       dialog: {
-        imageUrl: '',
-        visible: false,
         formVisible: false
       },
       display: {
@@ -100,17 +80,14 @@ export default {
       selectStatus: foo.STATUS,
       rules: {
         title: foo.RULES.title,
-        // thumbnail: foo.RULES.thumbnail,
       },
       form: {
         title: '',
         parent_id: '',
         description: '',
         content: '',
-        thumbnail: '',
         status: 1,
       },
-      imagesList: [],
       selectCategory: [],
     }
   },
@@ -122,18 +99,6 @@ export default {
       currItem: `${CONTROLLER}/getCurrItem`,
       user: 'auth/getUser'
     }),
-    /**
-     * Lược bỏ những phần tử có level thấp hơn
-     */
-    filterSelectCategory() {
-      if(this.currItem) {
-        let idx = this.selectCategory.findIndex(item => item.id === this.currItem.id)
-        let current = this.selectCategory[idx]
-        console.log(current)
-        // return this.selectCategory.filter(item => item.id !== current.id && item.level <= current.level)
-      }
-      return this.selectCategory
-    }
   },
   watch: {
     currItem(val, oldVal) {
@@ -143,40 +108,15 @@ export default {
         this.display.formTitle = 'Cập nhật'
 
         Object.entries(val).forEach(([key, value]) => {
-          if(value && ['title', 'description', 'content', 'parent_id', 'status', 'thumbnail'].includes(key)) {
+          if(value && ['title', 'description', 'content', 'parent_id', 'status'].includes(key)) {
             this.form[key] = value
           }
         })
-        this.imagesList.push({
-          name: val.thumbnail,
-          url: this._getThumbnail(this.controller, val.thumbnail)
-        })
       }
     },
-  },
-  created() {
-    this.getMultiCategory().then(res => {
-      if(res.flag) {
-        this.selectCategory = res.data
-      }
-    })
   },
   methods: {
-    ...mapActions(CONTROLLER, ['createItem', 'updateItem', 'getMultiCategory']),
-    /**
-     * Hiển thị dialog hình ảnh
-     */
-    handlePictureCardPreview(file) {
-      this.dialog.imageUrl = file.url
-      this.dialog.visible = true
-    },
-    /**
-     * Upload hình ảnh (giới hạn 1 hình ảnh)
-     */
-    handleChangeUpload(file) {
-      this.form.thumbnail = file.raw
-      this._limitDisplayImage(true)
-    },
+    ...mapActions(CONTROLLER, ['createItem', 'updateItem']),
     /**
      * Reset tất cả trạng thái
      */
@@ -184,9 +124,6 @@ export default {
       this.$store.commit(`${CONTROLLER}/setCurrItem`, null)
       this.handleResetForm()
       this.$refs[formName].clearValidate()
-      this.$refs.upload.clearFiles()
-      this.imagesList = []
-      this._limitDisplayImage(false)
       this.isEdit = false
       this.dialog.formVisible = false
     },
@@ -212,7 +149,6 @@ export default {
           } else {
             data.append('id',             this.currItem.id)
             data.append('updated_by',     this.user.name)
-            data.append('currThumbnail',  this.imagesList[0].name)
             data.append('field',          'update-item')
             this.updateItem(data).then(res => {
               if(res.flag) {
@@ -228,17 +164,10 @@ export default {
       })
     },
     /**
-     * Khi xoá bỏ hình ảnh
-     */
-    handleRemove(file) {
-      this.form.thumbnail = ''
-      this._limitDisplayImage(false)
-    },
-    /**
      * Reset form
      */
     handleResetForm() {
-      ['title', 'description', 'content', 'thumbnail', 'parent_id'].forEach(field => {
+      ['title', 'description', 'content', 'parent_id'].forEach(field => {
         this.form[field] = ''
       })
       this.form.status = 1

@@ -8,42 +8,42 @@ class ShopTableSeeder extends Seeder
     {
         $shops = [
             [
-                'category_name' => 'Books',
+                'title' => 'Books',
                     'children' => [
                         [    
-                            'category_name' => 'Comic Book',
+                            'title' => 'Comic Book',
                             'children' => [
-                                    ['category_name' => 'Marvel Comic Book'],
-                                    ['category_name' => 'DC Comic Book'],
-                                    ['category_name' => 'Action comics'],
+                                    ['title' => 'Marvel Comic Book'],
+                                    ['title' => 'DC Comic Book'],
+                                    ['title' => 'Action comics'],
                             ],
                         ],
                         [    
-                            'category_name' => 'Textbooks',
+                            'title' => 'Textbooks',
                                 'children' => [
-                                    ['category_name' => 'Business'],
-                                    ['category_name' => 'Finance'],
-                                    ['category_name' => 'Computer Science'],
+                                    ['title' => 'Business'],
+                                    ['title' => 'Finance'],
+                                    ['title' => 'Computer Science'],
                             ],
                         ],
                     ],
                 ],
                 [
-                    'category_name' => 'Electronics',
+                    'title' => 'Electronics',
                         'children' => [
                         [
-                            'category_name' => 'TV',
+                            'title' => 'TV',
                             'children' => [
-                                ['category_name' => 'LED'],
-                                ['category_name' => 'Blu-ray'],
+                                ['title' => 'LED'],
+                                ['title' => 'Blu-ray'],
                             ],
                         ],
                         [
-                            'category_name' => 'Mobile',
+                            'title' => 'Mobile',
                             'children' => [
-                                ['category_name' => 'Samsung'],
-                                ['category_name' => 'iPhone'],
-                                ['category_name' => 'Xiomi'],
+                                ['title' => 'Samsung'],
+                                ['title' => 'iPhone'],
+                                ['title' => 'Xiomi'],
                             ],
                         ],
                     ],
@@ -51,7 +51,7 @@ class ShopTableSeeder extends Seeder
         ];
         foreach($shops as $shop)
         {
-            \App\Shop::create($shop);
+            \App\Models\Category::create($shop);
         }
     }
 }

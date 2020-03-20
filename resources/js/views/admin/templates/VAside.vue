@@ -92,12 +92,6 @@
           <router-link to="/users">Tài khoản</router-link>
         </template>
       </el-submenu>
-      <el-submenu index="10">
-        <template slot="title">
-          <i class="el-icon-s-custom"></i>
-          <router-link to="/admin/categories2">Danh mục</router-link>
-        </template>
-      </el-submenu>
     </el-menu>
   </el-aside>
 </template>
