@@ -123,16 +123,9 @@ export default {
 		
 	},
 	created() {
-		console.log('hihi')
-		this.getMultiCategory().then(res => {
-			if(res.flag) {
-				this.items = res.data
-				console.log(res.data)
-			}
-		})
 	},
 	methods: {
-		...mapActions('category', ['getMultiCategory'])
+		...mapActions('category', ['getList'])
 	},
 };
 </script>
