@@ -8,46 +8,43 @@ class ShopTableSeeder extends Seeder
     {
         $shops = [
             [
-                'title' => 'Books',
-                    'children' => [
-                        [    
-                            'title' => 'Comic Book',
-                            'children' => [
-                                    ['title' => 'Marvel Comic Book'],
-                                    ['title' => 'DC Comic Book'],
-                                    ['title' => 'Action comics'],
-                            ],
-                        ],
-                        [    
-                            'title' => 'Textbooks',
-                                'children' => [
-                                    ['title' => 'Business'],
-                                    ['title' => 'Finance'],
-                                    ['title' => 'Computer Science'],
-                            ],
-                        ],
+                'title' => 'Trang chủ',
+                'type' => 'Introduce',
+            ],
+            [
+                'title' => 'Sản phẩm',
+                'type' => 'Product',
+                'children' => [
+                    [    
+                        'title' => 'Hoa quả',
+                        'type' => 'Product',
+                    ],
+                    [    
+                        'title' => 'Đồ khô',
+                        'type' => 'Product',
                     ],
                 ],
-                [
-                    'title' => 'Electronics',
-                        'children' => [
-                        [
-                            'title' => 'TV',
-                            'children' => [
-                                ['title' => 'LED'],
-                                ['title' => 'Blu-ray'],
-                            ],
-                        ],
-                        [
-                            'title' => 'Mobile',
-                            'children' => [
-                                ['title' => 'Samsung'],
-                                ['title' => 'iPhone'],
-                                ['title' => 'Xiomi'],
-                            ],
-                        ],
-                    ],
-                ],
+            ],
+            [
+                'title' => 'Khuyến mãi',
+                'type' => 'News',
+            ],
+            [
+                'title' => 'Về chúng tôi',
+                'type' => 'Introduce',
+            ],
+            [
+                'title' => 'Hỗ trợ',
+                'type' => 'Faq',
+            ],
+            [
+                'title' => 'Tin tức',
+                'type' => 'News',
+            ],
+            [
+                'title' => 'Liên hệ',
+                'type' => 'Contact',
+            ],
         ];
         foreach($shops as $shop)
         {

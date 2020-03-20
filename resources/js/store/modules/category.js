@@ -76,7 +76,7 @@ const actions = {
 		try {
 			let result = await Axios.post(`${URL}/delete`, data)
 			if(result.status === 200) {
-				dispatch('getList')
+				dispatch('getList', { action: 'tree' })
 				return { flag: true }
 			}
 			return { flag: false }
@@ -92,7 +92,7 @@ const actions = {
 		try {
 			let result = await Axios.post(`${URL}`, data)
 			if(result.status === 200) {
-				dispatch('getList')
+				dispatch('getList', { action: 'tree' })
 				return { flag: true }
 			}
 			return { flag: false }
@@ -125,7 +125,7 @@ const actions = {
 		try {
 			let result = await Axios.post(`${URL}/${data.id}`, data)
 			if(result.status === 200) {
-				dispatch('getList')
+				dispatch('getList', { action: 'tree' })
 				return { flag: true }
 			}
 			return { flag: false }

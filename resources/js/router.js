@@ -21,6 +21,8 @@ import Home from '@/views/home/Base'
 import index from '@/views/home/pages/index/router'
 import faq from '@/views/home/pages/faq/router'
 import contact from '@/views/home/pages/contact/router'
+import product_home from '@/views/home/pages/product/router'
+import article_home from '@/views/home/pages/article/router'
 
 const routes = [
   {
@@ -29,7 +31,9 @@ const routes = [
     children: [
       index,
       faq,
-      contact
+      contact,
+      product_home,
+      article_home
     ]
   },
   {

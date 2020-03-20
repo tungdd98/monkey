@@ -88,3 +88,10 @@ Route::group([
     Route::post('/', 'Api\SupplierController@store')->name('supplier.store');
     Route::post('/{id}', 'Api\SupplierController@update')->name('supplier.edit');
 });
+
+Route::group([
+    'prefix' => 'datatypes'
+], function() {
+    Route::get('/', 'Api\DataTypeController@index')->name('datatype.index');
+    Route::get('/{id}', 'Api\DataTypeController@show')->name('datatype.show');
+});

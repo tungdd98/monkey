@@ -123,6 +123,7 @@ import foo from '@/configs'
 import { mapActions, mapGetters } from 'vuex';
 
 const CONTROLLER = 'product'
+const DATATYPE = 'Product'
 
 export default {
   data() {
@@ -236,7 +237,7 @@ export default {
     // Lấy danh sách category
     this.$store.dispatch('category/getList', {}).then(res => {
       if(res.flag) {
-        this.category.select = res.data
+        this.category.select = res.data.filter((value, key) => value.type === DATATYPE)
       }
     })
     // Lấy danh sách loại sản phẩm
@@ -244,7 +245,7 @@ export default {
       pagination: false
     }).then(res => {
       if(res.flag) {
-        this.type.select = res.data
+        this.type.select = res.data.data
       }
     })
     // Lấy danh sách đơn vị tính
