@@ -74,7 +74,7 @@ export default {
 	},
 	props: {
 		data: { type: Object, default: {} },
-		id: { type: String, default: '' }
+		id: { type: [Number, String] }
 	},
 	computed: {
 		priceSale() {
@@ -84,7 +84,7 @@ export default {
 	created() {
 		['unit', 'supplier'].forEach(value => {
 			this.getPropertyById({ id: this.id, property: value }).then(res => {
-				if(res.flag) {
+				if(res.flag && res.data.length > 0) {
 					this.info[value] = res.data[0].title
 				}
 			})

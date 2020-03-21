@@ -1,6 +1,6 @@
 <template>
 	<div class="col-lg-4 col-sm-6">
-		<div class="item-product">
+		<div class="item-product" v-if="item">
 			<a href title class="img-primary">
 				<img :src="_getThumbnail(controller, item.thumbnail)" alt />
 			</a>
@@ -52,7 +52,7 @@ export default {
 	created() {
 		['unit', 'supplier'].forEach(value => {
 			this.getPropertyById({ id: this.item.id, property: value }).then(res => {
-				if(res.flag) {
+				if(res.flag && res.data.length > 0) {
 					this.info[value] = res.data[0].title
 				}
 			})

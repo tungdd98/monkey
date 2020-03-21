@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Str;
 class Product extends Model
 {
     /**
@@ -85,7 +85,7 @@ class Product extends Model
             $params['images'] = json_encode($imagesStr);
             $product = new Product([
                 'title'         => $params['title'],
-                'code'          => $params['code'],
+                'code'          => !empty($params['code']) ? $params['code'] : Str::random(5),  
                 'description'   => $params['description'],
                 'content'       => $params['content'],
                 'thumbnail'     => $params['thumbnail'],

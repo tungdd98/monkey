@@ -24,9 +24,9 @@
         </script>
         <script src="{{ asset('js/app.js') }}" defer></script>
         <script src="{{ asset('tomita/js/jquery.js') }}" defer></script>
-        <script src="{{ asset('tomita/js/bootstrap.min.js') }}" defer></script>
         <script src="{{ asset('tomita/js/fancybox.js') }}" defer></script>
-        <script src="{{ asset('tomita/js/scrollspy.js') }}" defer></script>
-        <script src="{{ asset('tomita/js/jquery.sticky-kit.js') }}" defer></script>
+        <script src="{{ asset('tomita/js/bootstrap.min.js') }}" defer></script>
+        {{-- <script src="{{ asset('tomita/js/scrollspy.js') }}" defer></script> --}}
+        {{-- <script src="{{ asset('tomita/js/jquery.sticky-kit.js') }}" defer></script> --}}
     </body>
 </html>

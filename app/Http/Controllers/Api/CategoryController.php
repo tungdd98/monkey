@@ -14,7 +14,7 @@ class CategoryController extends Controller
     private $controller = 'category';
     
     public function __construct() {
-        $this->middleware(['auth:api']);
+        // $this->middleware(['auth:api']);
         $this->model = new Model();    
     }
     /**
@@ -77,6 +77,11 @@ class CategoryController extends Controller
      */
     public function destroy(Request $request)
     {
+        $item = Model::findOrFail($request->id);
+        $imgPath = "images/{$this->controller}/{$item->thumbnail}";
+        if(file_exists(public_path() . $imgPath)) {
+            unlink($imgPath);
+        }
         $this->model->deleteItem($request, ['task' => 'item']);
     }
 }

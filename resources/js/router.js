@@ -7,7 +7,6 @@ import store from '@/store'
 
 import Admin from '@/views/admin/Base'
 import dashboard from '@/views/admin/pages/dashboard/router'
-import slider from '@/views/admin/pages/slider/router'
 import category from '@/views/admin/pages/category/router'
 import product from '@/views/admin/pages/product/router'
 import type from '@/views/admin/pages/type/router'
@@ -21,6 +20,8 @@ import Home from '@/views/home/Base'
 import index from '@/views/home/pages/index/router'
 import faq from '@/views/home/pages/faq/router'
 import contact from '@/views/home/pages/contact/router'
+import about from '@/views/home/pages/about/router'
+import promotion from '@/views/home/pages/promotion/router'
 import product_home from '@/views/home/pages/product/router'
 import article_home from '@/views/home/pages/article/router'
 import product_detail from '@/views/home/pages/product-detail/router'
@@ -35,7 +36,9 @@ const routes = [
       contact,
       product_home,
       article_home,
-      product_detail
+      product_detail,
+      about,
+      promotion
     ]
   },
   {
@@ -43,7 +46,6 @@ const routes = [
     component: Admin,
     children: [
       dashboard,
-      slider,
       category,
       product,
       type,

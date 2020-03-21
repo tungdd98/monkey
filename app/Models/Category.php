@@ -16,8 +16,9 @@ class Category extends Model
      * $folderImg: đường dẫn chứa ảnh
      */
     protected $table = 'categories';
-    protected $fillable = ['title', 'parent_id', 'type', 'description', 'content', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at'];
-    protected $columns = ['id', 'title', 'description', 'content', 'parent_id', 'type', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at'];
+    protected $fillable = ['title', 'parent_id', 'type', 'description', 'content', 'thumbnail', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at'];
+    protected $columns = ['id', 'title', 'parent_id', 'type', 'description', 'content', 'thumbnail', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at'];
+    protected $folderImg = 'category';
 
     /**
      * Quan hệ với bảng sản phẩm (nhiều - nhiều)
@@ -48,15 +49,30 @@ class Category extends Model
         }
         // Thêm phần tử mới
         if($options['field'] == 'add-item') {
+            if($request->hasFile('thumbnail')) {
+                $imgName = time() . $params['thumbnail']->getClientOriginalName();
+                $params['thumbnail']->move("images/{$this->folderImg}", $imgName);
+                $params['thumbnail'] = $imgName;
+            }
             $this->create($params);
         }
         // Update phần tử
         if($options['field'] == 'update-item') {
+            if($request->hasFile('thumbnail')) {
+                $imgPath = "images/{$this->folderImg}/{$params['currThumbnail']}";
+                if(file_exists(public_path() . $imgPath)) {
+                    unlink($imgPath);
+                }
+                $imgName = time() . $params['thumbnail']->getClientOriginalName();
+                $params['thumbnail']->move("images/{$this->folderImg}", $imgName);
+                $params['thumbnail'] = $imgName;
+            }
             self::where('id', $params['id'])->update([
                 'title'         => $params['title'],
                 'description'   => $params['description'],
                 'content'       => $params['content'],
                 'parent_id'     => $params['parent_id'],
+                'thumbnail'     => $params['thumbnail'],
                 'status'        => $params['status'],
                 'updated_by'    => $params['updated_by'],
                 'type'          => $params['type']

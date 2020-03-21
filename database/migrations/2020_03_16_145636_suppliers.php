@@ -17,8 +17,8 @@ class Suppliers extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('description')->nullable();
-            $table->string('content')->nullable();
-            $table->string('address')->nullable();
+            $table->longText('content')->nullable();
+            $table->text('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('gmail')->nullable();
             $table->tinyInteger('status')->default(1)->nullable();

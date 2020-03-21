@@ -102,6 +102,8 @@ export default {
       this.getItemById({ id: data.id }).then(res => {
         if(!res.flag) {
           this.$fire(foo.NOTIFICATION.error)
+        } else {
+          this._limitDisplayImage(true)
         }
       })
     },

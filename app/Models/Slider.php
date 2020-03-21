@@ -17,6 +17,9 @@ class Slider extends Model
     protected $columns = ['id', 'title', 'description', 'content', 'thumbnail', 'link', 'status', 'created_by', 'created_at', 'updated_by', 'updated_at'];
     protected $folderImg = 'slider';
 
+    public function categories() {
+        return $this->belongsTo('App\Models\Category');
+    }
     /**
      * Lấy danh sách phần tử
      * 
@@ -73,7 +76,7 @@ class Slider extends Model
                 'link'          => $params['link'],
                 'thumbnail'     => $params['thumbnail'],
                 'status'        => $params['status'],
-                'updated_by'    => $params['updated_by']
+                'updated_by'    => $params['updated_by'],
             ]);
         }
     }

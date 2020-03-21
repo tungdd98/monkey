@@ -17,13 +17,13 @@ class Categories extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title')->nullable();
-            $table->string('description')->nullable();
-            $table->string('content')->nullable();
-            $table->string('link')->nullable();
+            $table->text('description')->nullable();
+            $table->longText('content')->nullable();
+            $table->string('thumbnail')->nullable();
+            $table->string('type')->nullable();
             $table->tinyInteger('status')->default(1)->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
-            $table->string('type')->nullable();
             NestedSet::columns($table);
             $table->timestamps();
         });

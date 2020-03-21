@@ -4,7 +4,6 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 import axios from '@/plugins/axios'
 import auth from './modules/auth'
-import slider from './modules/slider'
 import category from './modules/category'
 import product from './modules/product'
 import type from './modules/type'
@@ -16,18 +15,26 @@ import datatype from './modules/datatype'
 const store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
   state: {
-    isLoading: false
+    isLoading: false,
+    pathBanner: '/tomita/images/bn-product.jpg'
   },
-  getters: {},
-  actions: {},
+  getters: {
+    getUrlBanner: state => {
+      return state.pathBanner
+    }
+  },
+  actions: {
+  },
   mutations: {
     setLoading: (state, loading) => {
       state.isLoading = loading
+    },
+    setBanner: (state, pathBanner) => {
+      state.pathBanner = pathBanner
     }
   },
   modules: {
     auth,
-    slider,
     category,
     product,
     type,

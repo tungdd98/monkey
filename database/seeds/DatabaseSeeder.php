@@ -29,9 +29,10 @@ class DataTypesSeeder extends Seeder {
         DB::table('datatypes')->insert([
             ['title' => 'Sản phẩm', 'code' => 'Product'],
             ['title' => 'Tin tức', 'code' => 'News'],
-            ['title' => 'Giới thiệu', 'code' => 'Introduce'],
+            ['title' => 'HomePage', 'code' => 'Introduce'],
             ['title' => 'Hỗ trợ', 'code' => 'FAQ'],
             ['title' => 'Liên hệ', 'code' => 'Contact'],
+            ['title' => 'Giới thiệu', 'code' => 'About'],
         ]);
     }
 }

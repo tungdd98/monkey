@@ -59,6 +59,24 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
+                <el-form-item label="Hình ảnh" :label-width="display.formLabelWidth" prop="thumbnail">
+                  <el-upload
+                    action="/"
+                    ref="upload"
+                    list-type="picture-card"
+                    :auto-upload="false"
+                    :on-preview="handlePictureCardPreview"
+                    :limit="1"
+                    :on-change="handleChangeUpload"
+                    :file-list="imagesList"
+                    :on-remove="handleRemove"
+                  >
+                    <i class="el-icon-plus"></i>
+                  </el-upload>
+                  <el-dialog :visible.sync="dialog.visible">
+                    <img width="100%" :src="dialog.imageUrl" alt />
+                  </el-dialog>
+                </el-form-item>
               </el-col>
             </el-row>
           </el-form>
@@ -87,6 +105,8 @@ export default {
         config: {}
       },
       dialog: {
+        imageUrl: '',
+        visible: false,
         formVisible: false
       },
       display: {
@@ -103,9 +123,10 @@ export default {
         description: '',
         content: '',
         type: '',
-        // link: '',
+        thumbnail: '',
         status: 1,
       },
+      imagesList: [],
       selectCategory: [],
       selectType: []
     }
@@ -132,6 +153,11 @@ export default {
             this.form[key] = value
           }
         })
+        // Hiển thị danh sách ảnh 
+        this.imagesList.push({
+          name: val.thumbnail,
+          url: this._getThumbnail(this.controller, val.thumbnail)
+        })
       }
     },
     'dialog.formVisible': function(val, oldVal) {
@@ -153,6 +179,20 @@ export default {
   methods: {
     ...mapActions(CONTROLLER, ['getList', 'createItem', 'updateItem']),
     /**
+     * Hiển thị dialog hình ảnh
+     */
+    handlePictureCardPreview(file) {
+      this.dialog.imageUrl = file.url
+      this.dialog.visible = true
+    },
+    /**
+     * Upload hình ảnh (giới hạn 1 hình ảnh)
+     */
+    handleChangeUpload(file) {
+      this.form.thumbnail = file.raw
+      this._limitDisplayImage(true)
+    },
+    /**
      * Reset tất cả trạng thái
      */
     handleReset(formName) {
@@ -160,6 +200,9 @@ export default {
       this.handleResetForm()
       this.$refs[formName].clearValidate()
       this.selectCategory = []
+      this.$refs.upload.clearFiles()
+      this.imagesList = []
+      this._limitDisplayImage(false)
       this.isEdit = false
       this.dialog.formVisible = false
     },
@@ -185,6 +228,7 @@ export default {
           } else {
             data.append('id',             this.currItem.id)
             data.append('updated_by',     this.user.name)
+            data.append('currThumbnail',  this.imagesList[0].name)
             data.append('field',          'update-item')
             this.updateItem(data).then(res => {
               if(res.flag) {
@@ -200,10 +244,17 @@ export default {
       })
     },
     /**
+     * Giới hạn upload hình ảnh khi xoá bỏ hình ảnh
+     */
+    handleRemove(file) {
+      this.form.thumbnail = ''
+      this._limitDisplayImage(false)
+    },
+    /**
      * Reset form
      */
     handleResetForm() {
-      ['title', 'description', 'content', 'parent_id', 'type'].forEach(field => {
+      ['title', 'description', 'content', 'parent_id', 'type', 'thumbnail'].forEach(field => {
         this.form[field] = ''
       })
       this.form.status = 1

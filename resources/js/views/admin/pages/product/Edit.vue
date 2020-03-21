@@ -60,6 +60,11 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
+                <el-form-item label="Mã sản phẩm" :label-width="display.formLabelWidth" prop="code">
+                  <el-input v-model.number="form.code" autocomplete="off">
+                    <i slot="suffix" class="el-input__icon el-icon-edit"></i>
+                  </el-input>
+                </el-form-item>
                 <el-form-item label="Đơn giá" :label-width="display.formLabelWidth" prop="price">
                   <el-input v-model.number="form.price" autocomplete="off">
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
