@@ -593,10 +593,4 @@ jQuery(function($) {
             $('.nav-user').removeClass('show');
         }
     });
-
-
-
-
-
-
 })

@@ -6,7 +6,7 @@
 			</a>
 			<div class="ct">
 				<h3 class="title">
-					<router-link :title="_slug(item.title)" to="/product">{{ _notag(item.title) }}</router-link>
+					<router-link :title="_slug(item.title)" :to="getLinkCategory(item)">{{ _notag(item.title) }}</router-link>
 				</h3>
 				<p class="note">Nhà cung cấp: {{ info.supplier }}</p>
 				<div class="price">
@@ -21,10 +21,10 @@
 				<a href title class="add-cart btn-crt">
 					<i class="fa fa-cart-plus"></i>
 				</a>
-				<router-link :title="_slug(item.title)" to="/product" class="view-details btn-crt">
+				<router-link :title="_slug(item.title)" :to="getLinkCategory(item)" class="view-details btn-crt">
 					<i class="fa fa-external-link"></i>
 				</router-link>
-				<router-link to="/product" class="link"></router-link>
+				<router-link :to="getLinkCategory(item)" class="link"></router-link>
 			</div>
 		</div>
 	</div>
@@ -43,7 +43,7 @@ export default {
 	computed: {
 		priceSale() {
 			return Math.floor(this.item.price - (this.item.sale_up)/100 * this.item.price)
-		}
+		},
 	},
 	props: {
 		item: { type: Object, default: {} },
@@ -59,7 +59,15 @@ export default {
 		})
 	},
 	methods: {
-		...mapActions('product', ['getPropertyById'])
+		...mapActions('product', ['getPropertyById']),
+		getLinkCategory(item) {
+			return {
+				name: 'product-detail',
+				query: {
+					id: item.id
+				}
+			}
+		}
 	}
 };
 </script>

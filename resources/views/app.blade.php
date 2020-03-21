@@ -13,7 +13,8 @@
         <link rel="stylesheet" href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome-font-awesome.min.css">
         <link rel="stylesheet" href="{{ asset('tomita/fonts/elegantIcon/elegantIcon.css') }}">
         <link rel="stylesheet" href="{{ asset('tomita/fonts/Linearicons-Free/Linearicons-Free.css') }}">
-        <link rel="stylesheet" href="{{ asset('tomita/css/owl.carousel.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('tomita/css/fancybox.css') }}">
+        <link rel="stylesheet" href="{{ asset('tomita/css/slick.css') }}">
         <link rel="stylesheet" href="{{ asset('tomita/css/main.css') }}">
     </head>
     <body>
@@ -24,10 +25,8 @@
         <script src="{{ asset('js/app.js') }}" defer></script>
         <script src="{{ asset('tomita/js/jquery.js') }}" defer></script>
         <script src="{{ asset('tomita/js/bootstrap.min.js') }}" defer></script>
-        <script src="{{ asset('tomita/js/owl.carousel.min.js') }}" defer></script>
-        <script src="{{ asset('tomita/js/wow.min.js') }}" defer></script>
+        <script src="{{ asset('tomita/js/fancybox.js') }}" defer></script>
         <script src="{{ asset('tomita/js/scrollspy.js') }}" defer></script>
         <script src="{{ asset('tomita/js/jquery.sticky-kit.js') }}" defer></script>
-        <script src="{{ asset('tomita/js/script.js') }}" defer></script>
     </body>
 </html>

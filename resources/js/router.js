@@ -23,6 +23,7 @@ import faq from '@/views/home/pages/faq/router'
 import contact from '@/views/home/pages/contact/router'
 import product_home from '@/views/home/pages/product/router'
 import article_home from '@/views/home/pages/article/router'
+import product_detail from '@/views/home/pages/product-detail/router'
 
 const routes = [
   {
@@ -33,7 +34,8 @@ const routes = [
       faq,
       contact,
       product_home,
-      article_home
+      article_home,
+      product_detail
     ]
   },
   {
