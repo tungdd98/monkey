@@ -295,6 +295,8 @@ export default {
       this.category.default = []
       this.type.list = []
       this.type.default = []
+      this.unit.select = []
+      this.supplier.select = []
       this.isEdit = false
       this.dialog.formVisible = false
     },

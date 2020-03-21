@@ -27,6 +27,13 @@ class Category extends Model
     }
 
     /**
+     * Quan hệ với bảng tin tức (nhiều - nhiều)
+     */
+    public function articles() {
+        return $this->belongstoMany('App\Models\Article');
+    }
+
+    /**
      * Lưu dữ liệu
      * 
      * @param $request: thông tin requests

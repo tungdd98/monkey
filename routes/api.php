@@ -1,5 +1,6 @@
 <?php
 
+/* Admin */
 Route::group([
     'prefix' => 'auth'
 ], function () {
@@ -94,4 +95,16 @@ Route::group([
 ], function() {
     Route::get('/', 'Api\DataTypeController@index')->name('datatype.index');
     Route::get('/{id}', 'Api\DataTypeController@show')->name('datatype.show');
+});
+
+/* Home */
+Route::group([
+    'prefix' => 'tomita'
+], function() {
+    Route::group([
+        'prefix' => 'products'
+    ], function() {
+        Route::get('/', 'ProductController@index');
+        Route::get('/get-by-category-id', 'ProductController@getItemByCategoryId');
+    });
 });

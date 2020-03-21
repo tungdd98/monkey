@@ -10,23 +10,23 @@
 					</div>
 					<ul>
 						<li v-for="item in menuLeft" :key="item.id">
-							<router-link :to="item.url" class="smooth">{{ item.title }}</router-link>
+							<router-link :to="getLinkCategoryNoChild(item)" class="smooth">{{ item.title }}</router-link>
 							<ul v-if="item.children && item.children.length > 0">
 								<li v-for="item in item.children" :key="item.id">
-									<router-link to="/" class="smooth">{{ item.title }}</router-link>
+									<router-link :to="getLinkCategoryWithChild(item)" class="smooth">{{ item.title }}</router-link>
 								</li>
 							</ul>
 						</li>
 					</ul>
 				</nav>
-				<a href="#" class="logo">
+				<router-link to="/admin" class="logo">
 					<img src="tomita/images/logo.png" alt />
-				</a>
+				</router-link>
 				<div class="head-right">
 					<nav class="d-nav">
 						<ul>
 							<li v-for="item in menuRight" :key="item.id">
-								<router-link :to="item.url" class="smooth">{{ item.title }}</router-link>
+								<router-link :to="getLinkCategoryNoChild(item)" class="smooth">{{ item.title }}</router-link>
 							</li>
 						</ul>
 					</nav>
@@ -83,7 +83,7 @@ export default {
 		},
 		menuRight() {
 			return this.items.filter((value, key) => key > 3);
-		}
+		},
 	},
 	created() {
 		this.getList({ action: "tree" }).then(res => {
@@ -100,7 +100,21 @@ export default {
 		});
 	},
 	methods: {
-		...mapActions("category", ["getList"])
+		...mapActions("category", ["getList"]),
+		getLinkCategoryNoChild(category) {
+			return {
+				name: category.type
+			}
+		},
+		getLinkCategoryWithChild(category) {
+			return {
+				name: category.type,
+				query: {
+					category: this._slug(category.title),
+					tag: category.id
+				}
+			}
+		}
 	}
 };
 </script>

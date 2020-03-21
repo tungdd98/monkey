@@ -1,6 +1,7 @@
 import Index from './Index'
+import ProductDetail from './components/ProductDetail'
 export default {
-  name: 'product-home',
+  name: 'Product',
   path: '/product',
-  component: Index
+  component: Index,
 }

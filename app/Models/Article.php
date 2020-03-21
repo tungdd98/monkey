@@ -13,9 +13,17 @@ class Article extends Model
      * $folderImg: đường dẫn chứa ảnh
      */
     protected $table = 'articles';
-    protected $fillable = ['title', 'category_id', 'description', 'content', 'is_hot', 'is_feature', 'thumbnail', 'status', 'author', 'pseudonym', 'source', 'created_by', 'created_at', 'updated_by', 'updated_at'];
+    protected $fillable = ['title', 'description', 'content', 'is_hot', 'is_feature', 'thumbnail', 'status', 'author', 'pseudonym', 'source', 'created_by', 'created_at', 'updated_by', 'updated_at'];
     protected $columns = ['id', 'title', 'category_id', 'description', 'content', 'is_hot', 'is_feature', 'thumbnail', 'status', 'author', 'pseudonym', 'source', 'created_by', 'created_at', 'updated_by', 'updated_at'];
     protected $folderImg = 'article';
+
+
+    /**
+     * Quan hệ với bảng danh mục(nhiều - nhiều)
+     */
+    public function categories() {
+        return $this->belongsToMany('App\Models\Category');
+    }
 
     /**
      * Lấy danh sách phần tử
@@ -55,6 +63,9 @@ class Article extends Model
                 $params['thumbnail']->move("images/{$this->folderImg}", $imgName);
                 $params['thumbnail'] = $imgName;
             }
+            foreach($request->categories as $key => $value) {
+                $product->categories()->attach($value);
+            }
             $this->create($params);
         }
         // Update phần tử
@@ -80,6 +91,18 @@ class Article extends Model
                 'is_hot'        => $params['is_hot'],
                 'is_feature'    => $params['is_feature']
             ]);
+            $article = self::find($params['id']);
+            if(!empty($request->categoriesRemove)) {
+                foreach($request->categoriesRemove as $key => $value) {
+                    $article->categories()->detach($value);
+                }
+            }
+            if(!empty($request->categoriesUpdate)) {
+                foreach($request->categoriesUpdate as $key => $value) {
+                    $article->categories()->attach($value);
+                }
+            }
+            return $article;
         }
     }
 
@@ -104,5 +127,16 @@ class Article extends Model
      */
     public function getItemById($request) {
         return self::select($this->columns)->where('id', $request->id)->first();
+    }
+
+    /**
+     * Lấy danh mục của sản phẩm
+     * 
+     * @param $id, $fields
+     * @return 
+     */
+    public function getCategoryOfItem($id, $fields) {
+        $result = self::find($id)->categories()->select($fields)->get();
+        return $result;
     }
 }
