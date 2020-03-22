@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 import axios from '@/plugins/axios'
 import auth from './modules/auth'
+import user from './modules/user'
 import category from './modules/category'
 import product from './modules/product'
 import unit from './modules/unit'
@@ -41,7 +42,8 @@ const store = new Vuex.Store({
     unit,
     supplier,
     datatype,
-    cart
+    cart,
+    user
   }
 })
 store.subscribe((mutations) => {

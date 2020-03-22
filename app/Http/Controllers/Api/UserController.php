@@ -4,11 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User as Model;
 
 class UserController extends Controller
 {
+    private $model;
+    private $controller = 'user';
+
     public function __construct() {
         $this->middleware(['auth:api']);
+        $this->model = new Model();    
     }
 
     public function __invoke(Request $request) {
@@ -19,13 +24,21 @@ class UserController extends Controller
         ]);
     }
     /**
-     * Display a listing of the resource.
-     *
+     * Hiển thị danh sách 
+     * 
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $options = [
+            'pagination'    => $request->pagination, 
+            'per_page'      => $request->per_page,
+            'order_by'      => $request->order_by,
+            'order_dir'     => $request->order_dir
+        ];
+        $items = $this->model->getListItems($options);
+        return response()->json(['data' => $items]);
     }
 
     /**

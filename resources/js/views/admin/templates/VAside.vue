@@ -59,12 +59,12 @@
           <router-link to="/">Quản lý đơn hàng</router-link>
         </template>
       </el-submenu>
-      <el-submenu index="6">
+      <el-menu-item index="6">
         <template slot="title">
           <i class="el-icon-user-solid"></i>
           <router-link to="/">Khách hàng</router-link>
         </template>
-      </el-submenu>
+      </el-menu-item>
       <el-menu-item index="7">
         <template slot="title">
           <i class="el-icon-star-on"></i>
@@ -77,12 +77,12 @@
           <router-link to="/">Hệ thống</router-link>
         </template>
       </el-submenu>
-      <el-submenu index="9">
+      <el-menu-item index="9">
         <template slot="title">
           <i class="el-icon-s-custom"></i>
-          <router-link to="/users">Tài khoản</router-link>
+          <router-link to="/admin/users">Tài khoản</router-link>
         </template>
-      </el-submenu>
+      </el-menu-item>
     </el-menu>
   </el-aside>
 </template>

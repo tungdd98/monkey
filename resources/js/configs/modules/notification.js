@@ -9,7 +9,8 @@ const notification = {
     created: { ...base, type: 'success', title: 'Thêm mới thành công!' },
     updated: { ...base, type: 'success', title: 'Cập nhật thành công!' },
     deleted: { ...base, type: 'success', title: 'Xoá thành công!' },
-    logined: { ...base, type: 'success', title: 'Đăng nhập thành công!' }
+    logined: { ...base, type: 'success', title: 'Đăng nhập thành công!' },
+    registed: { ...base, type: 'success', title: 'Đăng ký thành công!' }
   },
   error: { ...base, type: 'error', title: 'Có lỗi xảy ra' },
   confirm: {

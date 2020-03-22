@@ -126,6 +126,24 @@ const actions = {
         flag: false,
       }
     }
+  },
+  /**
+   * Đăng ký
+   * 
+   */
+  async register({ commit, dispatch }, data) {
+    try {
+      let result = await axios.post('auth/register', data)
+      console.log(result)
+      if(result.status === 200) {
+        dispatch('user/getList', {}, { root: true })
+        return { flag: true }
+      }
+      return { flag: false }
+    } catch (error) {
+      console.log(error)
+      return { flag: false, msg: error }
+    }
   }
 }
 

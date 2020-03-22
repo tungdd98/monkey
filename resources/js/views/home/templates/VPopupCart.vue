@@ -42,8 +42,8 @@
 											</div>
 										</td>
 										<td>
-											<span>{{ item.product.sale_up > 0 ? _formatCurrency(priceSale(item.product)) : _formatCurrency(item.product.price) }}</span>
-											<del v-if="item.product.sale_up > 0">{{ _formatCurrency(item.product.price) }}</del>
+											<span>{{ item.product.original_price ? _formatCurrency(item.product.original_price) : _formatCurrency(item.product.price) }}</span>
+											<del v-show="item.product.original_price">{{ _formatCurrency(item.product.original_price) }}</del>
 										</td>
 										<td>
 											<div class="i-number">
@@ -102,24 +102,33 @@ export default {
 		}),
 	},
 	methods: {
-		priceSale(item) {
-			return Math.floor(item.price - (item.sale_up)/100 * item.price)
-		},
+		/**
+		 * Tính tổng tiền từng sản phẩm
+		 */
 		totalMoneyItem(item) {
-			return (item.product.price - item.product.sale_up / 100 * item.product.price) * item.quantity
+			return item.product.price * item.quantity
 		},
+		/**
+		 * Giảm sản phẩm trong giỏ
+		 */
 		handleDecrementQuantity(item) {
 			this.$store.dispatch('cart/changeProductToCart', {
 				product: item.product,
 				quantity: -1
 			})
 		},
+		/**
+		 * Tăng sản phẩm trong giỏ
+		 */
 		handleIncrementQuantity(item) {
 			this.$store.dispatch('cart/changeProductToCart', {
 				product: item.product,
 				quantity: 1
 			})
 		},
+		/**
+		 * Xoá sản phẩm khỏi giỏ
+		 */
 		handleDelete(item) {
 			this.$store.dispatch('cart/deleteProductOutCart', item)
 		}

@@ -6,7 +6,14 @@ Route::group([
 ], function () {
     Route::post('login', 'AuthBasic\LoginController')->name('auth.login');
     Route::post('logout', 'AuthBasic\LogoutController')->name('auth.logout');
+    Route::post('register', 'AuthBasic\RegisterController')->name('auth.register');
     Route::get('users', 'Api\UserController');
+});
+
+Route::group([
+    'prefix' => 'users'
+], function() {
+    Route::get('/', 'Api\UserController@index')->name('user.index');
 });
 
 Route::group([
