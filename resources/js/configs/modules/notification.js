@@ -14,6 +14,9 @@ const notification = {
   error: { ...base, type: 'error', title: 'Có lỗi xảy ra' },
   confirm: {
     deleted: { type: 'warning', title: 'Bạn có chắc chắn muốn xoá?', showCancelButton: true, confirmButtonText: 'Có' }
-  }
+  },
+  outOfStock: { ...base, type: 'error', title: 'Sản phẩm đã hết hàng' },
+  addSuccess: { ...base, type: 'success', title: 'Sản phẩm đã thêm vào giỏ'},
+  deleteSuccess: { ...base, type: 'success', title: 'Đã xoá sản phẩm khỏi giỏ'}
 }
 export default notification

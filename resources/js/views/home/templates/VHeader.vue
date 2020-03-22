@@ -44,18 +44,27 @@
 								</div>
 							</div>
 						</div>
-						<div class="head-lang">
-							<img src="/tomita/images/lang-vi.jpg" alt />
-							<ul>
-								<li v-for="item in menuRight" :key="item.id">
-									<router-link to="/" class="smooth">{{ item.title }}</router-link>
-								</li>
-							</ul>
-						</div>
-						<a href="javascript:;" title class="head-login" data-toggle="modal" data-target="#pu-login">
+						<a href="javascript:;" title class="head-login" data-toggle="modal" data-target="#pu-login" v-if="!user">
 							<i class="lnr lnr-user"></i>
 							<span>Đăng nhập</span>
 						</a>
+						<el-dropdown trigger="click" v-else style="margin-left: 20px">
+							<el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+							<el-dropdown-menu slot="dropdown">
+								<el-dropdown-item>
+									<span>{{ user.name }}</span>
+								</el-dropdown-item>
+								<el-dropdown-item icon="el-icon-plus">
+									<router-link to="/login">Login</router-link>
+								</el-dropdown-item>
+								<el-dropdown-item icon="el-icon-circle-plus">
+									<router-link to="/register">Register</router-link>
+								</el-dropdown-item>
+								<el-dropdown-item icon="el-icon-circle-plus">
+									<span>Đăng xuất</span>
+								</el-dropdown-item>
+							</el-dropdown-menu>
+						</el-dropdown>
 					</div>
 				</div>
 				<div class="icon-menu open-mnav">
@@ -68,7 +77,7 @@
 	</header>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import foo from '@/configs'
 
 export default {
@@ -78,6 +87,9 @@ export default {
 		};
 	},
 	computed: {
+		...mapGetters({
+			user: 'auth/getUser',
+		}),
 		menuLeft() {
 			return this.items.filter((value, key) => key <= 3);
 		},

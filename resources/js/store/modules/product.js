@@ -201,6 +201,10 @@ const mutations = {
 		state.page 			= page
 		state.order_by 	= order_by
 		state.order_dir = order_dir
+	},
+	setProductQuantity: (state, { id, quantity }) => {
+		const product = state.all.find(item => item.id === id)
+		product.quantity -= quantity
 	}
 }
 

@@ -11,6 +11,7 @@ import unit from './modules/unit'
 import supplier from './modules/supplier'
 import article from './modules/article'
 import datatype from './modules/datatype'
+import cart from './modules/cart'
 
 const store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
@@ -41,7 +42,8 @@ const store = new Vuex.Store({
     article,
     unit,
     supplier,
-    datatype
+    datatype,
+    cart
   }
 })
 store.subscribe((mutations) => {

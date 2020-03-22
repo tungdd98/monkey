@@ -18,7 +18,7 @@
 			</div>
 			<span class="sales" v-show="item.sale_up > 0">-{{ item.sale_up }}%</span>
 			<div href class="control">
-				<a href title class="add-cart btn-crt">
+				<a href title class="add-cart btn-crt" @click.prevent="handleAddCart(item)">
 					<i class="fa fa-cart-plus"></i>
 				</a>
 				<router-link :title="_slug(item.title)" :to="getLinkItem(item)" class="view-details btn-crt">
@@ -67,6 +67,12 @@ export default {
 					id: item.id
 				}
 			}
+		},
+		handleAddCart(item) {
+			this.$store.dispatch('cart/changeProductToCart', {
+				product: item,
+				quantity: 1
+			})
 		}
 	}
 };

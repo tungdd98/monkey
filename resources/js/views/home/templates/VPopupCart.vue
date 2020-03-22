@@ -2,7 +2,7 @@
 	<div>
 		<a href title class="icon-cart" data-toggle="modal" data-target="#pu-cart">
 			<i class="fa fa-shopping-cart"></i>
-			<span>1</span>
+			<span>{{ cart.totalQuantity }}</span>
 		</a>
 		<div class="modal popup-cart popup-primary fade" id="pu-cart">
 			<div class="modal-dialog modal-dialog-centered">
@@ -14,7 +14,7 @@
 					<div class="modal-body">
 						<h3 class="title-cart">
 							giỏ hàng của bạn
-							<span>(3 sản phẩm)</span>
+							<span>({{ cart.totalQuantity }} sản phẩm)</span>
 						</h3>
 						<div class="md-cart-tb">
 							<table>
@@ -27,103 +27,55 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
+									<tr v-for="item in cart.all" :key="item.product.id">
 										<td>
 											<div class="if-pro-cart">
 												<a class="img" href="#" title>
-													<img src="tomita/images/cart1.jpg" alt title />
+													<img :src="_getThumbnail('product', item.product.thumbnail)" alt title />
 												</a>
 												<div class="ct">
-													<a class="smooth title" href="#" title>Thịt chân giò hữu cơ</a>
-													<a class="smooth remove" href="#" title>
+													<a class="smooth title" href="#" title>{{ item.product.title }}</a>
+													<a class="smooth remove" href="#" title @click.prevent="handleDelete(item)">
 														<i class="icon_close"></i> Bỏ sản phẩm
 													</a>
 												</div>
 											</div>
 										</td>
 										<td>
-											180.000đ
-											<del>200.000đ</del>
+											<span>{{ item.product.sale_up > 0 ? _formatCurrency(priceSale(item.product)) : _formatCurrency(item.product.price) }}</span>
+											<del v-if="item.product.sale_up > 0">{{ _formatCurrency(item.product.price) }}</del>
 										</td>
 										<td>
 											<div class="i-number">
-												<button class="n-ctrl down smooth"></button>
-												<input type="text" class="numberic" min="1" max="1000" value="1" />
-												<button class="n-ctrl up smooth"></button>
+												<button class="n-ctrl down smooth" @click.prevent="handleDecrementQuantity(item)"></button>
+												<input type="text" class="numberic" min="1" max="1000" :value="item.quantity">
+												<button class="n-ctrl up smooth" @click.prevent="handleIncrementQuantity(item)"></button>
 											</div>
 										</td>
-										<td>180.000đ</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="if-pro-cart">
-												<a class="img" href="#" title>
-													<img src="tomita/images/cart2.jpg" alt title />
-												</a>
-												<div class="ct">
-													<a class="smooth title" href="#" title>Cá hồi Nauy tươi Fillet</a>
-													<a class="smooth remove" href="#" title>
-														<i class="icon_close"></i> Bỏ sản phẩm
-													</a>
-												</div>
-											</div>
-										</td>
-										<td>679.000đ</td>
-										<td>
-											<div class="i-number">
-												<button class="n-ctrl down smooth"></button>
-												<input type="text" class="numberic" min="1" max="1000" value="1" />
-												<button class="n-ctrl up smooth"></button>
-											</div>
-										</td>
-										<td>679.000đ</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="if-pro-cart">
-												<a class="img" href="#" title>
-													<img src="tomita/images/cart3.jpg" alt title />
-												</a>
-												<div class="ct">
-													<a class="smooth title" href="#" title>Cải thảo Baby</a>
-													<a class="smooth remove" href="#" title>
-														<i class="icon_close"></i> Bỏ sản phẩm
-													</a>
-												</div>
-											</div>
-										</td>
-										<td>39.000đ</td>
-										<td>
-											<div class="i-number">
-												<button class="n-ctrl down smooth"></button>
-												<input type="text" class="numberic" min="1" max="1000" value="1" />
-												<button class="n-ctrl up smooth"></button>
-											</div>
-										</td>
-										<td>39.000đ</td>
+										<td>{{ _formatCurrency(totalMoneyItem(item)) }}</td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
 						<div class="md-cart-foot">
 							<div class="top">
-								<span class="total-provision">Tổng tạm tính: 898.000đ</span>
+								<span class="total-provision">Tổng tạm tính: {{ _formatCurrency(cart.totalMoney) }}</span>
 								<span class="line">|</span>
-								<span class="transport">Phí vận chuyển: 25.000đ</span>
+								<span class="transport">Phí vận chuyển: 0đ</span>
 								<span class="line">|</span>
 								<div class="total">
 									<p>
 										Tổng cộng:
-										<strong>923.000đ</strong>
+										<strong>{{ _formatCurrency(cart.totalMoney) }}</strong>
 									</p>
 									<span>(Giá đã bao gồm thuế VAT)</span>
 								</div>
 							</div>
 							<div class="bottom">
 								<div class="cell">
-									<a class="smooth ctrl-continue" href="#" title>
+									<router-link :to="{ name: 'Product', path: '/product' }" class="smooth ctrl-continue" data-dismiss="modal">
 										<i class="arrow_left"></i> Tiếp tục mua hàng
-									</a>
+									</router-link>
 								</div>
 								<div class="cell">
 									<a class="smooth ctrl-payment" href="#" title>Gửi đơn hàng</a>
@@ -137,7 +89,46 @@
 	</div>
 </template>
 <script>
-export default {};
+import { mapGetters } from "vuex";
+export default {
+	data() {
+		return {
+			num: 1
+		}
+	},
+	computed: {
+		...mapGetters({
+			cart: "cart/getCart"
+		}),
+	},
+	methods: {
+		priceSale(item) {
+			return Math.floor(item.price - (item.sale_up)/100 * item.price)
+		},
+		totalMoneyItem(item) {
+			return (item.product.price - item.product.sale_up / 100 * item.product.price) * item.quantity
+		},
+		handleDecrementQuantity(item) {
+			this.$store.dispatch('cart/changeProductToCart', {
+				product: item.product,
+				quantity: -1
+			})
+		},
+		handleIncrementQuantity(item) {
+			this.$store.dispatch('cart/changeProductToCart', {
+				product: item.product,
+				quantity: 1
+			})
+		},
+		handleDelete(item) {
+			this.$store.dispatch('cart/deleteProductOutCart', item)
+		}
+	}
+};
 </script>
 <style>
+.el-input-number__decrease, .el-input-number__increase {
+	background: #f75510 !important;
+	color: #fff !important;
+}
 </style>
