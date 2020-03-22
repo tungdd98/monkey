@@ -45,7 +45,8 @@
 		bottom: calc(100% - 1px);
 		width: 100%;
 		height: 27px;
-		background: url(../images/bg-certifi.png) no-repeat center;
+		// background: url(../images/bg-certifi.png) no-repeat center;
+		background: rgba(0,0,0,0.01);
 		background-size: auto 100%;
 		@media (min-width: 1920px) {
 			background-size: 100% 100%;
@@ -64,7 +65,7 @@
 	}
 }
 .support-home{
-	background: url(../images/bg-sp-home.jpg) no-repeat center;
+	// background: url(../images/bg-sp-home.jpg) no-repeat center;
 	background-size: cover;
 	position: relative;
 	padding: 45px 0 70px 0;
@@ -84,7 +85,7 @@
 		bottom: -1px;
 		width: 100%;
 		height: 27px;
-		background: url(../images/bg-before.png) no-repeat center;
+		// background: url(../images/bg-before.png) no-repeat center;
 		background-size: auto 100%;
 		@media (min-width: 1920px) {
 			background-size: 100% 100%;

@@ -1,18 +1,6 @@
 <template>
 	<section class="page-faqs page-primary">
 		<div class="container">
-			<nav aria-label="breadcrumb">
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item">
-						<a href="#">Trang chủ</a>
-					</li>
-					<li class="breadcrumb-item">
-						<a href="#">Hỗ trợ</a>
-					</li>
-					<li class="breadcrumb-item active" aria-current="page">Câu hỏi thường gặp?</li>
-				</ol>
-			</nav>
-			<h2 class="head-primary v3">Câu hỏi thường gặp?</h2>
 			<section class="page-faqs page-primary">
 				<div class="container">
 					<nav aria-label="breadcrumb">

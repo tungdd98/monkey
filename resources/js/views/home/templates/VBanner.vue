@@ -8,7 +8,8 @@ import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
-      path: null
+      path: null,
+      type: this.$route.name
     }
   },
   computed: {
@@ -23,11 +24,23 @@ export default {
   },
   watch: {
     '$route' (to, from) {
-      let type = to.name
-      if(!['profile', 'product-detail', 'history-order'].includes(type)) {
-        let item = this.categories.filter(value => value.type == type)
-        this.path = item[0].thumbnail  
-      }
+      this.type = to.name
+      this.init()
+    }
+  },
+  created() {
+    this.init()
+  },
+  methods: {
+    init() {
+      this.$store.dispatch('category/getList', {}).then(res => {
+        if(res.flag) {
+          if(!['profile', 'product-detail', 'history-order'].includes(this.type)) {
+            let item = this.categories.filter(value => value.type == this.type)
+            this.path = item[0].thumbnail  
+          }
+        }
+      })
     }
   }
 };

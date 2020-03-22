@@ -1,5 +1,5 @@
 <template>
-	<header>
+	<header style="background: url(../tomita/images/bg-header.png) top center no-repeat;">
 		<div class="container">
 			<div class="wrap-head">
 				<nav class="d-nav v1">

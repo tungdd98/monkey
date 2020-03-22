@@ -7,8 +7,7 @@
         <title>Laravel</title>
 
         <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,800" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('tomita/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome-font-awesome.min.css">
         <link rel="stylesheet" href="{{ asset('tomita/fonts/elegantIcon/elegantIcon.css') }}">
@@ -16,6 +15,7 @@
         <link rel="stylesheet" href="{{ asset('tomita/css/fancybox.css') }}">
         <link rel="stylesheet" href="{{ asset('tomita/css/slick.css') }}">
         <link rel="stylesheet" href="{{ asset('tomita/css/main.css') }}">
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     </head>
     <body>
         <div id="app"></div>
