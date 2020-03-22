@@ -36,9 +36,6 @@
           <span>Quản lý sản phẩm</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="3-1">
-            <router-link to="/admin/types" active-class="active-link">Loại sản phẩm</router-link>
-          </el-menu-item>
           <el-menu-item index="3-2">
             <router-link to="/admin/products" active-class="active-link">Danh sách sản phẩm</router-link>
           </el-menu-item>

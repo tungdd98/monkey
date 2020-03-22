@@ -6,7 +6,6 @@ import axios from '@/plugins/axios'
 import auth from './modules/auth'
 import category from './modules/category'
 import product from './modules/product'
-import type from './modules/type'
 import unit from './modules/unit'
 import supplier from './modules/supplier'
 import article from './modules/article'
@@ -38,7 +37,6 @@ const store = new Vuex.Store({
     auth,
     category,
     product,
-    type,
     article,
     unit,
     supplier,

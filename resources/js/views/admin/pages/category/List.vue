@@ -103,7 +103,7 @@ export default {
         if(!res.flag) {
           this.$fire(foo.NOTIFICATION.error)
         } else {
-          this._limitDisplayImage(true)
+          // this._limitDisplayImage(true)
         }
       })
     },

@@ -10,7 +10,7 @@
           <el-form :model="form" :rules="rules" :ref="controller">
             <el-row :gutter="20">
               <el-col :span="16">
-                <el-form-item label="Tiêu đề" :label-width="display.formLabelWidth" prop="title">
+                <el-form-item label="Đơn vị" :label-width="display.formLabelWidth" prop="title">
                   <el-input v-model="form.title" autocomplete="off">
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
                   </el-input>
@@ -22,15 +22,8 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="Trạng thái" :label-width="display.formLabelWidth" prop="status">
-                  <el-select v-model="form.status" placeholder="--Chọn--">
-                    <el-option
-                      v-for="item in selectStatus"
-                      :key="item.title"
-                      :value="item.value"
-                      :label="item.title"
-                    ></el-option>
-                  </el-select>
+                <el-form-item label="Hiển thị" :label-width="display.formLabelWidth">
+                  <el-switch v-model="state.status"></el-switch>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -70,7 +63,9 @@ export default {
         note: '',
         status: 1
       },
-      selectStatus: foo.STATUS,
+      state: {
+        status: true,
+      },
     }
   },
   props: {
@@ -93,6 +88,9 @@ export default {
         Object.entries(val).forEach(([key, value]) => {
           if(value && ['title', 'note'].includes(key)) {
             this.form[key] = value
+          }
+          if(['status', 'is_hot', 'is_bestseller'].includes(key)) {
+            value === 1 ? this.state[key] = true : this.state[key] = false
           }
         })
       }  
@@ -118,7 +116,10 @@ export default {
         if(valid) {
           let data = new FormData()
           Object.entries(this.form).forEach(([key, value]) => data.append(key, value))
-          
+          Object.entries(this.state).forEach(([key, value]) => {
+            let numberValue = value ? 1 : 0
+            data.append(key, numberValue)
+          })
           if(!this.isEdit) {
             data.append('created_by', this.user.name)
             this.createItem(data).then(res => {
@@ -153,6 +154,7 @@ export default {
       ['title', 'note'].forEach(field => {
         this.form[field] = ''
       })
+      this.state.status = true
     }
   }
 };

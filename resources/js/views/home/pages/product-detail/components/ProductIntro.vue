@@ -1,15 +1,15 @@
 <template>
-	<div class="product-intro" v-if="data">
+	<div class="product-intro" v-if="item">
 		<h3 class="title">Thông tin sản phẩm</h3>
-		<div class="s-content" v-html="data.content">
-			{{ data.content }}
+		<div class="s-content" v-html="item.content">
+			{{ item.content }}
 		</div>
 	</div>
 </template>
 <script>
 export default {
 	props: {
-		data: { type: Object, default: '' }
+		item: { type: Object, default: '' }
 	}
 };
 </script>

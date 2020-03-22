@@ -17,7 +17,7 @@ class Customers extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('phone')->nullable();
-            $table->string('address')->nullable();
+            $table->text('address')->nullable();
             $table->string('email')->nullable();
             $table->text('note')->nullable();
             $table->timestamps();

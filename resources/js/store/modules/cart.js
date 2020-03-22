@@ -11,12 +11,8 @@ const state = {
 
 const getters = {
   getCart: state => {
-    const totalQuantity = state.all.reduce((total, item) => {
-      return total + item.quantity
-    }, 0)
-    const totalMoney = state.all.reduce((total, item) => {
-      return total + item.product.price * item.quantity
-    }, 0)
+    const totalQuantity = state.all.reduce((total, item) => total + item.quantity, 0)
+    const totalMoney = state.all.reduce((total, item) => total + item.product.price * item.quantity, 0)
     return {
       all: state.all,
       totalQuantity: totalQuantity,
@@ -26,6 +22,9 @@ const getters = {
 }
 
 const actions = {
+  /**
+   * Thay đổi số lượng sản phẩm trong giỏ
+   */
   changeProductToCart: ({ state, commit }, { product, quantity }) => {
     if(product.quantity > 0) {
       const cartItem = state.all.find(item => item.product.id === product.id)
@@ -44,6 +43,9 @@ const actions = {
       Vue.fire(foo.NOTIFICATION.outOfStock)
     }
   },
+  /**
+   * Xoá sản phẩm khỏi giỏ
+   */
   deleteProductOutCart: ({ state, commit }, cartItem) => {
     const index = state.all.findIndex(item => item.id === cartItem.product.id)
     commit('deleteProduct', index)

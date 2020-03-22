@@ -58,11 +58,13 @@ class Category extends Model
         }
         // Update phần tử
         if($options['field'] == 'update-item') {
-            if($request->hasFile('thumbnail')) {
+            if(!empty($request->currThumbnail)) {
                 $imgPath = "images/{$this->folderImg}/{$params['currThumbnail']}";
                 if(file_exists(public_path() . $imgPath)) {
                     unlink($imgPath);
                 }
+            }
+            if($request->hasFile('thumbnail')) {
                 $imgName = time() . $params['thumbnail']->getClientOriginalName();
                 $params['thumbnail']->move("images/{$this->folderImg}", $imgName);
                 $params['thumbnail'] = $imgName;

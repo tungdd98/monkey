@@ -11,12 +11,12 @@
 				<p class="note">Nhà cung cấp: {{ info.supplier }}</p>
 				<div class="price">
 					<span>
-						<strong>{{ item.sale_up > 0 ? _formatCurrency(priceSale) : _formatCurrency(item.price) }}</strong>/{{ info.unit }}
+						<strong>{{ item.original_price ? _formatCurrency(item.original_price) : _formatCurrency(item.price) }}</strong>{{ `/${info.unit}` }}
 					</span>
-					<del v-show="item.sale_up > 0">{{ _formatCurrency(item.price) }}/{{ info.unit }}</del>
+					<del v-show="item.original_price">{{ _formatCurrency(item.original_price) }}{{ `/${info.unit}` }}</del>
 				</div>
 			</div>
-			<span class="sales" v-show="item.sale_up > 0">-{{ item.sale_up }}%</span>
+			<span class="sales" v-show="getSale > 0">-{{ getSale }}%</span>
 			<div href class="control">
 				<a href title class="add-cart btn-crt" @click.prevent="handleAddCart(item)">
 					<i class="fa fa-cart-plus"></i>
@@ -41,8 +41,8 @@ export default {
 		}
 	},
 	computed: {
-		priceSale() {
-			return Math.floor(this.item.price - (this.item.sale_up)/100 * this.item.price)
+		getSale() {
+			return Math.floor(this.item.price / this.item.original_price) * 100
 		},
 	},
 	props: {
@@ -60,6 +60,9 @@ export default {
 	},
 	methods: {
 		...mapActions('product', ['getPropertyById']),
+		/**
+		 * Lấy link sản phẩm
+		 */
 		getLinkItem(item) {
 			return {
 				name: 'product-detail',
@@ -68,6 +71,9 @@ export default {
 				}
 			}
 		},
+		/**
+		 * Thêm sản phẩm vào giỏ
+		 */
 		handleAddCart(item) {
 			this.$store.dispatch('cart/changeProductToCart', {
 				product: item,

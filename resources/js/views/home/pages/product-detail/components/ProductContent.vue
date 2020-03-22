@@ -1,17 +1,17 @@
 <template>
-	<div class="info-pro-dt" v-if="data">
-		<h1 class="title-pro">{{ _notag(data.title) }}</h1>
+	<div class="info-pro-dt" v-if="item">
+		<h1 class="title-pro">{{ _notag(item.title) }}</h1>
 		<div class="price">
-			<strong>{{ data.sale_up > 0 ? _formatCurrency(priceSale) : _formatCurrency(data.price) }}</strong>
-			<del>{{ _formatCurrency(data.price) }}</del>
+			<strong>{{ item.original_price ? _formatCurrency(item.original_price) : _formatCurrency(item.price) }}</strong>{{ `/${info.unit}` }}
+			<del v-show="item.original_price">{{ _formatCurrency(item.original_price) }}{{ `/${info.unit}` }}</del>
 		</div>
 		<div
 			class="desc"
-			v-html="data.description"
-		>{{ data.description }}</div>
+			v-html="item.description"
+		>{{ item.description }}</div>
 		<ul class="pro-properties clearfix">
 			<li>
-				<strong>Mã sản phẩm: </strong>{{ data.code ? _notag(data.code) : '' }}
+				<strong>Mã sản phẩm: </strong>{{ item.code ? _notag(item.code) : '' }}
 			</li>
 			<li>
 				<strong>Đơn vị tính: </strong>{{ _notag(info.unit) }}
@@ -20,11 +20,11 @@
 				<strong>Nhà sản xuất: </strong>{{ _notag(info.supplier) }}
 			</li>
 			<li>
-				<strong>Trạng thái: </strong>{{ data.quantity > 0 ? 'Còn hàng' : 'Hết hàng' }}
+				<strong>Trạng thái: </strong>{{ item.quantity > 0 ? 'Còn hàng' : 'Hết hàng' }}
 			</li>
 		</ul>
 		<div class="pro-quantity">
-			<span>Số lượng: {{ data.quantity }}</span>
+			<span>Số lượng: {{ item.quantity }}</span>
 			<div class="i-number">
 				<button class="n-ctrl down smooth"></button>
 				<input type="text" class="numberic" min="1" max="1000" value="1" />
@@ -73,12 +73,12 @@ export default {
 		}
 	},
 	props: {
-		data: { type: Object, default: {} },
+		item: { type: Object, default: {} },
 		id: { type: [Number, String] }
 	},
 	computed: {
-		priceSale() {
-			return Math.floor(this.data.price - (this.data.sale_up)/100 * this.data.price)
+		getSale() {
+			return Math.floor(this.item.price / this.item.original_price) * 100
 		},
 	},
 	created() {

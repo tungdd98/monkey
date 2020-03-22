@@ -154,10 +154,13 @@ export default {
           }
         })
         // Hiển thị danh sách ảnh 
-        this.imagesList.push({
-          name: val.thumbnail,
-          url: this._getThumbnail(this.controller, val.thumbnail)
-        })
+        if(val.thumbnail) {
+          this._limitDisplayImage(true)
+          this.imagesList.push({
+            name: val.thumbnail,
+            url: this._getThumbnail(this.controller, val.thumbnail)
+          })
+        } 
       }
     },
     'dialog.formVisible': function(val, oldVal) {
@@ -228,7 +231,9 @@ export default {
           } else {
             data.append('id',             this.currItem.id)
             data.append('updated_by',     this.user.name)
-            data.append('currThumbnail',  this.imagesList[0].name)
+            if(this.imagesList.length > 0) {
+              data.append('currThumbnail',  this.imagesList[0].name)
+            }
             data.append('field',          'update-item')
             this.updateItem(data).then(res => {
               if(res.flag) {

@@ -21,10 +21,10 @@
 						<product-images></product-images>
 					</div>
 					<div class="col-lg-6">
-						<product-content :data="data" :id="id"></product-content>
+						<product-content :item="item" :id="id"></product-content>
 					</div>
 				</div>
-				<product-intro :data="data"></product-intro>
+				<product-intro :item="item"></product-intro>
 			</div>
 			<product-related></product-related>
 		</div>
@@ -51,7 +51,7 @@ export default {
 	},
 	computed: {
 		...mapGetters({
-			data: 'product/getCurrItem'
+			item: 'product/getCurrItem'
 		})
 	},
 	created() {

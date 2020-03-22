@@ -22,14 +22,18 @@ class Products extends Migration
             $table->string('thumbnail')->nullable();
             $table->string('images')->nullable();
             $table->double('price')->nullable()->default(0);
-            $table->float('sale_up')->nullable()->default(0);
+            $table->double('original_price')->nullable();
             $table->integer('quantity')->nullable()->default(1);
+            $table->tinyInteger('is_bestseller')->nullable()->default(0);
+            $table->tinyInteger('is_hot')->nullable()->default();
             $table->tinyInteger('status')->nullable()->default(1);
+
             $table->bigInteger('unit_id')->unsigned()->nullable();
             $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade');
+
             $table->bigInteger('supplier_id')->unsigned()->nullable();
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
-            $table->tinyInteger('is_bestseller')->nullable()->default(0);
+            
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->timestamps();
