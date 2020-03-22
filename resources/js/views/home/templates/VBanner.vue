@@ -24,7 +24,7 @@ export default {
   watch: {
     '$route' (to, from) {
       let type = to.name
-      if(type !== 'product-detail') {
+      if(!['profile', 'product-detail', 'history-order'].includes(type)) {
         let item = this.categories.filter(value => value.type == type)
         this.path = item[0].thumbnail  
       }

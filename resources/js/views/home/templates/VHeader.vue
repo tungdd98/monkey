@@ -55,13 +55,13 @@
 									<span>{{ user.name }}</span>
 								</el-dropdown-item>
 								<el-dropdown-item icon="el-icon-plus">
-									<router-link to="/login">Login</router-link>
+									<router-link to="/profile">Trang cá nhân</router-link>
 								</el-dropdown-item>
 								<el-dropdown-item icon="el-icon-circle-plus">
-									<router-link to="/register">Register</router-link>
+									<router-link to="/history-order">Lịch sử mua hàng</router-link>
 								</el-dropdown-item>
 								<el-dropdown-item icon="el-icon-circle-plus">
-									<span>Đăng xuất</span>
+									<span @click="handleLogout">Đăng xuất</span>
 								</el-dropdown-item>
 							</el-dropdown-menu>
 						</el-dropdown>
@@ -126,6 +126,9 @@ export default {
 					tag: category.id
 				}
 			}
+		},
+		handleLogout() {
+			this.$store.dispatch('auth/logout')
 		}
 	}
 };

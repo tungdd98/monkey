@@ -1,6 +1,7 @@
 <template>
 	<div class="wrap">
 		<v-popup-cart></v-popup-cart>
+		<v-popup-login></v-popup-login>
 		<v-header></v-header>
 		<v-banner></v-banner>
 		<router-view></router-view>
@@ -14,6 +15,7 @@ import VHeader from './templates/VHeader'
 import VNewLetter from './templates/VNewLetter'
 import VBanner from './templates/VBanner'
 import VPopupCart from './templates/VPopupCart'
+import VPopupLogin from './templates/VPopupLogin'
 export default {
 	components: {
 		VFooter,
@@ -21,6 +23,7 @@ export default {
 		VNewLetter,
 		VBanner,
 		VPopupCart,
+		VPopupLogin
 	}
 };
 </script>

@@ -22,6 +22,8 @@ import faq from '@/views/home/pages/faq/router'
 import contact from '@/views/home/pages/contact/router'
 import about from '@/views/home/pages/about/router'
 import promotion from '@/views/home/pages/promotion/router'
+import profile from '@/views/home/pages/profile/router'
+import history_order from '@/views/home/pages/history-order/router'
 import product_home from '@/views/home/pages/product/router'
 import article_home from '@/views/home/pages/article/router'
 import product_detail from '@/views/home/pages/product-detail/router'
@@ -38,7 +40,9 @@ const routes = [
       article_home,
       product_detail,
       about,
-      promotion
+      promotion,
+      profile,
+      history_order
     ]
   },
   {
