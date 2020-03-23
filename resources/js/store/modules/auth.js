@@ -60,7 +60,8 @@ const actions = {
       if(result.status === 200) {
         commit('setUserLogin', result.data)
         return {
-          flag: true
+          flag: true,
+          level: result.data.level
         }
       }
       return {
