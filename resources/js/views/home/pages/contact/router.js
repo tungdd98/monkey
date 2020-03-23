@@ -1,6 +1,6 @@
 import Index from './Index'
 export default {
-  name: 'contact',
+  name: 'Contact',
   path: '/contact',
   component: Index
 }

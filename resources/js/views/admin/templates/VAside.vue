@@ -26,72 +26,63 @@
       </el-menu-item>
       <el-menu-item index="2">
         <template slot="title">
-          <i class="el-icon-picture"></i>
-          <router-link to="/admin/sliders">Quản lý slide</router-link>
-        </template>
-      </el-menu-item>
-      <el-menu-item index="3">
-        <template slot="title">
           <i class="el-icon-s-grid"></i>
           <router-link to="/admin/categories">Quản lý danh mục</router-link>
         </template>
       </el-menu-item>
-      <el-submenu index="4">
+      <el-submenu index="3">
         <template slot="title">
           <i class="el-icon-s-cooperation"></i>
           <span>Quản lý sản phẩm</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="4-1">
-            <router-link to="/admin/types" active-class="active-link">Loại sản phẩm</router-link>
-          </el-menu-item>
-          <el-menu-item index="4-2">
+          <el-menu-item index="3-2">
             <router-link to="/admin/products" active-class="active-link">Danh sách sản phẩm</router-link>
           </el-menu-item>
-          <el-menu-item index="4-3">
+          <el-menu-item index="3-3">
             <router-link to="/admin/units" active-class="active-link">Đơn vị tính</router-link>
           </el-menu-item>
-          <el-menu-item index="4-4">
+          <el-menu-item index="3-4">
             <router-link to="/admin/suppliers" active-class="active-link">Nhà cung cấp</router-link>
           </el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-menu-item index="5">
+      <el-menu-item index="4">
         <template slot="title">
           <i class="el-icon-s-platform"></i>
           <router-link to="/admin/articles">Quản lý bài viết</router-link>
         </template>
       </el-menu-item>
-      <el-submenu index="6">
+      <el-submenu index="5">
         <template slot="title">
           <i class="el-icon-s-order"></i>
           <router-link to="/">Quản lý đơn hàng</router-link>
         </template>
       </el-submenu>
-      <el-submenu index="7">
+      <el-menu-item index="6">
         <template slot="title">
           <i class="el-icon-user-solid"></i>
           <router-link to="/">Khách hàng</router-link>
         </template>
-      </el-submenu>
-      <el-menu-item index="8">
+      </el-menu-item>
+      <el-menu-item index="7">
         <template slot="title">
           <i class="el-icon-star-on"></i>
           <router-link to="/">Giao diện</router-link>
         </template>
       </el-menu-item>
-      <el-submenu index="9">
+      <el-submenu index="8">
         <template slot="title">
           <i class="el-icon-s-tools"></i>
           <router-link to="/">Hệ thống</router-link>
         </template>
       </el-submenu>
-      <el-submenu index="10">
+      <el-menu-item index="9">
         <template slot="title">
           <i class="el-icon-s-custom"></i>
-          <router-link to="/users">Tài khoản</router-link>
+          <router-link to="/admin/users">Tài khoản</router-link>
         </template>
-      </el-submenu>
+      </el-menu-item>
     </el-menu>
   </el-aside>
 </template>

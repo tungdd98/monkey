@@ -27,11 +27,11 @@ class ShopTableSeeder extends Seeder
             ],
             [
                 'title' => 'Khuyến mãi',
-                'type' => 'News',
+                'type' => 'Promotion',
             ],
             [
                 'title' => 'Về chúng tôi',
-                'type' => 'Introduce',
+                'type' => 'About',
             ],
             [
                 'title' => 'Hỗ trợ',

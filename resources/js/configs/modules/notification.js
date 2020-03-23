@@ -9,11 +9,15 @@ const notification = {
     created: { ...base, type: 'success', title: 'Thêm mới thành công!' },
     updated: { ...base, type: 'success', title: 'Cập nhật thành công!' },
     deleted: { ...base, type: 'success', title: 'Xoá thành công!' },
-    logined: { ...base, type: 'success', title: 'Đăng nhập thành công!' }
+    logined: { ...base, type: 'success', title: 'Đăng nhập thành công!' },
+    registed: { ...base, type: 'success', title: 'Đăng ký thành công!' }
   },
   error: { ...base, type: 'error', title: 'Có lỗi xảy ra' },
   confirm: {
     deleted: { type: 'warning', title: 'Bạn có chắc chắn muốn xoá?', showCancelButton: true, confirmButtonText: 'Có' }
-  }
+  },
+  outOfStock: { ...base, type: 'error', title: 'Sản phẩm đã hết hàng' },
+  addSuccess: { ...base, type: 'success', title: 'Sản phẩm đã thêm vào giỏ'},
+  deleteSuccess: { ...base, type: 'success', title: 'Đã xoá sản phẩm khỏi giỏ'}
 }
 export default notification

@@ -7,13 +7,12 @@ import store from '@/store'
 
 import Admin from '@/views/admin/Base'
 import dashboard from '@/views/admin/pages/dashboard/router'
-import slider from '@/views/admin/pages/slider/router'
 import category from '@/views/admin/pages/category/router'
 import product from '@/views/admin/pages/product/router'
-import type from '@/views/admin/pages/type/router'
 import unit from '@/views/admin/pages/unit/router'
 import supplier from '@/views/admin/pages/supplier/router'
 import article from '@/views/admin/pages/article/router'
+import user from '@/views/admin/pages/user/router'
 import Login from '@/views/Login'
 import Register from '@/views/Register'
 
@@ -21,8 +20,13 @@ import Home from '@/views/home/Base'
 import index from '@/views/home/pages/index/router'
 import faq from '@/views/home/pages/faq/router'
 import contact from '@/views/home/pages/contact/router'
+import about from '@/views/home/pages/about/router'
+import promotion from '@/views/home/pages/promotion/router'
+import profile from '@/views/home/pages/profile/router'
+import history_order from '@/views/home/pages/history-order/router'
 import product_home from '@/views/home/pages/product/router'
 import article_home from '@/views/home/pages/article/router'
+import product_detail from '@/views/home/pages/product-detail/router'
 
 const routes = [
   {
@@ -33,7 +37,12 @@ const routes = [
       faq,
       contact,
       product_home,
-      article_home
+      article_home,
+      product_detail,
+      about,
+      promotion,
+      profile,
+      history_order
     ]
   },
   {
@@ -41,13 +50,12 @@ const routes = [
     component: Admin,
     children: [
       dashboard,
-      slider,
       category,
       product,
-      type,
       unit,
       supplier,
       article,
+      user,
     ],
     meta: { requiresAuth: true }
   },

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Str;
 class Product extends Model
 {
     /**
@@ -13,8 +13,8 @@ class Product extends Model
      * $folderImg: đường dẫn chứa ảnh
      */
     protected $table = 'products';
-    protected $fillable = ['title', 'code', 'description', 'content', 'thumbnail', 'images', 'price', 'sale_up', 'quantity', 'status', 'unit_id', 'supplier_id', 'created_by', 'updated_by'];
-    protected $columns = ['id', 'title', 'code', 'description', 'content', 'thumbnail', 'images', 'price', 'sale_up', 'quantity', 'status', 'unit_id', 'supplier_id', 'created_by', 'updated_by'];
+    protected $fillable = ['title', 'code', 'description', 'content', 'thumbnail', 'images', 'price', 'original_price', 'quantity', 'status', 'is_hot', 'is_bestseller',  'unit_id', 'supplier_id', 'created_by', 'updated_by'];
+    protected $columns = ['id', 'title', 'code', 'description', 'content', 'thumbnail', 'images', 'price', 'original_price', 'quantity', 'status', 'is_hot', 'is_bestseller',  'unit_id', 'supplier_id', 'created_by', 'updated_by'];
     protected $folderImg = 'product';
 
     /**
@@ -22,13 +22,6 @@ class Product extends Model
      */
     public function categories() {
         return $this->belongsToMany('App\Models\Category');
-    }
-
-    /**
-     * Quan hệ với bảng loại sản phẩm(nhiều - nhiều)
-     */
-    public function types() {
-        return $this->belongsToMany('App\Models\Type');
     }
 
     public function units() {
@@ -85,15 +78,17 @@ class Product extends Model
             $params['images'] = json_encode($imagesStr);
             $product = new Product([
                 'title'         => $params['title'],
-                'code'          => $params['code'],
+                'code'          => !empty($params['code']) ? $params['code'] : Str::random(5),  
                 'description'   => $params['description'],
                 'content'       => $params['content'],
                 'thumbnail'     => $params['thumbnail'],
                 'images'        => $params['images'],
                 'price'         => $params['price'],
-                'sale_up'       => $params['sale_up'],
+                'original_price'=> $params['original_price'],
                 'quantity'      => $params['quantity'],
                 'status'        => $params['status'],
+                'is_hot'        => $params['is_hot'],
+                'is_bestseller' => $params['is_bestseller'],
                 'unit_id'       => $params['unit_id'],
                 'supplier_id'   => $params['supplier_id'],
                 'created_by'    => $params['created_by']
@@ -101,11 +96,6 @@ class Product extends Model
             $product->save();
             foreach($request->categories as $key => $value) {
                 $product->categories()->attach($value);
-            }
-            if(!empty($request->types)) {
-                foreach($request->types as $key => $value) {
-                    $product->types()->attach($value);
-                }
             }
             return $product;
         }
@@ -137,13 +127,15 @@ class Product extends Model
             }
             self::where('id', $params['id'])->update([
                 'title'         => $params['title'],
-                'code'          => $params['code'],
+                'code'          => $params['code'],  
                 'description'   => $params['description'],
                 'content'       => $params['content'],
                 'price'         => $params['price'],
-                'sale_up'       => $params['sale_up'],
+                'original_price'=> $params['original_price'],
                 'quantity'      => $params['quantity'],
                 'status'        => $params['status'],
+                'is_hot'        => $params['is_hot'],
+                'is_bestseller' => $params['is_bestseller'],
                 'unit_id'       => $params['unit_id'],
                 'supplier_id'   => $params['supplier_id'],
                 'updated_by'    => $params['updated_by']
@@ -157,17 +149,6 @@ class Product extends Model
             if(!empty($request->categoriesUpdate)) {
                 foreach($request->categoriesUpdate as $key => $value) {
                     $product->categories()->attach($value);
-                }
-            }
-
-            if(!empty($request->typesRemove)) {
-                foreach($request->typesRemove as $key => $value) {
-                    $product->types()->detach($value);
-                }
-            }
-            if(!empty($request->typesUpdate)) {
-                foreach($request->typesUpdate as $key => $value) {
-                    $product->types()->attach($value);
                 }
             }
             return $product;
@@ -205,17 +186,6 @@ class Product extends Model
      */
     public function getCategoryOfItem($id, $fields) {
         $result = self::find($id)->categories()->select($fields)->get();
-        return $result;
-    }
-
-    /**
-     * Lấy loại sản phẩm
-     * 
-     * @param $id, $fields
-     * @return 
-     */
-    public function getTypeOfItem($id, $fields) {
-        $result = self::find($id)->types()->select($fields)->get();
         return $result;
     }
 

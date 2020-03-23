@@ -1,4 +1,8 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);#v-admin {
+@import url(https://fonts.googleapis.com/css?family=Nunito);body {
+  font-family: "Nunito", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+#v-admin {
   font-size: 14px;
   margin: 0;
   font-family: "Nunito", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
@@ -133,7 +137,7 @@ input {
 
 .v-login-form,
 .v-register-form {
-  width: 400px;
+  width: 600px;
   margin: 100px 20px;
   padding: 40px 60px;
   border-radius: 5px;

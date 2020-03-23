@@ -1,5 +1,5 @@
 <template>
-	<section class="support-home">
+	<section class="support-home" style="background: url(../tomita/images/bg-sp-home.jpg) no-repeat center;">
 		<div class="container">
 			<div class="list-item">
 				<div class="item-sup-home">

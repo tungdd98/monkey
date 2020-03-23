@@ -99,17 +99,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Lấy loại sản phẩm của phần tử
-     * 
-     * @param 
-     * @return response
-     */
-    public function getTypeOfItem(Request $request) {
-        $types = $this->model->getTypeOfItem($request->id, ['title']);
-        return response()->json(['data' => $types]);
-    }
-
-    /**
      * Lấy đơn vị tính
      * 
      * @param 

@@ -4,37 +4,46 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 import axios from '@/plugins/axios'
 import auth from './modules/auth'
-import slider from './modules/slider'
+import user from './modules/user'
 import category from './modules/category'
 import product from './modules/product'
-import type from './modules/type'
 import unit from './modules/unit'
 import supplier from './modules/supplier'
 import article from './modules/article'
 import datatype from './modules/datatype'
+import cart from './modules/cart'
 
 const store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
   state: {
-    isLoading: false
+    isLoading: false,
+    pathBanner: '/tomita/images/bn-product.jpg'
   },
-  getters: {},
-  actions: {},
+  getters: {
+    getUrlBanner: state => {
+      return state.pathBanner
+    }
+  },
+  actions: {
+  },
   mutations: {
     setLoading: (state, loading) => {
       state.isLoading = loading
+    },
+    setBanner: (state, pathBanner) => {
+      state.pathBanner = pathBanner
     }
   },
   modules: {
     auth,
-    slider,
     category,
     product,
-    type,
     article,
     unit,
     supplier,
-    datatype
+    datatype,
+    cart,
+    user
   }
 })
 store.subscribe((mutations) => {

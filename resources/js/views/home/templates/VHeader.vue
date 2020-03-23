@@ -1,5 +1,5 @@
 <template>
-	<header>
+	<header style="background: url(../tomita/images/bg-header.png) top center no-repeat;">
 		<div class="container">
 			<div class="wrap-head">
 				<nav class="d-nav v1">
@@ -10,23 +10,23 @@
 					</div>
 					<ul>
 						<li v-for="item in menuLeft" :key="item.id">
-							<router-link :to="item.url" class="smooth">{{ item.title }}</router-link>
+							<router-link :to="getLinkCategoryNoChild(item)" class="smooth">{{ item.title }}</router-link>
 							<ul v-if="item.children && item.children.length > 0">
 								<li v-for="item in item.children" :key="item.id">
-									<router-link to="/" class="smooth">{{ item.title }}</router-link>
+									<router-link :to="getLinkCategoryWithChild(item)" class="smooth">{{ item.title }}</router-link>
 								</li>
 							</ul>
 						</li>
 					</ul>
 				</nav>
-				<a href="#" class="logo">
+				<router-link to="/admin" class="logo">
 					<img src="tomita/images/logo.png" alt />
-				</a>
+				</router-link>
 				<div class="head-right">
 					<nav class="d-nav">
 						<ul>
 							<li v-for="item in menuRight" :key="item.id">
-								<router-link :to="item.url" class="smooth">{{ item.title }}</router-link>
+								<router-link :to="getLinkCategoryNoChild(item)" class="smooth">{{ item.title }}</router-link>
 							</li>
 						</ul>
 					</nav>
@@ -44,18 +44,27 @@
 								</div>
 							</div>
 						</div>
-						<div class="head-lang">
-							<img src="/tomita/images/lang-vi.jpg" alt />
-							<ul>
-								<li v-for="item in menuRight" :key="item.id">
-									<router-link to="/" class="smooth">{{ item.title }}</router-link>
-								</li>
-							</ul>
-						</div>
-						<a href="javascript:;" title class="head-login" data-toggle="modal" data-target="#pu-login">
+						<a href="javascript:;" title class="head-login" data-toggle="modal" data-target="#pu-login" v-if="!user">
 							<i class="lnr lnr-user"></i>
 							<span>Đăng nhập</span>
 						</a>
+						<el-dropdown trigger="click" v-else style="margin-left: 20px">
+							<el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+							<el-dropdown-menu slot="dropdown">
+								<el-dropdown-item>
+									<span>{{ user.name }}</span>
+								</el-dropdown-item>
+								<el-dropdown-item icon="el-icon-plus">
+									<router-link to="/profile">Trang cá nhân</router-link>
+								</el-dropdown-item>
+								<el-dropdown-item icon="el-icon-circle-plus">
+									<router-link to="/history-order">Lịch sử mua hàng</router-link>
+								</el-dropdown-item>
+								<el-dropdown-item icon="el-icon-circle-plus">
+									<span @click="handleLogout">Đăng xuất</span>
+								</el-dropdown-item>
+							</el-dropdown-menu>
+						</el-dropdown>
 					</div>
 				</div>
 				<div class="icon-menu open-mnav">
@@ -68,7 +77,7 @@
 	</header>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import foo from '@/configs'
 
 export default {
@@ -78,12 +87,15 @@ export default {
 		};
 	},
 	computed: {
+		...mapGetters({
+			user: 'auth/getUser',
+		}),
 		menuLeft() {
 			return this.items.filter((value, key) => key <= 3);
 		},
 		menuRight() {
 			return this.items.filter((value, key) => key > 3);
-		}
+		},
 	},
 	created() {
 		this.getList({ action: "tree" }).then(res => {
@@ -100,7 +112,24 @@ export default {
 		});
 	},
 	methods: {
-		...mapActions("category", ["getList"])
+		...mapActions("category", ["getList"]),
+		getLinkCategoryNoChild(category) {
+			return {
+				name: category.type
+			}
+		},
+		getLinkCategoryWithChild(category) {
+			return {
+				name: category.type,
+				query: {
+					category: this._slug(category.title),
+					tag: category.id
+				}
+			}
+		},
+		handleLogout() {
+			this.$store.dispatch('auth/logout')
+		}
 	}
 };
 </script>

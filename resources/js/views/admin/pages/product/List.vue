@@ -29,7 +29,6 @@
         <el-table-column label="Tiêu đề">
           <template slot-scope="scope">
             <div class="v-h2">{{ _notag(scope.row.title) }}</div>
-            <div class="v-italic" v-html="scope.row.description">Mô tả: {{ scope.row.description }}</div>
           </template>
         </el-table-column>
         <el-table-column label="Giá bán">

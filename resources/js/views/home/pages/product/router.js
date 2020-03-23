@@ -1,6 +1,6 @@
 import Index from './Index'
 export default {
-  name: 'product-home',
+  name: 'Product',
   path: '/product',
-  component: Index
+  component: Index,
 }

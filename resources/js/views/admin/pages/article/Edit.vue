@@ -15,6 +15,16 @@
                     <i slot="suffix" class="el-input__icon el-icon-edit"></i>
                   </el-input>
                 </el-form-item>
+                <el-form-item label="Danh mục" :label-width="display.formLabelWidth" prop="category">
+                  <el-select v-model="category.list" placeholder="--Chọn--" v-if="category.select" multiple collapse-tags>
+                    <el-option
+                      v-for="item in category.select"
+                      :key="item.id"
+                      :value="item.id"
+                      :label="item.title"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
                 <el-form-item label="Mô tả" :label-width="display.formLabelWidth" prop="description">
                   <ckeditor :editor="editor.type" v-model="form.description" :config="editor.config"></ckeditor>
                 </el-form-item>
@@ -84,6 +94,7 @@ import foo from '@/configs'
 import { mapActions, mapGetters } from 'vuex';
 
 const CONTROLLER = 'article'
+const DATATYPE = 'News'
 
 export default {
   data() {
@@ -118,6 +129,11 @@ export default {
       },
       selectStatus: foo.STATUS,
       imagesList: [],
+      category: {
+        select: [],
+        list: [],
+        default: []
+      },
     }
   },
   props: {
@@ -149,6 +165,34 @@ export default {
         })
       }  
     },
+    'dialog.formVisible': function(val, oldVal) {
+      if(val) {
+        if(!this.isEdit) {
+          this.category.list = []
+        } else {
+          ['category'].forEach(value => {
+            this.getPropertyById({ id: this.currItem.id, property: value }).then(res => {
+              if(res.flag) {
+                if(['category'].includes(value)) {
+                  res.data.forEach(item => this[value].list.push(item.pivot[`${value}_id`]))
+                  this[value].default = this[value].list
+                } else {
+                  res.data.forEach(item => this.form[`${value}_id`] = item.id)
+                }
+              }
+            })
+          })
+        }
+      }
+    }
+  },
+  created() {
+    // Lấy danh sách category
+    this.$store.dispatch('category/getList', {}).then(res => {
+      if(res.flag) {
+        this.category.select = res.data.filter((value, key) => value.type === DATATYPE)
+      }
+    })
   },
   methods: {
     ...mapActions(CONTROLLER, ['createItem', 'updateItem']),

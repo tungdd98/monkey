@@ -1,6 +1,6 @@
 import Index from './Index'
 export default {
-  name: 'article-home',
+  name: 'News',
   path: '/article',
   component: Index
 }

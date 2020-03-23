@@ -157,6 +157,34 @@ const actions = {
 			console.log(error)
 			return { flag: false }
 		}
+	},
+	/**
+	 * Lấy danh sách sản phẩm ngoài trang chủ
+	 */
+	getListTomita: async ({ commit }, { tag = null }) => {
+		try {
+			let configs = {
+				params: {
+					tag
+				}
+			}
+			let result = null
+			if(!tag) {
+				result = await Axios.get(`tomita/${URL}`)
+			} else {
+				result = await Axios.get(`tomita/${URL}/get-by-category-id`, configs)
+			}
+			if(result.status === 200) {
+				commit('setList', {
+					all: result.data.data.data,
+					total: result.data.total
+				})
+				return { flag: true }
+			}
+		} catch (error) {
+			console.log(error)
+			return { flag: false }
+		}
 	}
 }
 
@@ -173,6 +201,10 @@ const mutations = {
 		state.page 			= page
 		state.order_by 	= order_by
 		state.order_dir = order_dir
+	},
+	setProductQuantity: (state, { id, quantity }) => {
+		const product = state.all.find(item => item.id === id)
+		product.quantity -= quantity
 	}
 }
 
