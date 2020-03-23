@@ -22,6 +22,11 @@
             <div>{{ scope.row.email }}</div>
           </template>
         </el-table-column>
+        <el-table-column label="Level">
+          <template slot-scope="scope">
+            <div>{{ scope.row.level === 0 ? 'Member' : 'Admin' }}</div>
+          </template>
+        </el-table-column>
         <el-table-column label="Số điện thoại">
           <template slot-scope="scope">
             <div>{{ scope.row.email }}</div>
@@ -32,10 +37,11 @@
             <div>{{ _dateFormat(scope.row.created_at, 'short') }}</div>
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="Thao tác" align="center" width="120">
+        <el-table-column fixed="right" label="Thao tác" align="center" width="200">
           <template slot-scope="scope">
             <el-button type="primary" icon="el-icon-edit" size="small" title="Edit" circle @click="handleShow(scope.row)"></el-button>
             <el-button type="danger" icon="el-icon-delete" size="small" title="Delete" circle @click="handleDelete(scope.row)"></el-button>
+            <el-button type="warning " icon="el-icon-key" size="small" title="Change Password" circle @click="handleChangePassword(scope.row)"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -72,13 +78,48 @@ export default {
     this.init()
   },
   methods: {
-    ...mapActions(CONTROLLER, ['getList']),
+    ...mapActions(CONTROLLER, ['getList', 'deleteItem', 'getItemById']),
     /**
      * Khởi tạo dữ liệu
      */
     init(){
       this.getList({})
     },
+    /**
+     * Xoá bản ghi
+     */
+    handleDelete(data) {
+      this.$fire(foo.NOTIFICATION.confirm.deleted)
+      .then(res => {
+        if(res.value) {
+          this.deleteItem(data)
+          .then(res => {
+            if(res.flag) {
+              this.$store.dispatch(`${CONTROLLER}/getList`, {
+                per_page: this.filters.per_page,
+                order_by: this.filters.order_by,
+                order_dir: this.filters.order_dir,
+              })
+              this.$fire(foo.NOTIFICATION.success.deleted)
+            }
+            else this.$fire(foo.NOTIFICATION.error)
+          })
+        }
+      })
+    },
+    /**
+     * Hiển thị sản phẩm
+     */
+    handleShow(data) {
+      this.getItemById(data.id).then(res => {
+        if(!res.flag) {
+          this.$fire(foo.NOTIFICATION.error)
+        } 
+      })
+    },
+    handleChangePassword(data) {
+      alert('Đang xây dựng')
+    }
   },
   components: {
     Edit,

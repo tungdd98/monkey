@@ -27,8 +27,12 @@
                   <el-col :span="12">
 										<el-form-item label="Level" :label-width="display.formLabelWidth" prop="gender" style="float: right">
 											<el-select v-model="form.level" placeholder="--Chọn--">
-												<el-option value="1">Admin</el-option>
-												<el-option value="0">Member</el-option>
+												<el-option
+													v-for="item in level.select"
+													:key="item.value"
+													:label="item.label"
+													:value="item.value"
+												></el-option>
 											</el-select>
 										</el-form-item>
 									</el-col>
@@ -38,7 +42,7 @@
 										<i slot="suffix" class="el-input__icon el-icon-edit"></i>
 									</el-input>
 								</el-form-item>
-                <el-form-item label="Mật khẩu" :label-width="display.formLabelWidth" prop="password">
+                <el-form-item label="Mật khẩu" :label-width="display.formLabelWidth" prop="password" v-if="!isEdit">
 									<el-input v-model="form.password" autocomplete="off" type="password">
 										<i slot="suffix" class="el-input__icon el-icon-edit"></i>
 									</el-input>
@@ -95,12 +99,24 @@ export default {
 				phone: "",
 				birthday: "",
 				gender: "",
-				level: "",
+				level: 0,
         avatar: "",
         password: ""
 			},
 			state: {
 				status: true
+			},
+			level: {
+				select: [
+					{
+						value: 0,
+						label: 'Member'
+					},
+					{
+						value: 1,
+						label: 'Admin'
+					}
+				]
 			}
 		};
 	},
@@ -150,7 +166,8 @@ export default {
     handleResetForm() {
       Object.keys(this.form).forEach(field => {
         this.form[field] = ''
-      })
+			})
+			this.form.level = 0
       this.state.status = true
     },
     /**

@@ -66,6 +66,67 @@ const actions = {
 			return { flag: false }
 		}
 	},
+	/**
+	 * Thay đổi trạng thái phần tử
+	 */
+	changeStatus: async ({ commit, dispatch }, data) => {
+		try {
+			let result = await Axios.patch(`${URL}/${data.id}`, data)
+			if(result.status === 200) {
+				return { flag: true }
+			}
+		} catch (error) {
+			console.log(error)
+			return { flag: false }
+		}
+	},
+	/**
+	 * Xoá phần tử
+	 */
+	deleteItem: async ({ commit, dispatch }, data) => {
+		try {
+			let result = await Axios.delete(`${URL}/${data.id}`)
+			if(result.status === 200) {
+				return { flag: true }
+			}
+			return { flag: false }
+		} catch (error) {
+			console.log(error)
+			return { flag: false }
+		}
+	},
+	/**
+	 * Lấy phần tử theo id
+	 */
+	getItemById: async ({ commit }, id) => {
+		try {
+			let result = await Axios.get(`${URL}/${id}`)
+			if(result.status === 200) {
+				commit('setCurrItem', result.data.data)
+				return { flag: true, data: result.data }
+			}
+			return { flag: false }
+		} catch (error) {
+			console.log(error)
+			return { flag: false }
+		}
+	},
+	/**
+	 * Update phần tử
+	 */
+	updateItem: async ({ commit, dispatch }, data) => {
+		try {
+			let result = await Axios.post(`${URL}/${data.id}`, data)
+			if(result.status === 200) {
+				dispatch('getList', {})
+				return { flag: true }
+			}
+			return { flag: false }
+		} catch (error) {
+			console.log(error)
+			return { flag: false, msg: error }
+		}
+	}
 }
 
 const mutations = {

@@ -20,7 +20,8 @@ class UserController extends Controller
         $user = $request->user();
         return response()->json([
             'email' => $user->email,
-            'name'  => $user->name
+            'name'  => $user->name,
+            'level' => $user->level,
         ]);
     }
     /**
@@ -53,36 +54,36 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Lấy thông tin phần tử
      *
-     * @param  int  $id
+     * @param  $request
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $item = $this->model->getItemById($request);
+        return response()->json(['data' => $item]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Cập nhật phần tử
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $this->model->saveItem($request, ['field' => $request->field]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Xoá phần tử
      *
-     * @param  int  $id
+     * @param  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $this->model->deleteItem($request, ['task' => 'item']);
     }
 }

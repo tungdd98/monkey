@@ -14,6 +14,10 @@ Route::group([
     'prefix' => 'users'
 ], function() {
     Route::get('/', 'Api\UserController@index')->name('user.index');
+    Route::get('/{id}', 'Api\UserController@show')->name('user.show');
+    Route::patch('/{id}', 'Api\UserController@update')->name('user.update');
+    Route::delete('/{id}', 'Api\UserController@destroy')->name('user.delete');
+    Route::post('/{id}', 'Api\UserController@update')->name('user.edit');
 });
 
 Route::group([

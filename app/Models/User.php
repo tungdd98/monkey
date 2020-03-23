@@ -48,8 +48,8 @@ class User extends Model
         // Update phần tử
         if($options['field'] == 'update-item') {
             self::where('id', $params['id'])->update([
-                'name'      => $params['title'],
-                'address'   => $params['note'],
+                'name'      => $params['name'],
+                'address'   => $params['address'],
                 'phone'     => $params['status'],
                 'birthday'  => $params['birthday'],
                 'gender'    => $params['gender'],

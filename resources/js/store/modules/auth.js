@@ -135,7 +135,7 @@ const actions = {
     try {
       let result = await axios.post('auth/register', data)
       console.log(result)
-      if(result.status === 200) {
+      if(result.status === 201) {
         dispatch('user/getList', {}, { root: true })
         return { flag: true }
       }
