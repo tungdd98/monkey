@@ -49,15 +49,8 @@
                 </el-form-item>
               </el-col>
               <el-col :span="8">
-                <el-form-item label="Trạng thái" :label-width="display.formLabelWidth" prop="status">
-                  <el-select v-model="form.status" placeholder="--Chọn--">
-                    <el-option
-                      v-for="item in selectStatus"
-                      :key="item.title"
-                      :value="item.value"
-                      :label="item.title"
-                    ></el-option>
-                  </el-select>
+                <el-form-item label="Hiển thị" :label-width="display.formLabelWidth">
+                  <el-switch v-model="state.status"></el-switch>
                 </el-form-item>
                 <el-form-item label="Hình ảnh" :label-width="display.formLabelWidth" prop="thumbnail">
                   <el-upload
@@ -113,7 +106,6 @@ export default {
         formTitle: 'Thêm mới',
         formLabelWidth: '120px'
       },
-      selectStatus: foo.STATUS,
       rules: {
         title: foo.RULES.title,
       },
@@ -124,11 +116,13 @@ export default {
         content: '',
         type: '',
         thumbnail: '',
-        status: 1,
       },
       imagesList: [],
       selectCategory: [],
-      selectType: []
+      selectType: [],
+      state: {
+        status: true,
+      },
     }
   },
   props: {
@@ -151,6 +145,9 @@ export default {
         Object.entries(val).forEach(([key, value]) => {
           if(value && ['title', 'description', 'content', 'parent_id', 'status', 'type'].includes(key)) {
             this.form[key] = value
+          }
+          if(['status', 'is_hot', 'is_bestseller'].includes(key)) {
+            value === 1 ? this.state[key] = true : this.state[key] = false
           }
         })
         // Hiển thị danh sách ảnh 
@@ -217,7 +214,10 @@ export default {
         if(valid) {
           let data = new FormData()
           Object.entries(this.form).forEach(([key, value]) => data.append(key, value))
-
+          Object.entries(this.state).forEach(([key, value]) => {
+            let numberValue = value ? 1 : 0
+            data.append(key, numberValue)
+          })
           if(!this.isEdit) {
             data.append('created_by', this.user.name)
             this.createItem(data).then(res => {
@@ -262,7 +262,7 @@ export default {
       ['title', 'description', 'content', 'parent_id', 'type', 'thumbnail'].forEach(field => {
         this.form[field] = ''
       })
-      this.form.status = 1
+      this.state.status = true
     },
     /**
      * Đệ quy lấy select category

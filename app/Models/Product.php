@@ -24,6 +24,10 @@ class Product extends Model
         return $this->belongsToMany('App\Models\Category');
     }
 
+    public function bills() {
+        return $this->belongsToMany('App\Models\Bill');
+    }
+
     public function units() {
         return $this->belongsTo('App\Models\Unit', 'unit_id', 'id');
     }

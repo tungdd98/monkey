@@ -19,9 +19,12 @@ class UserController extends Controller
     public function __invoke(Request $request) {
         $user = $request->user();
         return response()->json([
+            'id'    => $user->id,
             'email' => $user->email,
             'name'  => $user->name,
             'level' => $user->level,
+            'address' => $user->address,
+            'phone' => $user->phone,
         ]);
     }
     /**

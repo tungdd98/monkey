@@ -38,7 +38,7 @@
 									</el-col>
 								</el-row>
 								<el-form-item label="Email" :label-width="display.formLabelWidth" prop="email">
-									<el-input v-model="form.email" autocomplete="off">
+									<el-input v-model="form.email" autocomplete="off" :disabled="isEdit">
 										<i slot="suffix" class="el-input__icon el-icon-edit"></i>
 									</el-input>
 								</el-form-item>
@@ -53,7 +53,7 @@
 									</el-input>
 								</el-form-item>
 								<el-form-item label="Địa chỉ" :label-width="display.formLabelWidth" prop="address">
-									<el-input v-model="form.address" autocomplete="off">
+									<el-input v-model="form.address" autocomplete="off" type="textarea">
 										<i slot="suffix" class="el-input__icon el-icon-edit"></i>
 									</el-input>
 								</el-form-item>
@@ -82,8 +82,14 @@ import { mapActions, mapGetters } from "vuex";
 const CONTROLLER = "user";
 export default {
 	data() {
+		const validateRepassword = function(rule, value, callback) {
+			if(value !== this.password) {
+				callback(new Error('Mật khẩu nhập lại không đúng'));
+			}
+		}
 		return {
 			isEdit: false,
+			isChangePassword: false,
 			dialog: {
 				formVisible: false
 			},
@@ -91,7 +97,14 @@ export default {
 				formTitle: "Thêm mới",
 				formLabelWidth: "120px"
 			},
-			rules: {},
+			rules: {
+				name: foo.RULES.register.name,
+				email: foo.RULES.register.email,
+				password: foo.RULES.register.password,
+				rePassword: [
+					{ validator: validateRepassword, trigger: 'blur' }
+				]
+			},
 			form: {
 				name: "",
 				email: "",
@@ -101,7 +114,8 @@ export default {
 				gender: "",
 				level: 0,
         avatar: "",
-        password: ""
+				password: "",
+				rePassword: ""
 			},
 			state: {
 				status: true
