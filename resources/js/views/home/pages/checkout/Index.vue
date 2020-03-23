@@ -2,6 +2,9 @@
   <section class="page-checkout page-primary mt-5">
 		<div class="container">
       <h2 class="head-primary v2">Thanh toán</h2>
+      <div class="text-center" v-if="!user">
+        <small class="text-center text-danger font-italic">Hãy đăng nhập để quản lý đơn hàng 1 cách tốt nhất!</small>
+      </div>
       <div class="checkout__steps">
         <button class="checkout__btn checkout__btn--small checkout__btn--transparent">
           <router-link :to="{ name: 'information' }">Thông tin đơn hàng</router-link>
@@ -15,7 +18,14 @@
 	</section>
 </template>
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
+  computed: {
+		...mapGetters({
+			user: "auth/getUser",
+		})
+	},
 }
 </script>
 <style lang="scss">
