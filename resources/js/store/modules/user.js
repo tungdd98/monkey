@@ -10,7 +10,8 @@ const state = {
 	page: foo.PAGINATE.page,
 	all: [],
 	total: 0,
-	currItem: null
+	currItem: null,
+	address: []
 }
 
 const getters = {
@@ -30,6 +31,9 @@ const getters = {
 			order_dir: state.order_dir,
 			page: state.page,
 		}
+	},
+	getCurrAddress: state => {
+		return state.address
 	}
 }
 
@@ -126,7 +130,7 @@ const actions = {
 			console.log(error)
 			return { flag: false, msg: error }
 		}
-	}
+	},
 }
 
 const mutations = {
@@ -142,6 +146,9 @@ const mutations = {
 		state.page 			= page
 		state.order_by 	= order_by
 		state.order_dir = order_dir
+	},
+	setCurrAddress: (state, address) => {
+		state.address = address
 	}
 }
 

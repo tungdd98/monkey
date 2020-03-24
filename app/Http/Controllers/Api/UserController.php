@@ -25,6 +25,10 @@ class UserController extends Controller
             'level' => $user->level,
             'address' => $user->address,
             'phone' => $user->phone,
+            'gender' => $user->gender,
+            'city' => $user->city,
+            'district' => $user->district,
+            'ward' => $user->ward
         ]);
     }
     /**
@@ -89,4 +93,5 @@ class UserController extends Controller
     {
         $this->model->deleteItem($request, ['task' => 'item']);
     }
+
 }

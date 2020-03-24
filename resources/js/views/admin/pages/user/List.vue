@@ -29,7 +29,7 @@
         </el-table-column>
         <el-table-column label="Số điện thoại">
           <template slot-scope="scope">
-            <div>{{ scope.row.email }}</div>
+            <div>{{ scope.row.phone }}</div>
           </template>
         </el-table-column>
         <el-table-column label="Ngày tạo">
@@ -117,8 +117,21 @@ export default {
         } 
       })
     },
+    /**
+     * Đổi password
+     */
     handleChangePassword(data) {
       alert('Đang xây dựng')
+    },
+    /**
+     * Đổi địa chỉ
+     */
+    handleChangeAddress(data) {
+      this.getAddressByUserId(data.id).then(res => {
+        if(!res.flag) {
+          this.$fire(foo.NOTIFICATION.error)
+        } 
+      })
     }
   },
   components: {

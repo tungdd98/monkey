@@ -9,22 +9,31 @@
 				<el-dialog :title="display.formTitle" :visible.sync="dialog.formVisible" :show-close="false">
 					<el-form :model="form" :rules="rules" :ref="controller">
 						<el-row :gutter="20">
-							<el-col :span="16">
+							<el-col :span="20">
 								<el-form-item label="Tên tài khoản" :label-width="display.formLabelWidth" prop="name">
 									<el-input v-model="form.name" autocomplete="off">
 										<i slot="suffix" class="el-input__icon el-icon-edit"></i>
 									</el-input>
 								</el-form-item>
 								<el-row :gutter="20">
-									<el-col :span="12">
+									<el-col :span="8">
 										<el-form-item label="Giới tính" :label-width="display.formLabelWidth" prop="gender">
 											<el-select v-model="form.gender" placeholder="--Chọn--">
-												<el-option value="1">Nam</el-option>
-												<el-option value="0">Nữ</el-option>
+												<el-option value="1" label="Nam"></el-option>
+												<el-option value="0" label="Nữ"></el-option>
 											</el-select>
 										</el-form-item>
 									</el-col>
-                  <el-col :span="12">
+									<el-col :span="8">
+										<el-form-item label="Ngày sinh" :label-width="display.formLabelWidth" prop="birthday">
+											<el-date-picker
+												v-model="form.birthday"
+												type="date"
+												placeholder="--Chọn--">
+											</el-date-picker>
+										</el-form-item>
+									</el-col>
+                  <el-col :span="8">
 										<el-form-item label="Level" :label-width="display.formLabelWidth" prop="gender" style="float: right">
 											<el-select v-model="form.level" placeholder="--Chọn--">
 												<el-option
@@ -52,13 +61,51 @@
 										<i slot="suffix" class="el-input__icon el-icon-edit"></i>
 									</el-input>
 								</el-form-item>
+								<el-row :gutter="10">
+									<el-col :span="8">
+										<el-form-item label="Tỉnh/ Thành phố" :label-width="display.formLabelWidth">
+											<el-select v-model="address.city" placeholder="--Chọn--" filterable>
+												<el-option
+													v-for="item in City"
+													:key="item.code"
+													:label="item.name"
+													:value="item.code"
+												></el-option>
+											</el-select>
+										</el-form-item>
+									</el-col>
+									<el-col :span="8">
+										<el-form-item label="Quận/ Huyện" :label-width="display.formLabelWidth">
+											<el-select v-model="address.district" placeholder="--Chọn--" filterable>
+												<el-option
+													v-for="item in filterDistrict"
+													:key="item[1].code"
+													:label="item[1].name"
+													:value="item[1].code"
+												></el-option>
+											</el-select>
+										</el-form-item>
+									</el-col>
+									<el-col :span="8">
+										<el-form-item label="Xã/ Phường" :label-width="display.formLabelWidth">
+											<el-select v-model="address.ward" placeholder="--Chọn--" filterable>
+												<el-option
+													v-for="item in filterWard"
+													:key="item[1].code"
+													:label="item[1].name"
+													:value="item[1].code"
+												></el-option>
+											</el-select>
+										</el-form-item>
+									</el-col>
+								</el-row>
 								<el-form-item label="Địa chỉ" :label-width="display.formLabelWidth" prop="address">
 									<el-input v-model="form.address" autocomplete="off" type="textarea">
 										<i slot="suffix" class="el-input__icon el-icon-edit"></i>
 									</el-input>
 								</el-form-item>
 							</el-col>
-							<el-col :span="8">
+							<el-col :span="4">
 								<el-form-item label="Hiển thị" :label-width="display.formLabelWidth">
 									<el-switch v-model="state.status"></el-switch>
 								</el-form-item>
@@ -79,6 +126,10 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import foo from "@/configs";
 import { mapActions, mapGetters } from "vuex";
 
+import * as District from '@/location/quan_huyen.json'
+import * as City from '@/location/tinh_tp.json'
+import * as Ward from '@/location/xa_phuong.json'
+
 const CONTROLLER = "user";
 export default {
 	data() {
@@ -88,6 +139,14 @@ export default {
 			}
 		}
 		return {
+			City: City.default,
+			District: District.default,
+			Ward: Ward.default,
+			address: {
+				city: '',
+				district: '',
+				ward: '',
+			},
 			isEdit: false,
 			isChangePassword: false,
 			dialog: {
@@ -95,7 +154,7 @@ export default {
 			},
 			display: {
 				formTitle: "Thêm mới",
-				formLabelWidth: "120px"
+				formLabelWidth: "130px"
 			},
 			rules: {
 				name: foo.RULES.register.name,
@@ -108,8 +167,8 @@ export default {
 			form: {
 				name: "",
 				email: "",
-				address: "",
 				phone: "",
+				address: "",
 				birthday: "",
 				gender: "",
 				level: 0,
@@ -141,7 +200,13 @@ export default {
 		...mapGetters({
 			currItem: `${CONTROLLER}/getCurrItem`,
 			user: "auth/getUser"
-		})
+		}),
+		filterDistrict() {
+			return Object.entries(this.District).filter(([key, value]) => value.parent_code === this.address.city)
+		},
+		filterWard() {
+			return Object.entries(this.Ward).filter(([key, value]) => value.parent_code === this.address.district)
+		}
   },
   watch: {
     currItem(val, oldVal) {
@@ -153,7 +218,10 @@ export default {
         // Hiển thị thông tin item
         Object.entries(val).forEach(([key, value]) => {
           if(value) {
-            this.form[key] = value
+						if(['name', 'email', 'phone', 'address', 'birthday', 'gender', 'level', 'avatar'].includes(key))
+							this.form[key] = value
+						if(['city', 'district', 'ward'].includes(key))
+							this.address[key] = value
           }
           if(['status', 'is_hot', 'is_bestseller'].includes(key)) {
             value === 1 ? this.state[key] = true : this.state[key] = false
@@ -178,9 +246,8 @@ export default {
      * Reset form
      */
     handleResetForm() {
-      Object.keys(this.form).forEach(field => {
-        this.form[field] = ''
-			})
+      Object.keys(this.form).forEach(field => this.form[field] = '')
+			Object.keys(this.address).forEach(field => this.address[field] = '')
 			this.form.level = 0
       this.state.status = true
     },
@@ -190,12 +257,13 @@ export default {
     handleSubmit(formName) {
       this.$refs[formName].validate(valid => {
         if(valid) {
-          let data = new FormData()
+					let data = new FormData()
           Object.entries(this.form).forEach(([key, value]) => data.append(key, value))
           Object.entries(this.state).forEach(([key, value]) => {
             let numberValue = value ? 1 : 0
             data.append(key, numberValue)
-          })
+					})
+					Object.entries(this.address).forEach(([key, value]) => data.append(key, value))
           if(!this.isEdit) {
             this.$store.dispatch('auth/register', data).then(res => {
               if(res.flag) {
