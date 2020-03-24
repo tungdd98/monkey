@@ -21,6 +21,8 @@ class BillProduct extends Migration
 
             $table->bigInteger('bill_id')->unsigned();
             $table->foreign('bill_id')->references('id')->on('bills')->onDelete('cascade');
+
+            $table->string('quantity')->nullable();
             $table->timestamps();
         });
     }

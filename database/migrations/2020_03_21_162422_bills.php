@@ -18,7 +18,9 @@ class Bills extends Migration
             $table->bigInteger('customer_id')->unsigned()->nullable();
             $table->tinyInteger('status')->default(1);
             $table->bigInteger('user_id')->unsigned()->nullable();
-            $table->float('total')->nullable();
+            $table->string('total')->nullable();
+            $table->integer('quantity')->nullable();
+            $table->dateTime('time_intend')->nullable();
             $table->timestamps();
         });
     }

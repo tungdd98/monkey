@@ -51,6 +51,22 @@ const actions = {
     commit('deleteProduct', index)
     commit('product/setProductQuantity', { id: cartItem.product.id, quantity: -cartItem.quantity }, { root: true })
     Vue.fire(foo.NOTIFICATION.deleteSuccess)
+  },
+  /**
+   * Thêm giỏ hàng vào csdl
+   */
+  addCart: async ({ commit }, data) => {
+    try {
+      let result = await axios.post('tomita/carts', data)
+      console.log(result)
+      if(result.status === 201) {
+        return { flag: true }
+      }
+      return { flag: false }
+    } catch (error) {
+      console.log(error)
+      return { flag: false }
+    }
   }
 }
 

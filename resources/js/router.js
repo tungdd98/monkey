@@ -23,10 +23,10 @@ import contact from '@/views/home/pages/contact/router'
 import about from '@/views/home/pages/about/router'
 import promotion from '@/views/home/pages/promotion/router'
 import profile from '@/views/home/pages/profile/router'
-import history_order from '@/views/home/pages/history-order/router'
 import product_home from '@/views/home/pages/product/router'
 import article_home from '@/views/home/pages/article/router'
 import product_detail from '@/views/home/pages/product-detail/router'
+import checkout from '@/views/home/pages/checkout/router'
 
 const routes = [
   {
@@ -42,7 +42,7 @@ const routes = [
       about,
       promotion,
       profile,
-      history_order
+      checkout
     ]
   },
   {
@@ -79,12 +79,19 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   store.dispatch('auth/checkUserLogin').then(res => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
+      let user = store.getters['auth/getUser']
       if (!res.flag) {
         next({
           path: '/login',
           query: { redirect: to.fullPath }
         })
-      } else {
+      } 
+      if(res.flag && user.level === 0) {
+        next({
+          path: '/'
+        })
+      } 
+      if(res.flag && user.level === 1) {
         next()
       }
     } else if (to.matched.some(record => record.meta.unAuthen)) {

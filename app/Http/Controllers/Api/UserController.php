@@ -19,9 +19,16 @@ class UserController extends Controller
     public function __invoke(Request $request) {
         $user = $request->user();
         return response()->json([
+            'id'    => $user->id,
             'email' => $user->email,
             'name'  => $user->name,
             'level' => $user->level,
+            'address' => $user->address,
+            'phone' => $user->phone,
+            'gender' => $user->gender,
+            'city' => $user->city,
+            'district' => $user->district,
+            'ward' => $user->ward
         ]);
     }
     /**
@@ -86,4 +93,5 @@ class UserController extends Controller
     {
         $this->model->deleteItem($request, ['task' => 'item']);
     }
+
 }

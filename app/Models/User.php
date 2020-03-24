@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     protected $table = 'users';
-    protected $fillable = ['name', 'password', 'email', 'address', 'phone', 'birthday', 'gender', 'status', 'avatar', 'level', 'created_at', 'updated_at']; 
-    protected $columns = ['id', 'name', 'email', 'address', 'phone', 'birthday', 'gender', 'status', 'avatar', 'level', 'created_at', 'updated_at'];
+    protected $fillable = ['name', 'password', 'email', 'address', 'phone', 'birthday', 'gender', 'status', 'avatar', 'level', 'created_at', 'updated_at', 'city', 'district', 'ward']; 
+    protected $columns =  ['id', 'name', 'email', 'address', 'phone', 'birthday', 'gender', 'status', 'avatar', 'level', 'created_at', 'updated_at', 'city', 'district', 'ward']; 
+
 
     /**
      * Lấy danh sách phần tử
@@ -50,12 +51,15 @@ class User extends Model
             self::where('id', $params['id'])->update([
                 'name'      => $params['name'],
                 'address'   => $params['address'],
-                'phone'     => $params['status'],
+                'phone'     => $params['phone'],
                 'birthday'  => $params['birthday'],
                 'gender'    => $params['gender'],
                 'status'    => $params['status'],
                 'avatar'    => $params['avatar'],
                 'level'     => $params['level'],
+                'city'      => $params['city'],
+                'district'  => $params['district'],
+                'ward'      => $params['ward'],
             ]);
         }
     }

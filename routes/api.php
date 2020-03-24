@@ -95,4 +95,9 @@ Route::group([
         Route::get('/', 'ProductController@index');
         Route::get('/get-by-category-id', 'ProductController@getItemByCategoryId');
     });
+    Route::group([
+        'prefix' => 'carts'
+    ], function() {
+        Route::post('/', 'CartController@addCart');
+    });
 });

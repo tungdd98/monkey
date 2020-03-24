@@ -35,7 +35,7 @@ export default {
     init() {
       this.$store.dispatch('category/getList', {}).then(res => {
         if(res.flag) {
-          if(!['profile', 'product-detail', 'history-order'].includes(this.type)) {
+          if(!['profile', 'product-detail', 'history-order', 'checkout', 'information'].includes(this.type)) {
             let item = this.categories.filter(value => value.type == this.type)
             this.path = item[0].thumbnail  
           }

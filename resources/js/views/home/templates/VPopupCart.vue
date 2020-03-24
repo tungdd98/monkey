@@ -78,7 +78,7 @@
 									</router-link>
 								</div>
 								<div class="cell">
-									<a class="smooth ctrl-payment" href="#" title>Gửi đơn hàng</a>
+									<router-link to="/checkout" class="smooth ctrl-payment" data-dismiss="modal">Gửi đơn hàng</router-link>
 								</div>
 							</div>
 						</div>

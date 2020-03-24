@@ -86,9 +86,9 @@ const actions = {
     try {
       let tokenLocal = localStorage.getItem('token')
       if(tokenLocal) {
-        dispatch('getUserLogin', tokenLocal)
+        await dispatch('getUserLogin', tokenLocal)
         return {
-          flag: true
+          flag: true,
         }
       } else {
         return {

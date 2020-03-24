@@ -16,8 +16,16 @@ const rules = {
   category: [
     { required: true, message: 'Vui lòng chọn danh mục', trigger: 'blur' },
   ],
-  type: [
-    { required: true, message: 'Vui lòng chọn loại danh mục', trigger: 'blur' },
-  ]
+  register: {
+    name: [
+      { required: true, message: 'Vui lòng nhập tên tài khoản', trigger: 'blur' },
+    ],
+    email: [
+      { required: true, message: 'Vui lòng nhập email', trigger: 'blur' },
+    ],
+    password: [
+      { required: true, message: 'Vui lòng nhập mật khẩu', trigger: 'blur' },
+    ],
+  }
 }
 export default rules
