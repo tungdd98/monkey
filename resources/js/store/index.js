@@ -11,6 +11,7 @@ import unit from './modules/unit'
 import supplier from './modules/supplier'
 import article from './modules/article'
 import datatype from './modules/datatype'
+import order from './modules/order'
 import cart from './modules/cart'
 
 const store = new Vuex.Store({
@@ -43,7 +44,8 @@ const store = new Vuex.Store({
     supplier,
     datatype,
     cart,
-    user
+    user,
+    order
   }
 })
 store.subscribe((mutations) => {

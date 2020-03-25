@@ -9,7 +9,7 @@ class CartController extends Controller
 {
     public function addCart(Request $request) {
         $cart = new Model([
-            'customer_id'   => $request->customer_id,
+            // 'customer_id'   => $request->customer_id,
             'status'        => 0,
             'user_id'       => $request->user_id,
             'total'         => $request->total,

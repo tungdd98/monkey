@@ -11,7 +11,7 @@
 				<p class="note">Nhà cung cấp: {{ _notag(item.supplier.title) }}</p>
 				<div class="price">
 					<span>
-						<strong>{{ item.original_price ? _formatCurrency(item.original_price) : _formatCurrency(item.price) }}</strong>{{ `/${_notag(item.unit.title)}` }}
+						<strong>{{ item.original_price ? _formatCurrency(item.price) : _formatCurrency(item.original_price) }}</strong>{{ `/${_notag(item.unit.title)}` }}
 					</span>
 					<del v-show="item.original_price">{{ _formatCurrency(item.original_price) }}{{ `/${_notag(item.unit.title)}` }}</del>
 				</div>

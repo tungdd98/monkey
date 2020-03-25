@@ -25,7 +25,7 @@ class Product extends Model
     }
 
     public function bills() {
-        return $this->belongsToMany('App\Models\Bill');
+        return $this->belongsToMany('App\Models\Bill')->withPivot('quantity');
     }
 
     public function units() {

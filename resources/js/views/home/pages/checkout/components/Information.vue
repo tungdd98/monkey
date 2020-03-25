@@ -41,10 +41,10 @@
 							<tr>
 								<th colspan="2">Giỏ hàng của bạn</th>
 							</tr>
-							<tr v-for="item in cart.all" :key="item.product.id">
+							<!-- <tr v-for="item in cart.all" :key="item.product.id">
 								<td>{{ _notag(item.product.title) }} x {{ item.quantity }}</td>
 								<td>{{ _formatCurrency(totalMoneyItem(item)) }}</td>
-							</tr>
+							</tr> -->
 							<tr>
 								<td>Tạm tính</td>
 								<td class="text-right">{{ cart.totalMoney > 0 ? _formatCurrency(cart.totalMoney) : 0 }}</td>

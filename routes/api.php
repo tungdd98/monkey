@@ -82,6 +82,8 @@ Route::group([
     'prefix' => 'orders'
 ], function() {
     Route::get('/', 'Api\OrderController@index')->name('order.index');
+    Route::get('/{id}', 'Api\OrderController@show')->name('supplier.show');
+    Route::post('/change-status', 'Api\OrderController@changeStatus')->name('order.status');
 });
 
 Route::group([

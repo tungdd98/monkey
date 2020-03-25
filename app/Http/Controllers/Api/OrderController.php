@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Bill as Model;
+use App\Models\Customer as Customer;
+use App\Models\User as User;
 
 class OrderController extends Controller
 {
@@ -33,47 +35,31 @@ class OrderController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Thay đổi trạng thái đơn hàng
      */
-    public function store(Request $request)
-    {
-        //
+    public function changeStatus(Request $request) {
+        $item = Model::findOrFail($request->id);
+        $item->update([
+            'status' => $request->status
+        ]);
+        return response()->json(['data' => $item]);
     }
 
     /**
-     * Display the specified resource.
+     * Lấy thông tin phần tử
      *
-     * @param  int  $id
+     * @param  $request
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $item = Model::findOrFail($request->id);
+        if(!empty($item['customer_id'])) {
+            $item['customer'] = Customer::find($item['customer_id'])->first();
+        } else {
+            $item['customer'] = User::find($item['user_id'])->first();
+        }
+        $item['products'] = $item->products()->get();
+        return response()->json(['data' => $item]);
     }
 }

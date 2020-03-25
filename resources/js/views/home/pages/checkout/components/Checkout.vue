@@ -122,7 +122,7 @@ export default {
 		handleSubmit() {
 			const data = new FormData();
 			data.append("user_id", this.user.id);
-			data.append("customer_id", this.user.id);
+			// data.append("customer_id", this.user.id);
 			data.append("total", this.cart.totalMoney);
 			data.append("quantity", this.cart.totalQuantity);
 			this.cart.all.forEach((value, key) => {
