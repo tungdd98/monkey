@@ -79,6 +79,12 @@ Route::group([
 });
 
 Route::group([
+    'prefix' => 'orders'
+], function() {
+    Route::get('/', 'Api\OrderController@index')->name('order.index');
+});
+
+Route::group([
     'prefix' => 'datatypes'
 ], function() {
     Route::get('/', 'Api\DataTypeController@index')->name('datatype.index');

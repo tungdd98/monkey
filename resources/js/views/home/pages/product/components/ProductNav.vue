@@ -84,7 +84,14 @@
 	</div>
 </template>
 <script>
-export default {};
+import { mapGetters } from 'vuex';
+export default {
+	computed: {
+    ...mapGetters({
+      categories: 'category/getAll'
+    }),
+  },
+};
 </script>
 <style>
 </style>

@@ -114,15 +114,18 @@ class Product extends Model
                     }
                 }
             }
-            if(!empty($request->images)) {
-                $images = $request->images;
+            if(!empty($request->imagesUpdate)) {
+                $images = $request->imagesUpdate;
                 $imageStr = [];
-                if($request->hasFile('images')) {
+                if($request->hasFile('imagesUpdate')) {
                     foreach($images as $key => $image) {
                         $imgName = time() . $key . $image->getClientOriginalName();
                         $image->move("images/{$this->folderImg}", $imgName);
                         $imageStr[] = $imgName;
                     }
+                }
+                foreach($request->images as $key => $value) {
+                    $imagesStr[] = $value;
                 }
                 self::where('id', $params['id'])->update([
                     'thumbnail'     => $imageStr[0],

@@ -1,8 +1,8 @@
 <template>
 	<div class="ct-account">
 		<h3 class="title-acc">thông tin cá nhân</h3>
-		<el-form :model="form" :rules="rules" ref="form">
-      <el-form-item label="Email" :label-width="display.formLabelWidth" prop="email">
+		<el-form :model="form" :rules="rules" ref="update">
+			<el-form-item label="Email" :label-width="display.formLabelWidth" prop="email">
 				<el-input v-model="form.email" autocomplete="off" :disabled="true">
 					<i slot="suffix" class="el-input__icon el-icon-edit"></i>
 				</el-input>
@@ -22,7 +22,12 @@
 					</el-form-item>
 				</el-col>
 				<el-col :span="12">
-					<el-form-item label="Ngày sinh" :label-width="display.formLabelWidth" prop="birthday">
+					<el-form-item
+						label="Ngày sinh"
+						:label-width="display.formLabelWidth"
+						prop="birthday"
+						class="pull-right"
+					>
 						<el-date-picker v-model="form.birthday" type="date" placeholder="--Chọn--"></el-date-picker>
 					</el-form-item>
 				</el-col>
@@ -71,10 +76,14 @@
 				</el-input>
 			</el-form-item>
 		</el-form>
+		<div class="form-group pull-right">
+			<span class="empty">&nbsp;</span>
+			<button class="btn-account" type="button" @click.prevent="handleSubmit">Cập nhật</button>
+		</div>
 	</div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import * as District from "@/location/quan_huyen.json";
 import * as City from "@/location/tinh_tp.json";
 import * as Ward from "@/location/xa_phuong.json";
@@ -90,19 +99,14 @@ export default {
 				formTitle: "Thêm mới",
 				formLabelWidth: "120px"
 			},
-			rules: {
-			},
+			rules: {},
 			form: {
 				name: "",
 				email: "",
 				phone: "",
 				address: "",
-				birthday: "",
 				gender: "",
-				level: 0,
-				avatar: "",
-				password: "",
-				rePassword: ""
+				level: 0
 			},
 			address: {
 				city: "",
@@ -125,21 +129,47 @@ export default {
 				([key, value]) => value.parent_code === this.address.district
 			);
 		}
-  },
-  watch: {
-    user (val, oldVal) {
-      if(val) {
-        Object.entries(val).forEach(([key, value]) => {
-          if(value) {
-						if(['name', 'email', 'phone', 'address', 'birthday', 'gender'].includes(key))
-							this.form[key] = value
-						if(['city', 'district', 'ward'].includes(key))
-							this.address[key] = value
-          }
-        })
-      }
-    }
-  }
+	},
+	mounted() {
+		Object.entries(this.user).forEach(([key, value]) => {
+			if (
+				["email", "name", "address", "phone", "gender", "birthday"].includes(
+					key
+				)
+			) {
+				this.form[key] = value;
+			} else {
+				this.address[key] = value;
+			}
+		});
+	},
+	methods: {
+		...mapActions('user', ['updateItem']),
+		handleSubmit() {
+			this.$refs.update.validate(valid => {
+				if (valid) {
+					let data = new FormData();
+					Object.entries(this.form).forEach(([key, value]) =>
+						data.append(key, value)
+					);
+					Object.entries(this.address).forEach(([key, value]) =>
+						data.append(key, value)
+					);
+					data.append("id", this.user.id);
+					data.append("field", "update-item");
+					data.append('status', 1);
+					this.updateItem(data).then(res => {
+						if (res.flag) {
+							this.$fire(foo.NOTIFICATION.success.updated);
+						} else {
+							let errors = res.msg.response.data.errors;
+							this._showErrors(errors);
+						}
+					});
+				}
+			});
+		}
+	}
 };
 </script>
 <style>

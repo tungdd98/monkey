@@ -13,4 +13,22 @@ class Bill extends Model
     public function products() {
         return $this->belongsToMany('App\Models\Product');
     }
+
+    /**
+     * Lấy danh sách phần tử
+     * 
+     * @param $options: tham số truyền vào
+     * @return array
+     */
+    public function getListItems($options = null) {
+        $result = null;
+        if($options['pagination'] == 'false') {
+            $result = self::select($this->columns)->orderBy($options['order_by'], $options['order_dir'])->get();
+        } else {
+            $result = self::select($this->columns)
+                            ->orderBy($options['order_by'], $options['order_dir'])
+                            ->paginate($options['per_page']);
+        }
+        return $result;
+    }
 }

@@ -55,7 +55,7 @@ class User extends Model
                 'birthday'  => $params['birthday'],
                 'gender'    => $params['gender'],
                 'status'    => $params['status'],
-                'avatar'    => $params['avatar'],
+                // 'avatar'    => $params['avatar'],
                 'level'     => $params['level'],
                 'city'      => $params['city'],
                 'district'  => $params['district'],
