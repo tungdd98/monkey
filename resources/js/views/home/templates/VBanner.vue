@@ -14,7 +14,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      categories: 'category/getAll'
+      categories: 'category/getCategoryAll'
     }),
     getPath() {
       if(this.path) {
@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     init() {
-      this.$store.dispatch('category/getList', {}).then(res => {
+      this.$store.dispatch('category/getTomitaCategory', {}).then(res => {
         if(res.flag) {
           this.changePath()
         }

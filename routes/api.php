@@ -108,4 +108,9 @@ Route::group([
     ], function() {
         Route::post('/', 'CartController@addCart');
     });
+    Route::group([
+        'prefix' => 'categories'
+    ], function() {
+        Route::get('/', 'CategoryController@index');
+    });
 });

@@ -177,7 +177,7 @@ const actions = {
 			if(result.status === 200) {
 				commit('setList', {
 					all: result.data.data.data,
-					total: result.data.total
+					total: result.data.data.total
 				})
 				return { flag: true }
 			}

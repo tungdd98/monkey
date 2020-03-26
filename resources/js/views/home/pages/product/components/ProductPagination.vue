@@ -1,28 +1,42 @@
 <template>
 	<nav aria-label="Page navigation">
-		<ul class="pagination justify-content-center">
-			<!-- <li class="page-item">
-                                                <a class="page-link" href="#"><span class="arrow_left"></span></a>
-			</li>-->
-			<li class="page-item active">
-				<a class="page-link" href="#">1</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="#">2</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="#">3</a>
-			</li>
-			<li class="page-item">
-				<a class="page-link" href="#">
-					<span class="arrow_right"></span>
-				</a>
-			</li>
-		</ul>
+		<el-pagination
+			v-if="total > 0"
+			background
+			class="kr-pagination"
+			layout="prev, pager, next"
+			@current-change="handleCurrChange"
+			:page-size="12"
+			:total="total"
+		></el-pagination>
 	</nav>
 </template>
 <script>
-export default {};
+import { mapActions, mapGetters } from 'vuex';
+export default {
+	props: {
+		tag: { type: [String, Number], default: '' },
+		total: { type: Number, default: 0 }
+	},
+	methods: {
+		...mapActions('product', ['getListTomita']),
+		handleCurrChange(val) {
+			this.getListTomita({
+				tag: this.tag,
+				page: val
+			})
+		}
+	}
+};
 </script>
-<style>
+<style lang="scss">
+.kr-pagination {
+	display: flex;
+	justify-content: center;
+	background: #fff;
+	padding: 5px 0 !important;
+	&.is-background .el-pager li:not(.disabled).active {
+		background-color: #f75510 !important;
+	}
+}
 </style>
