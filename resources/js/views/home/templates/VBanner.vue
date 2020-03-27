@@ -14,7 +14,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      categories: 'category/getAll'
+      categories: 'category/getCategoryAll'
     }),
     getPath() {
       if(this.path) {
@@ -25,7 +25,7 @@ export default {
   watch: {
     '$route' (to, from) {
       this.type = to.name
-      this.init()
+      this.changePath()
     }
   },
   created() {
@@ -33,14 +33,17 @@ export default {
   },
   methods: {
     init() {
-      this.$store.dispatch('category/getList', {}).then(res => {
+      this.$store.dispatch('category/getTomitaCategory', {}).then(res => {
         if(res.flag) {
-          if(!['profile', 'product-detail', 'history-order', 'checkout', 'information'].includes(this.type)) {
-            let item = this.categories.filter(value => value.type == this.type)
-            this.path = item[0].thumbnail  
-          }
+          this.changePath()
         }
       })
+    },
+    changePath() {
+      if(!['profile', 'product-detail', 'history-order', 'checkout', 'information'].includes(this.type)) {
+        let item = this.categories.filter(value => value.type == this.type)
+        this.path = item[0].thumbnail  
+      }
     }
   }
 };

@@ -7,7 +7,9 @@ const state = {
 	all: [],
 	total: 0,
 	currItem: null,
-	select: []
+	select: [],
+	categoryAll: [],
+	categoryTree: []
 }
 
 const getters = {
@@ -27,6 +29,12 @@ const getters = {
 			order_dir: state.order_dir,
 			page: state.page,
 		}
+	},
+	getCategoryAll: state => {
+		return state.categoryAll
+	},
+	getCategoryTree: state => {
+		return state.categoryTree
 	}
 }
 
@@ -134,6 +142,33 @@ const actions = {
 			return { flag: false, msg: error }
 		}
 	},
+	/**
+	 * Lấy menu (tomita)
+	 */
+	getTomitaCategory: async ({ commit, dispatch }, { action = 'all' }) => {
+		commit('setLoading', true, { root: true })
+		try {
+			let configs = {
+				params: {
+					action
+				}
+			}
+			let result = await Axios.get('tomita/categories', configs)
+			commit('setLoading', false, { root: true })
+			if(result.status === 200) {
+				if(action === 'all') {
+					commit('setCategoryAll', result.data.data)
+				} else {
+					commit('setCategoryTree', result.data.data)
+				}
+				return { flag: true, data: result.data.data }
+			}
+			return { flag: false }
+		} catch (error) {
+			console.log(error)
+			return { flag: false }
+		}
+	},
 }
 
 const mutations = {
@@ -145,6 +180,12 @@ const mutations = {
 	},
 	setSelectItem: (state, data) => {
 		state.select = data
+	},
+	setCategoryAll: (state, data) => {
+		state.categoryAll = data
+	},
+	setCategoryTree: (state, data) => {
+		state.categoryTree = data
 	}
 }
 

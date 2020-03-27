@@ -7,6 +7,7 @@ import FILTER from './modules/filter'
 import ACTION from './modules/action'
 import CURRENCY from './modules/currency'
 import URL from './modules/url'
+import ORDER from './modules/order'
 
 const foo = {
   NOTIFICATION,
@@ -17,6 +18,7 @@ const foo = {
   FILTER,
   ACTION,
   CURRENCY,
-  URL
+  URL,
+  ORDER
 }
 export default foo

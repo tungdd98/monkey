@@ -5,14 +5,6 @@
       <div class="text-center" v-if="!user">
         <small class="text-center text-danger font-italic">Hãy đăng nhập để quản lý đơn hàng 1 cách tốt nhất!</small>
       </div>
-      <div class="checkout__steps">
-        <button class="checkout__btn checkout__btn--small checkout__btn--transparent">
-          <router-link :to="{ name: 'information' }">Thông tin đơn hàng</router-link>
-        </button>
-        <button class="checkout__btn checkout__btn--small checkout__btn--transparent">
-          <router-link :to="{ name: 'checkout' }">Xác nhận đơn hàng</router-link>
-        </button>
-      </div>
 			<router-view></router-view>
 		</div>
 	</section>
@@ -29,24 +21,6 @@ export default {
 }
 </script>
 <style lang="scss">
-.checkout__steps {
-  position: relative;
-  width: 600px;
-  margin: 20px auto;
-  display: flex;
-  justify-content: space-between;
-  &::before {
-    content: '';
-    width: 80%;
-    height: 1px;
-    background-color: #333;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: -1;
-  }
-}
 .checkout__btn {
 	padding: 0 10px;
 	height: 48px;

@@ -53,12 +53,12 @@
           <router-link to="/admin/articles">Quản lý bài viết</router-link>
         </template>
       </el-menu-item>
-      <el-submenu index="5">
+      <el-menu-item index="5">
         <template slot="title">
           <i class="el-icon-s-order"></i>
-          <router-link to="/">Quản lý đơn hàng</router-link>
+          <router-link to="/admin/orders">Quản lý đơn hàng</router-link>
         </template>
-      </el-submenu>
+      </el-menu-item>
       <el-menu-item index="6">
         <template slot="title">
           <i class="el-icon-user-solid"></i>

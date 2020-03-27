@@ -2,68 +2,16 @@
 	<div class="sb-product">
 		<div class="block-cate-pro">
 			<h3 class="title">Danh mục sản phẩm</h3>
-			<div id="accordion">
-				<div class="card">
+			<div id="accordion" v-if="getNav">
+				<div class="card" v-for="item in getNav.children" :key="item.id">
 					<div class="card-header">
-						<a class="card-link" data-toggle="collapse" href="#collap1">Rau, củ, quả</a>
+						<a class="card-link" data-toggle="collapse" :href="`#collap${item.id}`">{{ _notag(item.title) }}</a>
 					</div>
-					<div id="collap1" class="collapse show" data-parent="#accordion">
+					<div v-if="item.children.length > 0" :id="`collap${item.id}`" class="collapse show" data-parent="#accordion">
 						<div class="card-body">
 							<ul>
-								<li>
-									<a href title>Rau Ăn Lá</a>
-								</li>
-								<li>
-									<a href title>Rau Ăn Củ</a>
-								</li>
-								<li>
-									<a href title>Rau Ăn Quả</a>
-								</li>
-								<li>
-									<a href title>Rau Gia Vị</a>
-								</li>
-								<li>
-									<a href title>Nấm - Rau Mầm</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<div class="card">
-					<div class="card-header">
-						<a class="collapsed card-link" data-toggle="collapse" href="#collap2">Thịt heo, bò, gà</a>
-					</div>
-					<div id="collap2" class="collapse" data-parent="#accordion">
-						<div class="card-body">
-							<ul>
-								<li>
-									<a href title>Thịt heo</a>
-								</li>
-								<li>
-									<a href title>Thịt bò</a>
-								</li>
-								<li>
-									<a href title>Thịt gà</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<div class="card">
-					<div class="card-header">
-						<a class="collapsed card-link" data-toggle="collapse" href="#collap3">Thủy, hải sản</a>
-					</div>
-					<div id="collap3" class="collapse" data-parent="#accordion">
-						<div class="card-body">
-							<ul>
-								<li>
-									<a href title>Cua</a>
-								</li>
-								<li>
-									<a href title>Ghẹ</a>
-								</li>
-								<li>
-									<a href title>Tôm</a>
+								<li v-for="item2 in item.children" :key="item2.id">
+									<router-link :to="getLinkCategoryWithChild(item2)">{{ _notag(item2.title) }}</router-link>
 								</li>
 							</ul>
 						</div>
@@ -84,7 +32,28 @@
 	</div>
 </template>
 <script>
-export default {};
+import { mapGetters } from 'vuex';
+export default {
+	computed: {
+    ...mapGetters({
+      categories: 'category/getCategoryTree'
+		}),
+		getNav() {
+			return this.categories.filter(category => category.type === 'Product')[0]
+		}
+	},
+	methods: {
+		getLinkCategoryWithChild(category) {
+			return {
+				name: category.type,
+				query: {
+					category: this._slug(category.title),
+					tag: category.id
+				}
+			}
+		},
+	}
+};
 </script>
 <style>
 </style>

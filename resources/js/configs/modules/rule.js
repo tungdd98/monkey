@@ -26,6 +26,12 @@ const rules = {
     password: [
       { required: true, message: 'Vui lòng nhập mật khẩu', trigger: 'blur' },
     ],
+    phone: [
+      { required: true, message: 'Vui lòng nhập số điện thoại', trigger: 'blur' },
+    ],
+    address: [
+      { required: true, message: 'Vui lòng nhập địa chỉ', trigger: 'blur' },
+    ]
   }
 }
 export default rules
