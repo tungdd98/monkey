@@ -26,13 +26,13 @@
 		<div class="pro-quantity">
 			<span>Số lượng: {{ item.quantity }}</span>
 			<div class="i-number">
-				<button class="n-ctrl down smooth"></button>
-				<input type="text" class="numberic" min="1" max="1000" value="1" />
-				<button class="n-ctrl up smooth"></button>
+				<button class="n-ctrl down smooth" @click.prevent="handleDecrementQuantity"></button>
+				<input type="text" class="numberic" min="1" max="1000" value="1" v-model="number" />
+				<button class="n-ctrl up smooth" @click.prevent="handleIncrementQuantity"></button>
 			</div>
 		</div>
 		<div class="btn-addcart">
-			<a href title>Thêm vào giỏ hàng</a>
+			<a href title @click.prevent="handleAddCart">Thêm vào giỏ hàng</a>
 		</div>
 		<div class="pro-socials">
 			<span>Chia sẻ :</span>
@@ -69,7 +69,8 @@ export default {
 			info: {
 				unit: '',
 				supplier: ''
-			}
+			},
+			number: 1
 		}
 	},
 	props: {
@@ -92,6 +93,24 @@ export default {
 	},
 	methods: {
 		...mapActions('product', ['getPropertyById']),
+		/**
+		 * Giảm sản phẩm trong giỏ
+		 */
+		handleDecrementQuantity() {
+			this.number--
+		},
+		/**
+		 * Tăng sản phẩm trong giỏ
+		 */
+		handleIncrementQuantity() {
+			this.number++
+		},
+		handleAddCart() {
+			this.$store.dispatch('cart/changeProductToCart', {
+				product: this.item,
+				quantity: parseInt(this.number)
+			})
+		}
 	}
 };
 </script>

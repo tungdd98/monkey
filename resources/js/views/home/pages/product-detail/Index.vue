@@ -18,7 +18,7 @@
 			<div class="details-product">
 				<div class="row">
 					<div class="col-lg-6">
-						<product-images></product-images>
+						<product-images :item="item"></product-images>
 					</div>
 					<div class="col-lg-6">
 						<product-content :item="item" :id="id"></product-content>

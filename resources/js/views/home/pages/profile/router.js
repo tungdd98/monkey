@@ -15,5 +15,6 @@ export default {
       path: '/history-order',
       component: HistoryOrder
     }
-  ]
+  ],
+  meta: { requiresAuth: true }
 }
