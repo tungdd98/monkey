@@ -1,88 +1,14 @@
 <template>
 	<div class="sl-img-pro">
 		<span class="sales v2">-10%</span>
-		<slick :options="topSlick.options" class="pro-img" :ref="topSlick.name">
-			<div class="item">
-				<a class="c-img" href="/tomita/images/b-pro.jpg" title data-fancybox="gallery">
-					<img src="/tomita/images/b-pro.jpg" alt />
-				</a>
-			</div>
-			<div class="item">
-				<a class="c-img" href="/tomita/images/b-pro.jpg" title data-fancybox="gallery">
-					<img src="/tomita/images/b-pro.jpg" alt />
-				</a>
-			</div>
-			<div class="item">
-				<a class="c-img" href="/tomita/images/b-pro.jpg" title data-fancybox="gallery">
-					<img src="/tomita/images/b-pro.jpg" alt />
-				</a>
-			</div>
-			<div class="item">
-				<a class="c-img" href="/tomita/images/b-pro.jpg" title data-fancybox="gallery">
-					<img src="/tomita/images/b-pro.jpg" alt />
-				</a>
-			</div>
-			<div class="item">
-				<a class="c-img" href="/tomita/images/b-pro.jpg" title data-fancybox="gallery">
-					<img src="/tomita/images/b-pro.jpg" alt />
-				</a>
-			</div>
-			<div class="item">
-				<a class="c-img" href="/tomita/images/b-pro.jpg" title data-fancybox="gallery">
-					<img src="/tomita/images/b-pro.jpg" alt />
-				</a>
-			</div>
-			<div class="item">
-				<a class="c-img" href="/tomita/images/b-pro.jpg" title data-fancybox="gallery">
-					<img src="/tomita/images/b-pro.jpg" alt />
-				</a>
-			</div>
-			<div class="item">
-				<a class="c-img" href="/tomita/images/b-pro.jpg" title data-fancybox="gallery">
-					<img src="/tomita/images/b-pro.jpg" alt />
-				</a>
+		<slick :options="topSlick.options" class="pro-img" :ref="topSlick.name" v-if="images">
+			<div class="item" v-for="(image, index) in images" :key="index">
+				<a :href="_getThumbnail('product', image)" class="c-img" data-fancybox="gallery"><img :src="_getThumbnail('product', image)" alt=""></a>
 			</div>
 		</slick>
-		<slick :options="bottomSlick.options" class="pro-thumb" :ref="bottomSlick.name">
-			<div class="item">
-				<a class="c-img">
-					<img src="/tomita/images/m-pro.jpg" alt />
-				</a>
-			</div>
-			<div class="item">
-				<a class="c-img">
-					<img src="/tomita/images/m-pro1.jpg" alt />
-				</a>
-			</div>
-			<div class="item">
-				<a class="c-img">
-					<img src="/tomita/images/m-pro2.jpg" alt />
-				</a>
-			</div>
-			<div class="item">
-				<a class="c-img">
-					<img src="/tomita/images/m-pro3.jpg" alt />
-				</a>
-			</div>
-			<div class="item">
-				<a class="c-img">
-					<img src="/tomita/images/m-pro.jpg" alt />
-				</a>
-			</div>
-			<div class="item">
-				<a class="c-img">
-					<img src="/tomita/images/m-pro1.jpg" alt />
-				</a>
-			</div>
-			<div class="item">
-				<a class="c-img">
-					<img src="/tomita/images/m-pro2.jpg" alt />
-				</a>
-			</div>
-			<div class="item">
-				<a class="c-img">
-					<img src="/tomita/images/m-pro3.jpg" alt />
-				</a>
+		<slick :options="bottomSlick.options" class="pro-thumb" :ref="bottomSlick.name" v-if="images">
+			<div class="item" v-for="(image, index) in images" :key="index">
+				<a :href="_getThumbnail('product', image)" class="c-img" data-fancybox="gallery"><img :src="_getThumbnail('product', image)" alt=""></a>
 			</div>
 		</slick>
 	</div>
@@ -144,6 +70,17 @@ export default {
 			}
 		};
 	},
+	props: {
+		item: { type: Object, default: {} },
+	},
+	computed: {
+		images() {
+			if(this.item) {
+				return JSON.parse(this.item.images)
+			}
+			return []
+		}
+	},
 	methods: {
 		next() {
 			this.$refs.top.next();
@@ -153,7 +90,7 @@ export default {
 			this.$refs.top.prev();
 			this.$refs.bottom.prev();
 		}
-  },
+	},
   components: {
     Slick
   }
