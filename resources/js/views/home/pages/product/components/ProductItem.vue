@@ -8,12 +8,12 @@
 				<h3 class="title">
 					<router-link :title="_slug(item.title)" :to="getLinkItem(item)">{{ _notag(item.title) }}</router-link>
 				</h3>
-				<p class="note">Nhà cung cấp: {{ info.supplier }}</p>
+				<p class="note">Nhà cung cấp: {{ _notag(item.supplier.title) }}</p>
 				<div class="price">
 					<span>
-						<strong>{{ item.original_price ? _formatCurrency(item.original_price) : _formatCurrency(item.price) }}</strong>{{ `/${info.unit}` }}
+						<strong>{{ item.original_price ? _formatCurrency(item.price) : _formatCurrency(item.original_price) }}</strong>{{ `/${_notag(item.unit.title)}` }}
 					</span>
-					<del v-show="item.original_price">{{ _formatCurrency(item.original_price) }}{{ `/${info.unit}` }}</del>
+					<del v-show="item.original_price">{{ _formatCurrency(item.original_price) }}{{ `/${_notag(item.unit.title)}` }}</del>
 				</div>
 			</div>
 			<span class="sales" v-show="getSale > 0">-{{ getSale }}%</span>
@@ -50,13 +50,7 @@ export default {
 		controller: { type: String, default: '' }
 	},
 	created() {
-		['unit', 'supplier'].forEach(value => {
-			this.getPropertyById({ id: this.item.id, property: value }).then(res => {
-				if(res.flag && res.data.length > 0) {
-					this.info[value] = res.data[0].title
-				}
-			})
-		})
+		
 	},
 	methods: {
 		...mapActions('product', ['getPropertyById']),

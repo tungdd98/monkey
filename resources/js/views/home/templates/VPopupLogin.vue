@@ -151,7 +151,8 @@ export default {
 			this.login(formData).then(res => {
 				if (res.flag) {
           this.$fire(foo.NOTIFICATION.success.logined);
-          // document.querySelector('.modal-backdrop').style = 'display: none'
+					document.querySelector('.modal-backdrop').style = 'display: none'
+					document.querySelector('body').style = 'overflow: auto !important'
 				} else {
 					this.$fire(foo.NOTIFICATION.error);
 				}

@@ -3,7 +3,11 @@
 /public/storage
 /storage/*.key
 /vendor
+<<<<<<< HEAD
 .vscode/
+=======
+.vscode
+>>>>>>> dev2
 
 .env.backup
 .phpunit.result.cache

@@ -24,6 +24,7 @@ class UserController extends Controller
             'name'  => $user->name,
             'level' => $user->level,
             'address' => $user->address,
+            'birthday' => $user->birthday,
             'phone' => $user->phone,
             'gender' => $user->gender,
             'city' => $user->city,

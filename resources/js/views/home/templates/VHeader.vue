@@ -98,7 +98,7 @@ export default {
 		},
 	},
 	created() {
-		this.getList({ action: "tree" }).then(res => {
+		this.getTomitaCategory({ action: "tree" }).then(res => {
 			if (res.flag) {
 				this.items = res.data;
 				this.items.forEach((value, key) => {
@@ -112,7 +112,7 @@ export default {
 		});
 	},
 	methods: {
-		...mapActions("category", ["getList"]),
+		...mapActions("category", ["getList", "getTomitaCategory"]),
 		getLinkCategoryNoChild(category) {
 			return {
 				name: category.type

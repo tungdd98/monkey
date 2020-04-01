@@ -4,7 +4,7 @@
 			<h3 class="title-pro">Tất cả</h3>
 			<product-filter></product-filter>
 		</div>
-		<div class="row">
+		<div class="row" v-if="total > 0">
 			<product-item
         v-for="item in items"
         :key="item.id"
@@ -12,7 +12,10 @@
         :controller="controller"
       ></product-item>
 		</div>
-    <product-pagination></product-pagination>
+    <div v-else class="d-flex justify-content-center m-5">
+      <span>Không có sản phẩm</span>
+    </div>
+    <product-pagination :tag="tag" :total="total"></product-pagination>
 	</div>
 </template>
 <script>
@@ -27,6 +30,7 @@ export default {
   data() {
     return {
       controller: CONTROLLER,
+      tag: this.$route.query.tag
     }
   },
   computed: {
@@ -37,6 +41,7 @@ export default {
   },
   watch: {
     '$route' (to, from ) {
+      this.tag = to.query.tag
       this.init()
     }
   },
@@ -46,8 +51,7 @@ export default {
   methods: {
     ...mapActions(CONTROLLER, ['getListTomita']),
     init() {
-      let tag = parseInt(this.$route.query.tag)
-      this.getListTomita({ tag })
+      this.getListTomita({ tag: this.tag })
     }
   },
   components: {

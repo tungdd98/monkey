@@ -77,8 +77,8 @@
 										<i class="arrow_left"></i> Tiếp tục mua hàng
 									</router-link>
 								</div>
-								<div class="cell">
-									<router-link to="/checkout" class="smooth ctrl-payment" data-dismiss="modal">Gửi đơn hàng</router-link>
+								<div class="cell" v-if="cart.all.length > 0">
+									<router-link :to="handleGetLinkCheckOut" class="smooth ctrl-payment" data-dismiss="modal">Gửi đơn hàng</router-link>
 								</div>
 							</div>
 						</div>
@@ -98,8 +98,19 @@ export default {
 	},
 	computed: {
 		...mapGetters({
-			cart: "cart/getCart"
+			cart: "cart/getCart",
+			user: "auth/getUser"
 		}),
+		handleGetLinkCheckOut() {
+			if(this.user) {
+				return {
+					name: 'checkout'
+				}
+			} 
+			return {
+				name: 'information'
+			}
+		}
 	},
 	methods: {
 		/**
@@ -131,7 +142,7 @@ export default {
 		 */
 		handleDelete(item) {
 			this.$store.dispatch('cart/deleteProductOutCart', item)
-		}
+		},
 	}
 };
 </script>

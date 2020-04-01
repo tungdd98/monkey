@@ -6,7 +6,8 @@ import foo from '@/configs'
 const state = {
   all: [],
   totalQuantity: 0,
-  totalMoney: 0
+  totalMoney: 0,
+  customer: null
 }
 
 const getters = {
@@ -18,6 +19,12 @@ const getters = {
       totalQuantity: totalQuantity,
       totalMoney: totalMoney
     }
+  },
+  getCustomer: state => {
+    if(state.customer) {
+      return state.customer
+    }
+    return null
   }
 }
 
@@ -58,14 +65,22 @@ const actions = {
   addCart: async ({ commit }, data) => {
     try {
       let result = await axios.post('tomita/carts', data)
-      console.log(result)
       if(result.status === 201) {
+        commit('setNullCart')
         return { flag: true }
       }
       return { flag: false }
     } catch (error) {
       console.log(error)
       return { flag: false }
+    }
+  },
+  addCustomer: async ({ commit }, data) => {
+    try {
+      commit('saveCustomer', data)
+      return { flag: true }
+    } catch (error) {
+      console.log(error)
     }
   }
 }
@@ -83,6 +98,14 @@ const mutations = {
   },
   deleteProduct: (state, index) => {
     state.all.splice(index, 1)
+  },
+  saveCustomer: (state, data) => {
+    state.customer = data
+  },
+  setNullCart: state => {
+    state.all = []
+    state.totalMoney = 0
+    state.totalQuantity = 0
   }
 }
 

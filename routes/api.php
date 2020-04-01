@@ -79,6 +79,14 @@ Route::group([
 });
 
 Route::group([
+    'prefix' => 'orders'
+], function() {
+    Route::get('/', 'Api\OrderController@index')->name('order.index');
+    Route::get('/{id}', 'Api\OrderController@show')->name('supplier.show');
+    Route::post('/change-status', 'Api\OrderController@changeStatus')->name('order.status');
+});
+
+Route::group([
     'prefix' => 'datatypes'
 ], function() {
     Route::get('/', 'Api\DataTypeController@index')->name('datatype.index');
@@ -99,5 +107,10 @@ Route::group([
         'prefix' => 'carts'
     ], function() {
         Route::post('/', 'CartController@addCart');
+    });
+    Route::group([
+        'prefix' => 'categories'
+    ], function() {
+        Route::get('/', 'CategoryController@index');
     });
 });
