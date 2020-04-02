@@ -71,12 +71,12 @@
           <router-link to="/">Giao diện</router-link>
         </template>
       </el-menu-item>
-      <el-submenu index="8">
+      <el-menu-item index="8">
         <template slot="title">
           <i class="el-icon-s-tools"></i>
-          <router-link to="/">Hệ thống</router-link>
+          <router-link to="/admin/system">Hệ thống</router-link>
         </template>
-      </el-submenu>
+      </el-menu-item>
       <el-menu-item index="9">
         <template slot="title">
           <i class="el-icon-s-custom"></i>

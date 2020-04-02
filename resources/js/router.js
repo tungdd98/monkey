@@ -14,6 +14,7 @@ import supplier from '@/views/admin/pages/supplier/router'
 import article from '@/views/admin/pages/article/router'
 import user from '@/views/admin/pages/user/router'
 import order from '@/views/admin/pages/order/router'
+import system from '@/views/admin/pages/system/router'
 
 import Login from '@/views/Login'
 import Register from '@/views/Register'
@@ -59,6 +60,7 @@ const routes = [
       article,
       user,
       order,
+      system
     ],
     meta: { requiresAuth: true }
   },

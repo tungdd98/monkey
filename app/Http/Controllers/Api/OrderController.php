@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Bill as Model;
-use App\Models\Customer as Customer;
-use App\Models\User as User;
+use App\Models\Customer;
+use App\Models\User;
 
 class OrderController extends Controller
 {
@@ -54,12 +54,12 @@ class OrderController extends Controller
     public function show(Request $request)
     {
         $item = Model::findOrFail($request->id);
-        if(!empty($item['customer_id'])) {
-            $item['customer'] = Customer::find($item['customer_id'])->first();
+        if(isset($item->customer_id)) {
+            $item['customer'] = Customer::find($item->customer_id);
         } else {
-            $item['customer'] = User::find($item['user_id'])->first();
+            $item['customer'] = User::find($item['user_id']);
         }
         $item['products'] = $item->products()->get();
-        return response()->json(['data' => $item]);
+        return response()->json(['data' => $item, 'id' => $item->customer_id]);
     }
 }
