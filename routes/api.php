@@ -68,6 +68,13 @@ Route::group([
 });
 
 Route::group([
+    'prefix' => 'system'
+], function() {
+    Route::get('/', 'Api\SystemController@index')->name('system.index');
+    Route::post('/', 'Api\SystemController@update')->name('system.update');
+});
+
+Route::group([
     'prefix' => 'suppliers'
 ], function() {
     Route::get('/', 'Api\SupplierController@index')->name('supplier.index');

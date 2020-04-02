@@ -9,10 +9,7 @@
 					<li class="breadcrumb-item">
 						<a href="#">Sản phẩm</a>
 					</li>
-					<li class="breadcrumb-item">
-						<a href="#">Thực phẩm tưới sống</a>
-					</li>
-					<li class="breadcrumb-item active" aria-current="page">Cá hồi Nauy tươi Fillet</li>
+					<li class="breadcrumb-item active" aria-current="page" v-if="item">{{ _notag(item.title) }}</li>
 				</ol>
 			</nav>
 			<div class="details-product">
