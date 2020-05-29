@@ -25,12 +25,6 @@
           <el-dropdown-item v-if="user">
             <span>{{ user.name }}</span>
           </el-dropdown-item>
-          <el-dropdown-item icon="el-icon-plus">
-            <router-link to="/login">Login</router-link>
-          </el-dropdown-item>
-          <el-dropdown-item icon="el-icon-circle-plus">
-            <router-link to="/register">Register</router-link>
-          </el-dropdown-item>
           <el-dropdown-item icon="el-icon-circle-plus">
             <span @click="handleLogout">Đăng xuất</span>
           </el-dropdown-item>

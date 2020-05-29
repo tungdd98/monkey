@@ -13,7 +13,7 @@ class Article extends Model
      * $folderImg: đường dẫn chứa ảnh
      */
     protected $table = 'articles';
-    protected $fillable = ['title', 'description', 'content', 'is_hot', 'is_feature', 'thumbnail', 'status', 'author', 'pseudonym', 'source', 'created_by', 'created_at', 'updated_by', 'updated_at'];
+    protected $fillable = ['title', 'category_id', 'description', 'content', 'is_hot', 'is_feature', 'thumbnail', 'status', 'author', 'pseudonym', 'source', 'created_by', 'created_at', 'updated_by', 'updated_at'];
     protected $columns = ['id', 'title', 'category_id', 'description', 'content', 'is_hot', 'is_feature', 'thumbnail', 'status', 'author', 'pseudonym', 'source', 'created_by', 'created_at', 'updated_by', 'updated_at'];
     protected $folderImg = 'article';
 
@@ -63,9 +63,6 @@ class Article extends Model
                 $params['thumbnail']->move("images/{$this->folderImg}", $imgName);
                 $params['thumbnail'] = $imgName;
             }
-            foreach($request->categories as $key => $value) {
-                $product->categories()->attach($value);
-            }
             $this->create($params);
         }
         // Update phần tử
@@ -92,16 +89,6 @@ class Article extends Model
                 'is_feature'    => $params['is_feature']
             ]);
             $article = self::find($params['id']);
-            if(!empty($request->categoriesRemove)) {
-                foreach($request->categoriesRemove as $key => $value) {
-                    $article->categories()->detach($value);
-                }
-            }
-            if(!empty($request->categoriesUpdate)) {
-                foreach($request->categoriesUpdate as $key => $value) {
-                    $article->categories()->attach($value);
-                }
-            }
             return $article;
         }
     }

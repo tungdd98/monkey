@@ -75,46 +75,27 @@
 									</div>
 								</div>
 								<div id="register" class="tab-pane fade">
-									<div class="fr-login">
-										<div class="form-group">
-											<label for>Họ và tên</label>
-											<input type="text" class="form-control" placeholder="Nhập tên tài khoản" />
+									<el-container class="v-login">
+										<div class="" style="max-width: 600px; width: 100%">
+											<el-form :model="form" status-icon :ref="formName" label-width="140px" class="" :rules="rules">
+												<el-form-item label="Tên người dùng" prop="name">
+													<el-input type="text" v-model="form.name" auto-complete="off" placeholder="..."></el-input>
+												</el-form-item>
+												<el-form-item label="Email" prop="email">
+													<el-input type="email" v-model="form.email" auto-complete="off" placeholder="..."></el-input>
+												</el-form-item>
+												<el-form-item label="Mật khẩu" prop="password">
+													<el-input type="password" v-model="form.password" auto-complete="off" placeholder="..."></el-input>
+												</el-form-item>
+												<el-form-item label="Nhập lại mật khẩu">
+													<el-input type="password" v-model="form.repassword" auto-complete="off" placeholder="..."></el-input>
+												</el-form-item>
+												<div class="v-login-btn">
+													<el-button type="danger" @click.prevent="handleLogin(formName)">Đăng ký</el-button>
+												</div>
+											</el-form>
 										</div>
-										<div class="form-group">
-											<label for>Email</label>
-											<input type="email" class="form-control" placeholder="Địa chỉ email" />
-										</div>
-										<div class="form-group">
-											<label for>Mật khẩu</label>
-											<input type="password" class="form-control" placeholder="Nhập mật khẩu" />
-										</div>
-										<div class="form-group">
-											<label for>Nhập lại mật khẩu</label>
-											<input type="password" class="form-control" placeholder="Nhập lại mật khẩu" />
-										</div>
-										<div class="btn-login">
-											<button type="button" class="btn">Đăng ký</button>
-										</div>
-										<div class="other-ac">
-											<div class="lb-or">
-												<span>Hoặc</span>
-											</div>
-											<ul>
-												<li>
-													<a href title class="smooth">
-														<i class="social_facebook"></i>
-														<span>Đăng nhập qua Facebook</span>
-													</a>
-												</li>
-												<li>
-													<a href title class="smooth">
-														<i class="social_googleplus"></i>
-														<span>Đăng nhập qua Google+</span>
-													</a>
-												</li>
-											</ul>
-										</div>
-									</div>
+									</el-container>
 								</div>
 							</div>
 						</div>
@@ -134,7 +115,15 @@ export default {
 				email: "admin@gmail.com",
 				password: "123456"
 			},
-			isClosed: false
+			isClosed: false,
+			form: {
+        name: '',
+        email: '',
+        password: '',
+        repassword: ''
+      },
+			rules: foo.RULES.register,
+			formName: 'register',
 		};
 	},
 	computed: {
@@ -143,7 +132,7 @@ export default {
 		})
 	},
 	methods: {
-		...mapActions("auth", ["login"]),
+		...mapActions("auth", ["login", "register"]),
 		handleLogin() {
 			let formData = new FormData();
 			formData.append("email", this.formLogin.email);
@@ -157,7 +146,27 @@ export default {
 					this.$fire(foo.NOTIFICATION.error);
 				}
 			});
-		}
+		},
+		handleRegister(formName) {
+      this.$refs[formName].validate(valid => {
+        if(valid) {
+          let formData = new FormData()
+          formData.append('email', this.form.email)
+          formData.append('password', this.form.password)
+          formData.append('name', this.form.name)
+          this.register(formData)
+          .then(res => {
+            if(res.flag) {
+              this.$fire(foo.NOTIFICATION.success.registed)
+              return true
+            } else {
+              this.$fire(foo.NOTIFICATION.error)
+              return false
+            }
+          })
+        }
+      })
+    },
 	}
 };
 </script>
