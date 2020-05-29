@@ -16,7 +16,7 @@
                   </el-input>
                 </el-form-item>
                 <el-form-item label="Danh mục" :label-width="display.formLabelWidth" prop="category">
-                  <el-select v-model="category.list" placeholder="--Chọn--" v-if="category.select" multiple collapse-tags>
+                  <el-select v-model="form.category_id" placeholder="--Chọn--" v-if="category.select" collapse-tags>
                     <el-option
                       v-for="item in category.select"
                       :key="item.id"
@@ -126,6 +126,7 @@ export default {
         pseudonym: '',
         source: '',
         status: 1,
+        category_id: ''
       },
       selectStatus: foo.STATUS,
       imagesList: [],
@@ -231,9 +232,11 @@ export default {
         if(valid) {
           let data = new FormData()
           Object.entries(this.form).forEach(([key, value]) => data.append(key, value))
-          
           if(!this.isEdit) {
             data.append('created_by', this.user.name)
+            this.category.list.forEach((value, key) =>
+							data.append(`categories[${key}]`, value)
+						);
             this.createItem(data).then(res => {
               if(res.flag) {
                 this.$fire(foo.NOTIFICATION.success.created)
