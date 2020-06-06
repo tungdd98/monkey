@@ -45,8 +45,8 @@ const actions = {
 			}
 			let result = await Axios.get(`${URL}`, config)
 			commit('setLoading', false, { root: true })
-			if(result.status === 200) {
-				if(!pagination) {
+			if (result.status === 200) {
+				if (!pagination) {
 					commit('setList', {
 						all: result.data.data,
 						total: result.data.data.length
@@ -56,7 +56,7 @@ const actions = {
 						all: result.data.data.data,
 						total: result.data.data.total
 					})
-					commit('setPaginate', { per_page, page, order_by, order_dir})
+					commit('setPaginate', { per_page, page, order_by, order_dir })
 				}
 				return { flag: true }
 			}
@@ -73,7 +73,7 @@ const actions = {
 		try {
 			data.status = data.status === 1 ? 0 : 1
 			let result = await Axios.patch(`${URL}/${data.id}`, data)
-			if(result.status === 200) {
+			if (result.status === 200) {
 				return { flag: true }
 			}
 		} catch (error) {
@@ -87,7 +87,7 @@ const actions = {
 	deleteItem: async ({ commit, dispatch }, data) => {
 		try {
 			let result = await Axios.delete(`${URL}/${data.id}`)
-			if(result.status === 200) {
+			if (result.status === 200) {
 				return { flag: true }
 			}
 			return { flag: false }
@@ -102,7 +102,7 @@ const actions = {
 	createItem: async ({ commit, dispatch }, data) => {
 		try {
 			let result = await Axios.post(`${URL}`, data)
-			if(result.status === 200) {
+			if (result.status === 200) {
 				dispatch('getList', {})
 				return { flag: true }
 			}
@@ -116,8 +116,8 @@ const actions = {
 	 */
 	getItemById: async ({ commit }, id) => {
 		try {
-      let result = await Axios.get(`${URL}/${id}`)
-			if(result.status === 200) {
+			let result = await Axios.get(`${URL}/${id}`)
+			if (result.status === 200) {
 				commit('setCurrItem', result.data.data)
 				return { flag: true }
 			}
@@ -133,7 +133,7 @@ const actions = {
 	updateItem: async ({ commit, dispatch }, data) => {
 		try {
 			let result = await Axios.post(`${URL}/${data.id}`, data)
-			if(result.status === 200) {
+			if (result.status === 200) {
 				dispatch('getList', {})
 				return { flag: true }
 			}
@@ -149,7 +149,7 @@ const actions = {
 	getPropertyById: async ({ commit }, { id, property }) => {
 		try {
 			let result = await Axios.get(`${URL}/${property}/${id}`)
-			if(result.status === 200) {
+			if (result.status === 200) {
 				return { flag: true, data: result.data.data }
 			}
 			return { flag: false }
@@ -170,12 +170,12 @@ const actions = {
 				}
 			}
 			let result = null
-			if(!tag) {
+			if (!tag) {
 				result = await Axios.get(`tomita/${URL}`, configs)
 			} else {
 				result = await Axios.get(`tomita/${URL}/get-by-category-id`, configs)
 			}
-			if(result.status === 200) {
+			if (result.status === 200) {
 				commit('setList', {
 					all: result.data.data.data,
 					total: result.data.data.total
@@ -185,6 +185,17 @@ const actions = {
 		} catch (error) {
 			console.log(error)
 			return { flag: false }
+		}
+	},
+	getListPromotion: async ({ commit }) => {
+		try {
+			const res = await Axios.get(`tomita/${URL}/get-promotion`)
+			if(res.status === 200) {
+				return res.data
+			}
+			return null
+		} catch (error) {
+			return null
 		}
 	}
 }
@@ -197,10 +208,10 @@ const mutations = {
 	setCurrItem: (state, data) => {
 		state.currItem = data
 	},
-	setPaginate: (state,  { per_page, page, order_by, order_dir }) => {
-		state.per_page 	= per_page
-		state.page 			= page
-		state.order_by 	= order_by
+	setPaginate: (state, { per_page, page, order_by, order_dir }) => {
+		state.per_page = per_page
+		state.page = page
+		state.order_by = order_by
 		state.order_dir = order_dir
 	},
 	setProductQuantity: (state, { id, quantity }) => {

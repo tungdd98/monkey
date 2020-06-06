@@ -108,6 +108,7 @@ Route::group([
         'prefix' => 'products',
     ], function () {
         Route::get('/', 'SinglePageController@getListProducts');
+        Route::get('/get-promotion', 'SinglePageController@getListProductsPromotion');
         Route::get('/get-by-category-id', 'SinglePageController@getListProductsByCategoryId');
     });
     Route::group([
