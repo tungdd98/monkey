@@ -30,7 +30,7 @@ const getters = {
 			order_dir: state.order_dir,
 			page: state.page,
 		}
-	}
+	},
 }
 
 const actions = {
@@ -141,6 +141,14 @@ const actions = {
 		} catch (error) {
 			console.log(error)
 			return { flag: false, msg: error }
+		}
+	},
+	getListTomita: async({ commit, dispatch }) => {
+		try {
+			const res = await Axios.get(`tomita/${URL}`)
+			return res.status === 200 ? res.data : null
+		} catch (error) {
+			return null
 		}
 	}
 }

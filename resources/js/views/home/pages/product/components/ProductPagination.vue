@@ -6,7 +6,7 @@
 			class="kr-pagination"
 			layout="prev, pager, next"
 			@current-change="handleCurrChange"
-			:page-size="12"
+			:page-size="9"
 			:total="total"
 		></el-pagination>
 	</nav>
