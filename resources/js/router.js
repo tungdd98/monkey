@@ -29,6 +29,7 @@ import profile from '@/views/home/pages/profile/router'
 import product_home from '@/views/home/pages/product/router'
 import article_home from '@/views/home/pages/article/router'
 import product_detail from '@/views/home/pages/product-detail/router'
+import article_detail from '@/views/home/pages/article-detail/router'
 import checkout from '@/views/home/pages/checkout/router'
 
 const routes = [
@@ -45,7 +46,8 @@ const routes = [
       about,
       promotion,
       profile,
-      checkout
+      checkout,
+      article_detail
     ]
   },
   {

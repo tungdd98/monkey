@@ -161,16 +161,17 @@ const actions = {
 	/**
 	 * Lấy danh sách sản phẩm ngoài trang chủ
 	 */
-	getListTomita: async ({ commit }, { tag = null }) => {
+	getListTomita: async ({ commit }, { tag = null, page = 1 }) => {
 		try {
 			let configs = {
 				params: {
-					tag
+					tag,
+					page
 				}
 			}
 			let result = null
 			if(!tag) {
-				result = await Axios.get(`tomita/${URL}`)
+				result = await Axios.get(`tomita/${URL}`, configs)
 			} else {
 				result = await Axios.get(`tomita/${URL}/get-by-category-id`, configs)
 			}

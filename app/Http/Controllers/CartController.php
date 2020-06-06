@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bill as Model;
 use Illuminate\Http\Request;
 use App\Models\Customer;
+use App\Models\Product;
 class CartController extends Controller
 {
     public function addCart(Request $request) {
@@ -35,6 +36,9 @@ class CartController extends Controller
             $cart->products()->attach($value[0], [
                 'quantity' => $value[2]
             ]);
+            $itemProduct = Product::where('id', $value[0])->first();
+            $numberQuantityUpdate = (int)($itemProduct['quantity']) - (int)($value[2]);
+            Product::where('id', $value[0])->update(['quantity' => $numberQuantityUpdate]);
         }
         return $cart;
     }

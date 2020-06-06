@@ -67,6 +67,9 @@ class Product extends Model
         if($options['field'] == 'status') {
             self::where('id', $params['id'])->update(['status' => $params['status']]);
         }
+        if($options['field'] == 'quantity') {
+            self::where('id', $params['id'])->update(['quantity' => $params['quantity']]);
+        }
         // Lưu phần tử mới
         if($options['field'] == 'add-item') {
             $images = $request->images;

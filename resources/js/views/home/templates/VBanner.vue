@@ -40,7 +40,7 @@ export default {
       })
     },
     changePath() {
-      if(!['profile', 'product-detail', 'history-order', 'checkout', 'information'].includes(this.type)) {
+      if(!['profile', 'product-detail', 'history-order', 'checkout', 'information', 'article-detail'].includes(this.type)) {
         let item = this.categories.filter(value => value.type == this.type)
         this.path = item[0].thumbnail  
       }

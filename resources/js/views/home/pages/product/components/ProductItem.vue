@@ -1,6 +1,7 @@
 <template>
 	<div class="col-lg-4 col-sm-6">
 		<div class="item-product" v-if="item">
+			<div class="hethang" v-if="item.quantity === 0">Hết hàng</div>
 			<a href title class="img-primary">
 				<img :src="_getThumbnail(controller, item.thumbnail)" alt />
 			</a>
@@ -77,5 +78,14 @@ export default {
 	}
 };
 </script>
-<style>
+<style scoped>
+.hethang {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	background-color: #ab3434;
+	color: #fff;
+	padding: 10px 12px;
+	z-index: 10;
+}
 </style>

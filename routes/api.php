@@ -2,7 +2,7 @@
 
 /* Admin */
 Route::group([
-    'prefix' => 'auth'
+    'prefix' => 'auth',
 ], function () {
     Route::post('login', 'AuthBasic\LoginController')->name('auth.login');
     Route::post('logout', 'AuthBasic\LogoutController')->name('auth.logout');
@@ -11,8 +11,8 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'users'
-], function() {
+    'prefix' => 'users',
+], function () {
     Route::get('/', 'Api\UserController@index')->name('user.index');
     Route::get('/{id}', 'Api\UserController@show')->name('user.show');
     Route::patch('/{id}', 'Api\UserController@update')->name('user.update');
@@ -21,8 +21,8 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'categories'
-], function() {
+    'prefix' => 'categories',
+], function () {
     Route::get('/', 'Api\CategoryController@index')->name('category.index');
     Route::get('/{id}', 'Api\CategoryController@show')->name('category.show');
     Route::patch('/{id}', 'Api\CategoryController@update')->name('category.update');
@@ -32,8 +32,8 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'products'
-], function() {
+    'prefix' => 'products',
+], function () {
     Route::get('/', 'Api\ProductController@index')->name('product.index');
     Route::get('/category/{id}', 'Api\ProductController@getCategoryOfItem')->name('product.category');
     Route::get('/unit/{id}', 'Api\ProductController@getUnitOfItem')->name('product.unit');
@@ -46,8 +46,8 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'articles'
-], function() {
+    'prefix' => 'articles',
+], function () {
     Route::get('/', 'Api\ArticleController@index')->name('article.index');
     Route::get('/{id}', 'Api\ArticleController@show')->name('article.show');
     Route::patch('/{id}', 'Api\ArticleController@update')->name('article.update');
@@ -57,8 +57,8 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'units'
-], function() {
+    'prefix' => 'units',
+], function () {
     Route::get('/', 'Api\UnitController@index')->name('unit.index');
     Route::get('/{id}', 'Api\UnitController@show')->name('unit.show');
     Route::patch('/{id}', 'Api\UnitController@update')->name('unit.update');
@@ -68,15 +68,15 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'system'
-], function() {
+    'prefix' => 'system',
+], function () {
     Route::get('/', 'Api\SystemController@index')->name('system.index');
     Route::post('/', 'Api\SystemController@update')->name('system.update');
 });
 
 Route::group([
-    'prefix' => 'suppliers'
-], function() {
+    'prefix' => 'suppliers',
+], function () {
     Route::get('/', 'Api\SupplierController@index')->name('supplier.index');
     Route::get('/{id}', 'Api\SupplierController@show')->name('supplier.show');
     Route::patch('/{id}', 'Api\SupplierController@update')->name('supplier.update');
@@ -86,38 +86,44 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'orders'
-], function() {
+    'prefix' => 'orders',
+], function () {
     Route::get('/', 'Api\OrderController@index')->name('order.index');
     Route::get('/{id}', 'Api\OrderController@show')->name('supplier.show');
     Route::post('/change-status', 'Api\OrderController@changeStatus')->name('order.status');
 });
 
 Route::group([
-    'prefix' => 'datatypes'
-], function() {
+    'prefix' => 'datatypes',
+], function () {
     Route::get('/', 'Api\DataTypeController@index')->name('datatype.index');
     Route::get('/{id}', 'Api\DataTypeController@show')->name('datatype.show');
 });
 
 /* Home */
 Route::group([
-    'prefix' => 'tomita'
-], function() {
+    'prefix' => 'tomita',
+], function () {
     Route::group([
-        'prefix' => 'products'
-    ], function() {
-        Route::get('/', 'ProductController@index');
-        Route::get('/get-by-category-id', 'ProductController@getItemByCategoryId');
+        'prefix' => 'products',
+    ], function () {
+        Route::get('/', 'SinglePageController@getListProducts');
+        Route::get('/get-by-category-id', 'SinglePageController@getListProductsByCategoryId');
     });
     Route::group([
-        'prefix' => 'carts'
-    ], function() {
+        'prefix' => 'carts',
+    ], function () {
         Route::post('/', 'CartController@addCart');
     });
     Route::group([
-        'prefix' => 'categories'
-    ], function() {
-        Route::get('/', 'CategoryController@index');
+        'prefix' => 'categories',
+    ], function () {
+        Route::get('/', 'SinglePageController@getListCategories');
     });
+    Route::group([
+        'prefix' => 'articles',
+    ], function () {
+        Route::get('/', 'SinglePageController@getListArticles');
+    });
+
 });
