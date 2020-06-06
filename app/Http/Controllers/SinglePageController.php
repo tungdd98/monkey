@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\Article;
 use Illuminate\Http\Request;
 
 class SinglePageController extends Controller
@@ -42,6 +42,20 @@ class SinglePageController extends Controller
             $value['supplier'] = Product::find($value->id)->suppliers()->first();
         }
         return response()->json(['data' => $items]);
+    }
+
+    /**
+     * Láy sản phẩm khuyến mãi
+     */
+    public function getListProductsPromotion()
+    {
+        $items = Product::where('is_bestseller', 1)->get();
+        foreach ($items as $key => $value) {
+            $value['unit'] = Product::find($value->id)->units()->first();
+            $value['supplier'] = Product::find($value->id)->suppliers()->first();
+        }
+        return response()->json(['data' => $items]);
+
     }
 
     /**
