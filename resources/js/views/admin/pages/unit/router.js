@@ -1,6 +1,6 @@
 import List from './List'
 export default {
-  name: 'unit',
-  path: 'units',
-  component: List
+    name: 'unit',
+    path: 'units',
+    component: List,
 }

@@ -18,6 +18,7 @@ const store = new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
   state: {
     isLoading: false,
+    isLoadingHome: false,
     pathBanner: '/tomita/images/bn-product.jpg'
   },
   getters: {
@@ -33,6 +34,9 @@ const store = new Vuex.Store({
     },
     setBanner: (state, pathBanner) => {
       state.pathBanner = pathBanner
+    },
+    setLoadingHome: (state, loading) => {
+      state.isLoadingHome = loading
     }
   },
   modules: {
@@ -49,16 +53,16 @@ const store = new Vuex.Store({
   }
 })
 store.subscribe((mutations) => {
-  switch(mutations.type) {
+  switch (mutations.type) {
     case 'auth/setToken':
-      if(mutations.payload) {
+      if (mutations.payload) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${mutations.payload}`
         localStorage.setItem('token', mutations.payload)
       } else {
         axios.defaults.headers.common['Authorization'] = null
         localStorage.removeItem('token')
       }
-    break;
+      break;
   }
 })
 export default store
