@@ -162,6 +162,7 @@ const actions = {
 	 * Lấy danh sách sản phẩm ngoài trang chủ
 	 */
 	getListTomita: async ({ commit }, { tag = null, page = 1 }) => {
+		commit('setLoadingHome', true, { root: true })
 		try {
 			let configs = {
 				params: {
@@ -175,6 +176,7 @@ const actions = {
 			} else {
 				result = await Axios.get(`tomita/${URL}/get-by-category-id`, configs)
 			}
+			commit('setLoadingHome', false, { root: true })
 			if (result.status === 200) {
 				commit('setList', {
 					all: result.data.data.data,
@@ -188,9 +190,11 @@ const actions = {
 		}
 	},
 	getListPromotion: async ({ commit }) => {
+		commit('setLoadingHome', true, { root: true })
 		try {
 			const res = await Axios.get(`tomita/${URL}/get-promotion`)
-			if(res.status === 200) {
+			commit('setLoadingHome', false, { root: true })
+			if (res.status === 200) {
 				return res.data
 			}
 			return null

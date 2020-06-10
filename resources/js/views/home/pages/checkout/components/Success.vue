@@ -1,11 +1,9 @@
 <template>
-  <section class="page-success">
-    <h1 class="display-4">Mua hàng thành công!!</h1>
-  </section>
+    <section class="page-success">
+        <h1 class="display-4">Mua hàng thành công!!</h1>
+    </section>
 </template>
 <script>
-export default {
-}
+export default {};
 </script>
-<style>
-</style>
+<style></style>

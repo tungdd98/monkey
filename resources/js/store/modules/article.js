@@ -45,8 +45,8 @@ const actions = {
 			}
 			let result = await Axios.get(`${URL}`, config)
 			commit('setLoading', false, { root: true })
-			if(result.status === 200) {
-				if(!pagination) {
+			if (result.status === 200) {
+				if (!pagination) {
 					commit('setList', {
 						all: result.data.data,
 						total: result.data.data.length
@@ -73,7 +73,7 @@ const actions = {
 		try {
 			data.status = data.status === 1 ? 0 : 1
 			let result = await Axios.patch(`${URL}/${data.id}`, data)
-			if(result.status === 200) {
+			if (result.status === 200) {
 				return { flag: true }
 			}
 		} catch (error) {
@@ -87,7 +87,7 @@ const actions = {
 	deleteItem: async ({ commit, dispatch }, data) => {
 		try {
 			let result = await Axios.delete(`${URL}/${data.id}`)
-			if(result.status === 200) {
+			if (result.status === 200) {
 				return { flag: true }
 			}
 			return { flag: false }
@@ -102,7 +102,7 @@ const actions = {
 	createItem: async ({ commit, dispatch }, data) => {
 		try {
 			let result = await Axios.post(`${URL}`, data)
-			if(result.status === 200) {
+			if (result.status === 200) {
 				dispatch('getList', {})
 				return { flag: true }
 			}
@@ -117,7 +117,7 @@ const actions = {
 	getItemById: async ({ commit }, id) => {
 		try {
 			let result = await Axios.get(`${URL}/${id}`)
-			if(result.status === 200) {
+			if (result.status === 200) {
 				commit('setCurrItem', result.data.data)
 				return { flag: true }
 			}
@@ -133,7 +133,7 @@ const actions = {
 	updateItem: async ({ commit, dispatch }, data) => {
 		try {
 			let result = await Axios.post(`${URL}/${data.id}`, data)
-			if(result.status === 200) {
+			if (result.status === 200) {
 				dispatch('getList', {})
 				return { flag: true }
 			}
@@ -143,9 +143,11 @@ const actions = {
 			return { flag: false, msg: error }
 		}
 	},
-	getListTomita: async({ commit, dispatch }) => {
+	getListTomita: async ({ commit, dispatch }) => {
+		commit('setLoadingHome', true, { root: true })
 		try {
 			const res = await Axios.get(`tomita/${URL}`)
+			commit('setLoadingHome', false, { root: true })
 			return res.status === 200 ? res.data : null
 		} catch (error) {
 			return null
@@ -161,10 +163,10 @@ const mutations = {
 	setCurrItem: (state, data) => {
 		state.currItem = data
 	},
-	setPaginate: (state,  { per_page, page, order_by, order_dir }) => {
-		state.per_page 	= per_page
-		state.page 			= page
-		state.order_by 	= order_by
+	setPaginate: (state, { per_page, page, order_by, order_dir }) => {
+		state.per_page = per_page
+		state.page = page
+		state.order_by = order_by
 		state.order_dir = order_dir
 	}
 }

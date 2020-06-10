@@ -1,6 +1,6 @@
-import Index from './Index'
+import Index from "./Index";
 export default {
-  name: 'About',
-  path: '/about',
-  component: Index
-}
+    name: "About",
+    path: "/about",
+    component: Index
+};
