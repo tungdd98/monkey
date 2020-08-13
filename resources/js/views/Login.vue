@@ -23,7 +23,7 @@
                         type="password"
                         v-model="form.password"
                         auto-complete="off"
-                        placeholder="..."
+                        placeholder="...................."
                     ></el-input>
                 </el-form-item>
                 <div class="v-login-btn">
@@ -43,48 +43,48 @@
     </el-container>
 </template>
 <script>
-import { mapActions } from "vuex";
-import foo from "@/configs";
+import { mapActions } from 'vuex'
+import foo from '@/configs'
 export default {
-    name: "login",
+    name: 'login',
     data() {
         return {
-            formName: "login",
+            formName: 'login',
             form: {
-                email: "admin@gmail.com",
-                password: "123456"
+                email: 'admin@gmail.com',
+                password: '123456',
             },
-            rules: foo.RULES.login
-        };
+            rules: foo.RULES.login,
+        }
     },
     methods: {
-        ...mapActions("auth", ["login"]),
+        ...mapActions('auth', ['login']),
         handleLogin(formName) {
-            this.$refs[formName].validate(valid => {
+            this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    let formData = new FormData();
-                    formData.append("email", this.form.email);
-                    formData.append("password", this.form.password);
+                    let formData = new FormData()
+                    formData.append('email', this.form.email)
+                    formData.append('password', this.form.password)
                     this.login(formData)
-                        .then(res => {
+                        .then((res) => {
                             if (res.flag) {
-                                this.$fire(foo.NOTIFICATION.success.logined);
-                                return true;
+                                this.$fire(foo.NOTIFICATION.success.logined)
+                                return true
                             } else {
-                                this.$fire(foo.NOTIFICATION.error);
-                                return false;
+                                this.$fire(foo.NOTIFICATION.error)
+                                return false
                             }
                         })
-                        .then(res => {
-                            if (res) this.$router.push("/admin");
-                        });
+                        .then((res) => {
+                            if (res) this.$router.push('/admin')
+                        })
                 }
-            });
+            })
         },
         test() {
-            console.log("hihi");
-        }
-    }
-};
+            console.log('hihi')
+        },
+    },
+}
 </script>
 <style></style>
