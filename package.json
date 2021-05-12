@@ -22,7 +22,7 @@
     "dependencies": {
         "@ckeditor/ckeditor5-build-classic": "^17.0.0",
         "@ckeditor/ckeditor5-vue": "^1.0.1",
-        "chart.js": "^2.9.3",
+        "chart.js": "^2.9.4",
         "element-ui": "^2.13.0",
         "moment": "^2.24.0",
         "vue": "^2.6.11",
